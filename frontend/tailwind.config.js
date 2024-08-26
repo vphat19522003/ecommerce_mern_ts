@@ -2,7 +2,11 @@
 export default {
   content: ['./index.html', './src/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif']
+      }
+    },
     screens: {
       xs: '400px',
       sm: '600px',

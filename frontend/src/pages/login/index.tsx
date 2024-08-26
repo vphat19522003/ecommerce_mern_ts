@@ -1,23 +1,50 @@
-import { Box, Button, Input, Link, Stack, Typography } from '@mui/material';
+import { useCallback, useRef, useState } from 'react';
+
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Alert, Box, Button, IconButton, Link, Snackbar, Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
+
+import InputField from '@app/components/atoms/inputField';
+import Label from '@app/components/atoms/label';
+import ImageSlider from '@app/components/molecules/ImageSlider';
 
 import StitchLogo from '../../assets/stitch_icon.png';
 
-const LoginPage = () => {
+const LoginPage = (): JSX.Element => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleKeyDown = useCallback((event) => {
+    if (event.getModifierState('CapsLock')) {
+      setOpenSnackbar(true);
+    }
+  }, []);
+
+  const handleKeyUp = useCallback((event) => {
+    if (!event.getModifierState('CapsLock')) {
+      setOpenSnackbar(false);
+    }
+  }, []);
+
+  const handleToggleShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className='w-full h-full md:w-[980px] md:h-[616px] overflow-hidden bg-white shadow-md backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100'>
+      className='w-full h-full md:w-[980px] md:h-[580px] overflow-hidden bg-white shadow-md backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100'>
       <Box className='grid w-full h-full grid-cols-1 md:grid-cols-2'>
         <Box className='z-0 hidden h-full md:flex md:items-center md:justify-center bg-gradient-to-br from-blue-500 to-pink-300 opacity-90 rounded-es-2xl rounded-ss-2xl'>
-          <img src={StitchLogo} className='z-10 w-52 h-52' alt='Login banner' />
+          <ImageSlider />
         </Box>
         <Stack justifyContent='center' alignItems='center' className='h-full px-8'>
           <form className='w-full'>
             <Stack flexDirection='column' className='h-full'>
-              <Stack justifyContent='center' alignItems='center' className='mb-16'>
+              <Stack justifyContent='center' alignItems='center' className='mb-10'>
                 <Box
                   className='flex md:hidden'
                   sx={{
@@ -28,8 +55,9 @@ const LoginPage = () => {
                       xs: '80px'
                     }
                   }}>
-                  <img src={StitchLogo} alt='Logo' className='object-cover w-20 h-20' />
+                  <img src={StitchLogo} alt='Logo' className='hidden object-cover w-20 h-20 md:block' />
                 </Box>
+                <img src={StitchLogo} className='z-10 w-20 h-20' alt='Login banner' />
                 <Stack flexDirection={'row'} gap={1}>
                   <Typography
                     variant='h1'
@@ -64,14 +92,28 @@ const LoginPage = () => {
                 </Stack>
               </Stack>
 
-              <Box className='grid gap-4 mt-4'>
+              <Box className='grid gap-4'>
                 <Stack direction='column' className='gap-2'>
-                  <label>User ID</label>
-                  <Input />
+                  <Label title='User ID' required />
+                  <InputField type='text' ref={inputRef} onClick={() => console.log(inputRef.current)} />
                 </Stack>
                 <Stack direction='column' className='gap-2'>
-                  <label>Password</label>
-                  <Input />
+                  <Label title='Password' required />
+                  <InputField
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                      <IconButton onPointerUp={handleToggleShowPassword} onPointerDown={handleToggleShowPassword}>
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    }
+                    onKeyDown={handleKeyDown}
+                    onKeyUp={handleKeyUp}
+                  />
+                  <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
+                    <Alert onClose={() => setOpenSnackbar(false)} severity='warning'>
+                      Caps Lock is on!
+                    </Alert>
+                  </Snackbar>
                 </Stack>
               </Box>
 

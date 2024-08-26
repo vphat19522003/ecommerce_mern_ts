@@ -1,1 +1,2 @@
 1. Tạo giao diện login, reigter, forgot password, verify email
+2. Tạo custom common component: label, input - Add một số chức năng ux cho login như : banner ảnh chuyển động,ẩn/hiện mật khẩu, nhắc nhở mở caplock, sửa giao diện
