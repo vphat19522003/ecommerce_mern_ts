@@ -13,7 +13,7 @@ import { OverridableStringUnion } from '@mui/types';
 
 import { type IPlainObject } from '@app/types/common';
 
-type InputFieldProps = Omit<TextFieldProps, 'helperText'> & {
+type InputFieldProps = Omit<TextFieldProps, 'helperText' | 'error'> & {
   error?: IPlainObject;
   startAdornment?: React.ReactNode;
   endAdornment?: React.ReactNode;

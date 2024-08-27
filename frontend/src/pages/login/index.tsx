@@ -1,20 +1,39 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Alert, Box, Button, IconButton, Link, Snackbar, Stack, Typography } from '@mui/material';
+import { Alert, Box, Checkbox, FormControlLabel, IconButton, Link, Snackbar, Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 
+import ButtonForm from '@app/components/atoms/button';
 import InputField from '@app/components/atoms/inputField';
 import Label from '@app/components/atoms/label';
 import ImageSlider from '@app/components/molecules/ImageSlider';
+import { paths } from '@app/routes/paths';
 
-import StitchLogo from '../../assets/stitch_icon.png';
+import viteLogo from '../../../public/vite.svg';
+import { LoginSchema, LoginSchemaType } from './schemas';
+
+//import StitchLogo from '../../assets/stitch_icon.png';
 
 const LoginPage = (): JSX.Element => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const {
+    handleSubmit,
+    setValue,
+    control,
+    formState: { errors, isLoading }
+  } = useForm<LoginSchemaType>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      username: '',
+      password: ''
+    }
+  });
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
 
   const handleKeyDown = useCallback((event) => {
     if (event.getModifierState('CapsLock')) {
@@ -31,6 +50,10 @@ const LoginPage = (): JSX.Element => {
   const handleToggleShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
+
+  const submitForm = (value) => {
+    console.log(value);
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -42,7 +65,7 @@ const LoginPage = (): JSX.Element => {
           <ImageSlider />
         </Box>
         <Stack justifyContent='center' alignItems='center' className='h-full px-8'>
-          <form className='w-full'>
+          <form className='w-full' onSubmit={handleSubmit(submitForm)}>
             <Stack flexDirection='column' className='h-full'>
               <Stack justifyContent='center' alignItems='center' className='mb-10'>
                 <Box
@@ -55,9 +78,9 @@ const LoginPage = (): JSX.Element => {
                       xs: '80px'
                     }
                   }}>
-                  <img src={StitchLogo} alt='Logo' className='hidden object-cover w-20 h-20 md:block' />
+                  <img src={viteLogo} alt='Logo' className='hidden object-cover w-20 h-20 md:block' />
                 </Box>
-                <img src={StitchLogo} className='z-10 w-20 h-20' alt='Login banner' />
+                <img src={viteLogo} className='z-10 w-20 h-20' alt='Login banner' />
                 <Stack flexDirection={'row'} gap={1}>
                   <Typography
                     variant='h1'
@@ -72,7 +95,7 @@ const LoginPage = (): JSX.Element => {
                         md: '64px'
                       }
                     })}>
-                    Stitch
+                    ...
                   </Typography>
                   <Typography
                     variant='h1'
@@ -87,52 +110,80 @@ const LoginPage = (): JSX.Element => {
                         md: '64px'
                       }
                     })}>
-                    Shop
+                    ...
                   </Typography>
                 </Stack>
               </Stack>
 
               <Box className='grid gap-4'>
                 <Stack direction='column' className='gap-2'>
-                  <Label title='User ID' required />
-                  <InputField type='text' ref={inputRef} onClick={() => console.log(inputRef.current)} />
+                  <Label title='Username' required />
+                  <Controller
+                    name='username'
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <InputField autoFocus error={errors.username} type='text' onChange={onChange} value={value} />
+                    )}
+                  />
                 </Stack>
                 <Stack direction='column' className='gap-2'>
                   <Label title='Password' required />
-                  <InputField
-                    type={showPassword ? 'text' : 'password'}
-                    endAdornment={
-                      <IconButton onPointerUp={handleToggleShowPassword} onPointerDown={handleToggleShowPassword}>
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    }
-                    onKeyDown={handleKeyDown}
-                    onKeyUp={handleKeyUp}
+                  <Controller
+                    name='password'
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <>
+                        <InputField
+                          error={errors.password}
+                          type={showPassword ? 'text' : 'password'}
+                          endAdornment={
+                            <IconButton onPointerUp={handleToggleShowPassword} onPointerDown={handleToggleShowPassword}>
+                              {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          }
+                          onKeyDown={handleKeyDown}
+                          onKeyUp={handleKeyUp}
+                          onChange={onChange}
+                          value={value}
+                        />
+                        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
+                          <Alert onClose={() => setOpenSnackbar(false)} severity='warning'>
+                            Caps Lock is on!
+                          </Alert>
+                        </Snackbar>
+                      </>
+                    )}
                   />
-                  <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
-                    <Alert onClose={() => setOpenSnackbar(false)} severity='warning'>
-                      Caps Lock is on!
-                    </Alert>
-                  </Snackbar>
                 </Stack>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color='primary'
+                      checked={rememberMe}
+                      onChange={() => setRememberMe((prev) => !prev)}
+                      name='Remember me'
+                    />
+                  }
+                  label='Remember me'
+                />
               </Box>
 
               <Stack marginTop={4} justifyContent='center' alignItems='flex-start'>
-                <Link href={'/forgot-password'} className='no-underline text-md'>
+                <Link href={paths.forgotPassword} className='no-underline text-md'>
                   Forgot Password?
                 </Link>
               </Stack>
 
-              <Button variant='contained' fullWidth className='mt-4 text-lg' type='submit'>
+              <ButtonForm loading={isLoading} variant='contained' fullWidth className='mt-4 text-lg' type='submit'>
                 Login
-              </Button>
+              </ButtonForm>
 
               <hr className='w-full my-4 opacity-20' />
               <Stack flexDirection={'row'} alignItems={'center'}>
                 <Typography component='span' fontSize='13px'>
                   No account yet?&nbsp;
                 </Typography>
-                <Link href={'/sign-up'} className='text-sm text-pink-400 no-underline '>
+                <Link href={paths.signUp} className='text-sm text-pink-400 no-underline '>
                   Sign Up
                 </Link>
               </Stack>
