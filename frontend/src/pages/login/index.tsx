@@ -12,10 +12,9 @@ import Label from '@app/components/atoms/label';
 import ImageSlider from '@app/components/molecules/ImageSlider';
 import { paths } from '@app/routes/paths';
 
-import viteLogo from '../../../public/vite.svg';
-import { LoginSchema, LoginSchemaType } from './schemas';
-
 //import StitchLogo from '../../assets/stitch_icon.png';
+import viteLogo from '../../assets/vite.svg';
+import { LoginSchema, LoginSchemaType } from './schemas';
 
 const LoginPage = (): JSX.Element => {
   const {
@@ -59,7 +58,7 @@ const LoginPage = (): JSX.Element => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className='w-full h-full md:w-[980px] md:h-[580px] overflow-hidden bg-white shadow-md backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100'>
+      className='w-full h-full md:w-[980px] md:h-[540px] overflow-y-auto bg-white shadow-md backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100'>
       <Box className='grid w-full h-full grid-cols-1 md:grid-cols-2'>
         <Box className='z-0 hidden h-full md:flex md:items-center md:justify-center bg-gradient-to-br from-blue-500 to-pink-300 opacity-90 rounded-es-2xl rounded-ss-2xl'>
           <ImageSlider />
@@ -77,10 +76,8 @@ const LoginPage = (): JSX.Element => {
                     height: {
                       xs: '80px'
                     }
-                  }}>
-                  <img src={viteLogo} alt='Logo' className='hidden object-cover w-20 h-20 md:block' />
-                </Box>
-                <img src={viteLogo} className='z-10 w-20 h-20' alt='Login banner' />
+                  }}></Box>
+                <img src={viteLogo} className='z-10 block w-20 h-20 md:hidden' alt='Login banner' />
                 <Stack flexDirection={'row'} gap={1}>
                   <Typography
                     variant='h1'
@@ -95,8 +92,9 @@ const LoginPage = (): JSX.Element => {
                         md: '64px'
                       }
                     })}>
-                    ...
+                    Vite
                   </Typography>
+                  <img src={viteLogo} alt='Logo' className='hidden object-cover w-20 h-20 md:block' />
                   <Typography
                     variant='h1'
                     component='h1'
@@ -110,7 +108,7 @@ const LoginPage = (): JSX.Element => {
                         md: '64px'
                       }
                     })}>
-                    ...
+                    Shop
                   </Typography>
                 </Stack>
               </Stack>
@@ -165,6 +163,7 @@ const LoginPage = (): JSX.Element => {
                     />
                   }
                   label='Remember me'
+                  className='text-sm'
                 />
               </Box>
 
