@@ -10,7 +10,7 @@ import InputField from '@app/components/atoms/inputField';
 import Label from '@app/components/atoms/label';
 import { paths } from '@app/routes/paths';
 
-const UserInformation = () => {
+const UserInformation = ({ handleNextStep }: { handleNextStep: () => void }) => {
   const {
     handleSubmit,
     control,
@@ -43,15 +43,16 @@ const UserInformation = () => {
 
   const submitForm = (value) => {
     console.log('register', value);
+    handleNextStep();
   };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className='w-full h-full max-w-2xl overflow-y-auto bg-white shadow-md sm:px-8 md:px-10 lg:px-10 backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100'>
+      className='w-full h-full max-w-2xl overflow-y-auto bg-white shadow-md sm:px-8 md:px-8 lg:px-8 backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100'>
       <Link
-        className='self-start block mt-6 text-pink-500 no-underline cursor-pointer hover:underline'
+        className='self-start block mt-6 ml-2 text-pink-500 no-underline cursor-pointer hover:underline'
         href={paths.login}>
         {'< Login'}
       </Link>

@@ -163,7 +163,11 @@ const LoginPage = (): JSX.Element => {
                     />
                   }
                   label='Remember me'
-                  className='text-sm'
+                  sx={() => ({
+                    '.MuiFormControlLabel-label': {
+                      fontSize: '14px'
+                    }
+                  })}
                 />
               </Box>
 

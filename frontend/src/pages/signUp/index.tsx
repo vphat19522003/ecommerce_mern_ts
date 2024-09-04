@@ -44,7 +44,7 @@ const SignUpPage = (): JSX.Element => {
           alignItems='center'
           justifyContent='center'
           className='w-full h-full md:w-[504px] md:h-[720px] sm:pt-4 md:pt-8 md:pb-16'>
-          <UserInformation />
+          <UserInformation handleNextStep={handleNextStep} />
         </Stack>
       )}
       {step === 'verify_otp' && (
