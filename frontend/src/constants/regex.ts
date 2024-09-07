@@ -1,6 +1,7 @@
 import { errorMessages } from './errorMessages';
 
 export const otpRegex = /^\d{6}$/;
+export const digitRegex = /^\d+$/;
 export const userNameRegex = /^[a-zA-Z0-9_]+$/;
 export const phoneNumberRegex = /^\d{10,15}$/;
 export const passwordMinLength = 7;

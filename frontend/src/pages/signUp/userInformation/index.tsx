@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Alert, Box, IconButton, Link, Snackbar, Stack, Typography } from '@mui/material';
@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import ButtonForm from '@app/components/atoms/button';
 import InputField from '@app/components/atoms/inputField';
 import Label from '@app/components/atoms/label';
+import PasswordStrengthMeter from '@app/components/molecules/PasswordStrengthMeter';
 import { paths } from '@app/routes/paths';
 
 import { UserInfoPropsType, type UserInfoValidType } from './schema';
@@ -22,8 +23,6 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
     defaultValues: {
       username: '',
       email: '',
-      fullName: '',
-      phone: '',
       password: '',
       confirmPassword: ''
     }
@@ -32,6 +31,11 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+
+  const password = useWatch({
+    control,
+    name: 'password' // Field to watch
+  });
 
   const handleToggleShowPassword = () => {
     setShowPassword((prev) => !prev);
@@ -63,7 +67,7 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
       transition={{ duration: 0.5 }}
       className='w-full h-full max-w-2xl overflow-y-auto bg-white shadow-md sm:px-8 md:px-8 lg:px-8 backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100'>
       <Link
-        className='self-start block mt-6 ml-2 text-pink-500 no-underline cursor-pointer hover:underline'
+        className='inline-flex self-start mt-6 ml-2 text-pink-500 no-underline cursor-pointer hover:underline'
         href={paths.login}>
         {'< Login'}
       </Link>
@@ -95,7 +99,7 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
                   )}
                 />
               </Stack>
-              <Stack direction={'row'} alignItems={'center'}>
+              {/* <Stack direction={'row'} alignItems={'center'}>
                 <Stack direction='column' className={'mr-2 w-1/2'}>
                   <Label title='FullName' required />
                   <Controller
@@ -116,7 +120,7 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
                     )}
                   />
                 </Stack>
-              </Stack>
+              </Stack> */}
               <Box>
                 <Stack direction='column' className='gap-2'>
                   <Label title='Password' required />
@@ -140,6 +144,7 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
                     )}
                   />
                 </Stack>
+                <PasswordStrengthMeter password={password} />
                 <Stack direction='column' className='gap-2 mt-2'>
                   <Label title='Confirm Password' required />
                   <Controller
@@ -171,7 +176,7 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
                 </Snackbar>
               </Box>
             </Box>
-            <Box className='pt-10 pb-10'>
+            <Box className='pt-10'>
               <ButtonForm variant='contained' fullWidth type='submit'>
                 Regist
               </ButtonForm>

@@ -1,7 +1,7 @@
 import * as zod from 'zod';
 
 import { errorMessages } from '@app/constants/errorMessages';
-import { passwordCriteria, passwordMinLength, phoneNumberRegex, userNameRegex } from '@app/constants/regex';
+import { passwordCriteria, passwordMinLength, userNameRegex } from '@app/constants/regex';
 
 export const UserInfoValidSchema = zod
   .object({
@@ -11,13 +11,13 @@ export const UserInfoValidSchema = zod
       .max(16, { message: errorMessages.usernameTooLong })
       .regex(userNameRegex, { message: errorMessages.usernameInvalid }),
     email: zod.string().min(1, { message: errorMessages.require }).email(errorMessages.emailInvalid),
-    fullName: zod.string().min(1, { message: errorMessages.require }),
-    phone: zod
-      .string()
-      .min(1, { message: errorMessages.require })
-      .refine((value) => phoneNumberRegex.test(value), {
-        message: errorMessages.phoneNumberInvalid
-      }),
+    // fullName: zod.string().min(1, { message: errorMessages.require }),
+    // phone: zod
+    //   .string()
+    //   .min(1, { message: errorMessages.require })
+    //   .refine((value) => phoneNumberRegex.test(value), {
+    //     message: errorMessages.phoneNumberInvalid
+    //   }),
     password: zod
       .string()
       .min(1, { message: errorMessages.require })

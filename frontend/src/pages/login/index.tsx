@@ -120,7 +120,14 @@ const LoginPage = (): JSX.Element => {
                     name='username'
                     control={control}
                     render={({ field: { onChange, value } }) => (
-                      <InputField autoFocus error={errors.username} type='text' onChange={onChange} value={value} />
+                      <InputField
+                        autoFocus
+                        error={errors.username}
+                        type='text'
+                        onChange={onChange}
+                        value={value}
+                        placeholder='Username'
+                      />
                     )}
                   />
                 </Stack>
@@ -143,6 +150,7 @@ const LoginPage = (): JSX.Element => {
                           onKeyUp={handleKeyUp}
                           onChange={onChange}
                           value={value}
+                          placeholder='Password'
                         />
                         <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
                           <Alert onClose={() => setOpenSnackbar(false)} severity='warning'>
