@@ -6,12 +6,14 @@ import { useDevice } from '@app/hooks/useDevice';
 
 import { SignUpStepType } from './schemas';
 import UserInformation from './userInformation';
+import { UserInfoValidType } from './userInformation/schema';
 import VerifyOTP from './verifyOTP';
 
 const regist_step = ['Regist User Information', 'Verify OTP'];
 
 const SignUpPage = (): JSX.Element => {
   const [step, setStep] = useState<SignUpStepType>('regist_user_information');
+  const [userEmail, setUserEmail] = useState<string>('');
 
   const { isMobile } = useDevice();
 
@@ -28,6 +30,16 @@ const SignUpPage = (): JSX.Element => {
   const handleNextStep = () => {
     setStep((prev) => nextStepMap[prev]);
   };
+
+  const handleSubmitInformation = (userInfo: UserInfoValidType) => {
+    setUserEmail(userInfo.email);
+    handleNextStep();
+
+    //signup
+  };
+
+  const handleSubmitOTP = () => {};
+  const handleResendOTP = () => {};
   return (
     <>
       {!isMobile && (
@@ -44,12 +56,12 @@ const SignUpPage = (): JSX.Element => {
           alignItems='center'
           justifyContent='center'
           className='w-full h-full md:w-[504px] md:h-[720px] sm:pt-4 md:pt-8 md:pb-16'>
-          <UserInformation handleNextStep={handleNextStep} />
+          <UserInformation handleSubmitInformation={handleSubmitInformation} />
         </Stack>
       )}
       {step === 'verify_otp' && (
-        <Stack alignItems='center' justifyContent='center' className='sm:pt-4 md:pt-8 md:pb-16'>
-          <VerifyOTP />
+        <Stack alignItems='center' justifyContent='center' className='w-full h-full md:w-[960px] md:h-[720px] md:p-24'>
+          <VerifyOTP userEmail={userEmail} handleResendOTP={handleResendOTP} handleSubmitOTP={handleSubmitOTP} />
         </Stack>
       )}
     </>

@@ -10,12 +10,24 @@ import InputField from '@app/components/atoms/inputField';
 import Label from '@app/components/atoms/label';
 import { paths } from '@app/routes/paths';
 
-const UserInformation = ({ handleNextStep }: { handleNextStep: () => void }) => {
+import { UserInfoPropsType, type UserInfoValidType } from './schema';
+
+const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.Element => {
   const {
     handleSubmit,
     control,
     formState: { errors }
-  } = useForm();
+  } = useForm<UserInfoValidType>({
+    //resolver: zodResolver(UserInfoValidSchema),
+    defaultValues: {
+      username: '',
+      email: '',
+      fullName: '',
+      phone: '',
+      password: '',
+      confirmPassword: ''
+    }
+  });
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
@@ -41,9 +53,8 @@ const UserInformation = ({ handleNextStep }: { handleNextStep: () => void }) => 
     setShowConfirmPassword((prev) => !prev);
   };
 
-  const submitForm = (value) => {
-    console.log('register', value);
-    handleNextStep();
+  const submitForm = (userInfo: UserInfoValidType) => {
+    handleSubmitInformation(userInfo);
   };
   return (
     <motion.div
@@ -129,7 +140,7 @@ const UserInformation = ({ handleNextStep }: { handleNextStep: () => void }) => 
                     )}
                   />
                 </Stack>
-                <Stack direction='column' className='gap-2'>
+                <Stack direction='column' className='gap-2 mt-2'>
                   <Label title='Confirm Password' required />
                   <Controller
                     name='confirmPassword'
