@@ -1,4 +1,5 @@
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
@@ -16,6 +17,7 @@ const app = express();
 //middlewares
 app.use(morgan('combined', { stream: createLogFile(__dirname) }));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 //Connect database
 connectDB();

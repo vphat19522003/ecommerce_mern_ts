@@ -5,6 +5,7 @@ interface IOTP extends Document {
   code: string;
   expiresAt: Date;
   isUsed: boolean;
+  email: string;
 }
 
 const otpSchema = new Schema<IOTP>(
@@ -12,6 +13,10 @@ const otpSchema = new Schema<IOTP>(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', // ref to model user
+      required: true
+    },
+    email: {
+      type: String,
       required: true
     },
     code: {

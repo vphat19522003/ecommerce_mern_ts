@@ -1,6 +1,9 @@
+import mongoose from 'mongoose';
+
 import UserModel from '@app/models/user.model';
 
 export type UserInfo = {
+  _id?: string;
   username: string;
   email: string;
   password: string;
@@ -12,7 +15,7 @@ class UserRepository {
     const user = await UserModel.create({ email, username, password });
     if (!user) throw new Error('Failed to create user');
 
-    return user.toObject();
+    return user.toObject() as UserInfo;
   }
 
   static async findUserByEmail({ email }: Pick<UserInfo, 'email'>): Promise<Pick<UserInfo, 'email'> | null> {
@@ -27,6 +30,12 @@ class UserRepository {
     const existUsername = await UserModel.findOne({ username }).lean();
 
     return existUsername;
+  }
+
+  static async findUserById(userId: string): Promise<UserInfo> {
+    const foundUser = await UserModel.findById(new mongoose.Types.ObjectId(userId));
+
+    return foundUser?.toObject() as UserInfo;
   }
 }
 

@@ -12,3 +12,9 @@ export const registerController = async (req: Request, res: Response): Promise<R
     status: STATUS_CODE.OK
   });
 };
+
+export const verifyOTPController = async (req: Request, res: Response) => {
+  return res.json({
+    message: 'IN Verify OTP'
+  });
+};

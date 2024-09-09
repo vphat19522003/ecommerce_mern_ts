@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
-import { registerController } from '@app/controllers/auth.controller';
+import { registerController, verifyOTPController } from '@app/controllers/auth.controller';
+import verifyAccessToken from '@app/middleware/accessToken.middleware';
 import reqHandler from '@app/utils/reqHandler';
 
 const authRouter = Router();
@@ -10,5 +11,6 @@ authRouter.get('', (req, res) => {
 });
 
 authRouter.post('/register', reqHandler(registerController));
+authRouter.post('/verify-otp', verifyAccessToken, reqHandler(verifyOTPController));
 
 export default authRouter;
