@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { Request, Response } from 'express';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import { omit } from 'lodash';
+import mongoose, { Types } from 'mongoose';
 
 import STATUS_CODE from '@app/constants/responseStatus';
 import {
@@ -11,6 +13,7 @@ import {
   REFRESH_TOKEN_TIME
 } from '@app/constants/tokenProperty';
 import { CustomError } from '@app/core/response.error';
+import KeyModel from '@app/models/key.model';
 import UserRepository, { UserInfo } from '@app/repository/user.repository';
 import { createPairToken } from '@app/utils/token.util';
 
@@ -87,6 +90,88 @@ class AuthService {
     }
 
     return omit(userCreated, 'password');
+  }
+
+  static async verifyRefreshToken(req: Request, res: Response): Promise<void> {
+    const refresh_token = req.cookies['refresh_token'];
+    const client_id = req.cookies['client_id'];
+
+    if (!refresh_token || !client_id) {
+      throw new CustomError('Unauthorized - no refresh token or client id provided', STATUS_CODE.UNAUTHORIZED);
+    }
+
+    // client_id format
+    if (!mongoose.Types.ObjectId.isValid(client_id)) {
+      throw new CustomError('Invalid client ID format', STATUS_CODE.BAD_REQUEST);
+    }
+
+    //find user
+    const user = await UserRepository.findUserById(client_id);
+    if (!user) throw new CustomError('User not found', STATUS_CODE.UNAUTHORIZED);
+
+    const key = await KeyService.findKeyByUserId(client_id);
+    if (!key) {
+      throw new CustomError('Token not found', STATUS_CODE.BAD_REQUEST);
+    }
+
+    if (key.used_refresh_tokens?.includes(refresh_token)) {
+      throw new CustomError('Refresh token already used', STATUS_CODE.BAD_REQUEST);
+    }
+
+    try {
+      jwt.verify(refresh_token, key.private_key);
+
+      const public_key = randomBytes(64).toString('hex');
+      const private_key = randomBytes(64).toString('hex');
+
+      const token = createPairToken({
+        payload: {
+          _id: user._id as string,
+          email: user.email,
+          username: user.username
+        },
+        key: {
+          private_key,
+          public_key
+        }
+      });
+
+      await KeyModel.findOneAndUpdate(
+        { userId: new Types.ObjectId(user?._id) },
+
+        {
+          $set: { access_token: token.access_token, public_key }
+          //$addToSet: { used_refresh_tokens: refresh_token }
+        },
+        { upsert: true, new: true }
+      ).lean();
+
+      res.cookie('access_token', token.access_token, {
+        maxAge: ACCESS_TOKEN_TIME,
+        expires: ACCESS_TOKEN_EXPIRED,
+        secure: process.env.NODE_ENV !== 'development',
+        httpOnly: false,
+        sameSite: 'none'
+      });
+
+      res.cookie('client_id', user._id?.toString(), {
+        maxAge: REFRESH_TOKEN_TIME,
+        expires: REFRESH_TOKEN_EXPIRED,
+        secure: process.env.NODE_ENV !== 'development',
+        httpOnly: false,
+        sameSite: 'none'
+      });
+    } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        throw new CustomError('Refresh token expired', STATUS_CODE.UNAUTHORIZED);
+      }
+      console.log(error);
+      // if (error instanceof JsonWebTokenError) {
+      //   throw new CustomError('Invalid refresh token', STATUS_CODE.FORBIDDEN);
+      // }
+
+      throw new CustomError('Unknown error occurred', STATUS_CODE.INTERNAL_SERVER_ERROR);
+    }
   }
 }
 

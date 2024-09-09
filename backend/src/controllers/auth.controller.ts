@@ -13,8 +13,17 @@ export const registerController = async (req: Request, res: Response): Promise<R
   });
 };
 
-export const verifyOTPController = async (req: Request, res: Response) => {
+export const verifyOTPController = async (req: Request, res: Response): Promise<Response> => {
   return res.json({
     message: 'IN Verify OTP'
+  });
+};
+
+export const verifyRefreshTokenController = async (req: Request, res: Response): Promise<Response> => {
+  await AuthService.verifyRefreshToken(req, res);
+
+  return res.json({
+    message: 'In refresh token',
+    status: STATUS_CODE.OK
   });
 };
