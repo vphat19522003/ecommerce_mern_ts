@@ -6,3 +6,5 @@
 6. Tạo API Register, api send OTP - refresh token, access token
 7. Tạo API refresh token
 8. Tạo API login, logout, verify OTP
+9. Tạo API resend otp, fix middleware check verify account
+10. Ráp api, tạo struct gọi api front end

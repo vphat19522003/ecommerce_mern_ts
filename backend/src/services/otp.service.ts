@@ -9,6 +9,7 @@ import mailConfig from '../utils/mailConfig';
 const transporter = nodemailer.createTransport(mailConfig);
 
 interface IOTP {
+  _id: Types.ObjectId;
   userId: string | Types.ObjectId;
   email: string;
   code: string;
@@ -17,7 +18,7 @@ interface IOTP {
 }
 
 class OTPService {
-  static async generateOTP({ userId, email }: Omit<IOTP, 'code' | 'expiresAt' | 'isUsed'>): Promise<IOTP> {
+  static async generateOTP({ userId, email }: Omit<IOTP, 'code' | 'expiresAt' | 'isUsed' | '_id'>): Promise<IOTP> {
     const code = Math.floor(Math.random() * 900000 + 100000);
     const expiresAt = new Date(Date.now() + 2 * 60 * 1000);
 
@@ -30,7 +31,7 @@ class OTPService {
 
     const createdOTP = await OTPModel.create(otp);
 
-    return createdOTP.toObject();
+    return createdOTP.toObject() as IOTP;
   }
 
   static async sendOTP(otp: IOTP): Promise<void> {
@@ -50,6 +51,22 @@ class OTPService {
       console.error('Error sending email: ', error);
       throw new CustomError('Failed to send email', 500);
     }
+  }
+
+  static async findOTPByUserId(userId: string): Promise<IOTP> {
+    const otp = await OTPModel.findOne({ userId, isUsed: false });
+
+    return otp?.toObject() as IOTP;
+  }
+
+  static async changeStatusOTP(userId: string): Promise<IOTP> {
+    const updatedOTP = await OTPModel.findOneAndUpdate({ userId }, { $set: { isUsed: true } }, { new: true });
+
+    return updatedOTP?.toObject() as IOTP;
+  }
+
+  static async deleteOldOTP(userId: string): Promise<void> {
+    await OTPModel.findOneAndDelete({ userId });
   }
 }
 

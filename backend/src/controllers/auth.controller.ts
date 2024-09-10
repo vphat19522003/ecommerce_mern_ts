@@ -14,8 +14,19 @@ export const registerController = async (req: Request, res: Response): Promise<R
 };
 
 export const verifyOTPController = async (req: Request, res: Response): Promise<Response> => {
+  const user = await AuthService.verifyOTP(req);
   return res.json({
-    message: 'IN Verify OTP'
+    message: 'Verify OTP successfully',
+    status: STATUS_CODE.OK,
+    user
+  });
+};
+
+export const resendOTPController = async (req: Request, res: Response): Promise<Response> => {
+  await AuthService.resendOTP(req);
+  return res.json({
+    message: 'Resend OTP successfully',
+    status: STATUS_CODE.OK
   });
 };
 

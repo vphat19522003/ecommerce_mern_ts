@@ -36,8 +36,8 @@ const verifyAccessToken = async (req: IRequestCustom, res: Response, next: NextF
   if (!key) return next(new CustomError('Unauthorized - not found key', STATUS_CODE.UNAUTHORIZED));
 
   try {
-    const decoded = jwt.verify(access_token, key.public_key);
-    req.user = decoded;
+    jwt.verify(access_token, key.public_key);
+    req.user = user;
     return next();
   } catch (err) {
     if (err instanceof TokenExpiredError) {

@@ -13,7 +13,10 @@ import {
   REFRESH_TOKEN_TIME
 } from '@app/constants/tokenProperty';
 import { CustomError } from '@app/core/response.error';
+import { IRequestCustom } from '@app/middleware/accessToken.middleware';
 import KeyModel from '@app/models/key.model';
+import OTPModel from '@app/models/otp.model';
+import UserModel from '@app/models/user.model';
 import UserRepository, { UserInfo } from '@app/repository/user.repository';
 import { createPairToken } from '@app/utils/token.util';
 
@@ -91,7 +94,7 @@ class AuthService {
     if (otp) {
       await OTPService.sendOTP(otp);
     } else {
-      throw new CustomError('Error generating OTP', STATUS_CODE.NOT_FOUND);
+      throw new CustomError('Error generating OTP', STATUS_CODE.INTERNAL_SERVER_ERROR);
     }
 
     return omit(userCreated, 'password');
@@ -257,6 +260,67 @@ class AuthService {
       }
 
       throw new CustomError('Unknown error occurred', STATUS_CODE.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  static async verifyOTP(req: IRequestCustom): Promise<Omit<UserInfo, 'password'>> {
+    const { verify_otp } = req.body;
+    const user = req.user as UserInfo;
+    console.log(user);
+    if (user.isVerified) {
+      throw new CustomError('User is already verified', STATUS_CODE.BAD_REQUEST);
+    }
+
+    const otp = await OTPService.findOTPByUserId(user._id as string);
+
+    if (!otp) throw new CustomError('OTP Not found', STATUS_CODE.BAD_REQUEST);
+    console.log({ otp, verify_otp });
+
+    if (otp.code !== verify_otp) throw new CustomError('Invalid otp code', STATUS_CODE.BAD_REQUEST);
+
+    const currentTime = new Date();
+    const expiresAt = otp.expiresAt;
+
+    if (currentTime > expiresAt) {
+      await OTPModel.findByIdAndDelete(otp._id);
+      throw new CustomError('OTP has been expired', STATUS_CODE.BAD_REQUEST);
+    }
+
+    await OTPService.changeStatusOTP(user._id as string);
+
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { _id: new Types.ObjectId(user?._id) },
+      {
+        $set: {
+          isVerified: true
+        }
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) throw new CustomError('User not found or update failed', STATUS_CODE.INTERNAL_SERVER_ERROR);
+
+    return omit(updatedUser?.toObject() as UserInfo, 'password');
+  }
+
+  static async resendOTP(req: IRequestCustom): Promise<void> {
+    const user = req.user as UserInfo;
+
+    if (user.isVerified) {
+      throw new CustomError('User is already verified', STATUS_CODE.BAD_REQUEST);
+    }
+
+    await OTPService.deleteOldOTP(user._id as string);
+
+    const newOTP = await OTPService.generateOTP({
+      userId: user._id as string,
+      email: user.email
+    });
+
+    if (newOTP) {
+      await OTPService.sendOTP(newOTP);
+    } else {
+      throw new CustomError('Error generating OTP', STATUS_CODE.INTERNAL_SERVER_ERROR);
     }
   }
 }

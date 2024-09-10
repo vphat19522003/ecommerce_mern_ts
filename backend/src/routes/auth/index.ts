@@ -4,6 +4,7 @@ import {
   loginController,
   logoutController,
   registerController,
+  resendOTPController,
   verifyOTPController,
   verifyRefreshTokenController
 } from '@app/controllers/auth.controller';
@@ -18,6 +19,7 @@ authRouter.get('', (req, res) => {
 
 authRouter.post('/register', reqHandler(registerController));
 authRouter.post('/verify-otp', verifyAccessToken, reqHandler(verifyOTPController));
+authRouter.post('/resend-otp', verifyAccessToken, reqHandler(resendOTPController));
 authRouter.post('/login', reqHandler(loginController));
 authRouter.post('/logout', reqHandler(logoutController));
 
