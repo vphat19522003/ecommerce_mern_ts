@@ -3,7 +3,6 @@ import { Controller, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, FormHelperText, Link, Stack, TextField, Typography } from '@mui/material';
-import { motion } from 'framer-motion';
 
 import ButtonForm from '@app/components/atoms/button';
 import { OTPCountDownSeconds } from '@app/constants/date';
@@ -101,18 +100,14 @@ const VerifyOTP = ({ userEmail, handleResendOTP, handleSubmitOTP }: VerifyOTPSch
     };
   }, [isActive, seconds]);
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className='w-full h-full max-w-2xl overflow-y-auto bg-white shadow-md sm:px-8 md:px-8 lg:px-8 backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100 '>
+    <>
       <Link
         className='inline-flex self-start mt-6 ml-2 text-pink-500 no-underline cursor-pointer hover:underline'
         href={paths.login}>
         {'< Login '}
       </Link>
       <form>
-        <Stack direction='column' className='mt-10' alignItems='center' gap={3}>
+        <Stack direction='column' className='mt-4' alignItems='center' gap={3}>
           <Typography variant='h4' component='h4' className='font-bold text-center text-blue-600 '>
             OTP Verification
           </Typography>
@@ -177,7 +172,7 @@ const VerifyOTP = ({ userEmail, handleResendOTP, handleSubmitOTP }: VerifyOTPSch
           </ButtonForm>
         </Stack>
       </form>
-    </motion.div>
+    </>
   );
 };
 

@@ -3,7 +3,6 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Alert, Box, IconButton, Link, Snackbar, Stack, Typography } from '@mui/material';
-import { motion } from 'framer-motion';
 
 import ButtonForm from '@app/components/atoms/button';
 import InputField from '@app/components/atoms/inputField';
@@ -61,24 +60,20 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
     handleSubmitInformation(userInfo);
   };
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className='w-full h-full max-w-2xl overflow-y-auto bg-white shadow-md sm:px-8 md:px-8 lg:px-8 backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100'>
+    <>
       <Link
-        className='inline-flex self-start mt-6 ml-2 text-pink-500 no-underline cursor-pointer hover:underline'
+        className='inline-flex self-start mt-5 ml-2 text-pink-500 no-underline cursor-pointer hover:underline'
         href={paths.login}>
         {'< Login'}
       </Link>
       <Stack justifyContent='center' alignItems='center' className='px-2' direction={'column'}>
-        <Typography variant='h4' component='h4' className='pt-4 pb-4 font-bold text-center text-blue-600 '>
+        <Typography variant='h4' component='h4' className='pt-1 pb-1 font-bold text-center text-blue-600 '>
           Sign Up
         </Typography>
 
         <form className='w-full' onSubmit={handleSubmit(submitForm)}>
           <Stack className='h-full'>
-            <Box className='grid gap-4 mt-4'>
+            <Box className='grid gap-4 mt-2'>
               <Stack direction='column' className='gap-2'>
                 <Label title='Username' required />
                 <Controller
@@ -176,7 +171,7 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
                 </Snackbar>
               </Box>
             </Box>
-            <Box className='pt-10'>
+            <Box className='pt-4'>
               <ButtonForm variant='contained' fullWidth type='submit'>
                 Regist
               </ButtonForm>
@@ -184,7 +179,7 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
           </Stack>
         </form>
       </Stack>
-    </motion.div>
+    </>
   );
 };
 

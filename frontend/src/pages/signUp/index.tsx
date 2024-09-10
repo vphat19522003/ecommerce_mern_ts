@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { Stack, Step, StepLabel, Stepper } from '@mui/material';
+import { Step, StepLabel, Stepper } from '@mui/material';
+import { motion } from 'framer-motion';
 
 import { useDevice } from '@app/hooks/useDevice';
 
@@ -43,7 +44,7 @@ const SignUpPage = (): JSX.Element => {
   return (
     <>
       {!isMobile && (
-        <Stepper className='flex justify-center w-1/4 pt-8 mx-auto' activeStep={stepIndex[step]} alternativeLabel>
+        <Stepper className='flex justify-center w-1/4 pt-4 mx-auto mb-2' activeStep={stepIndex[step]} alternativeLabel>
           {regist_step.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
@@ -52,17 +53,22 @@ const SignUpPage = (): JSX.Element => {
         </Stepper>
       )}
       {step === 'regist_user_information' && (
-        <Stack
-          alignItems='center'
-          justifyContent='center'
-          className='w-full h-full md:w-[504px] md:h-[720px] sm:pt-4 md:pt-8 md:pb-16'>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className='w-full h-full md:w-[480px] md:h-[620px] md:px-2 bg-white shadow-md backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100'>
           <UserInformation handleSubmitInformation={handleSubmitInformation} />
-        </Stack>
+        </motion.div>
       )}
       {step === 'verify_otp' && (
-        <Stack alignItems='center' justifyContent='center' className='w-full h-full md:w-[960px] md:h-[720px] md:p-24'>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className='w-full h-full  md:w-[760px] md:h-[520px]  bg-white shadow-md sm:px-8 md:px-8 lg:px-8 backdrop-filter backdrop-blur-xl md:rounded-2xl shadow-black-100 pb-4 '>
           <VerifyOTP userEmail={userEmail} handleResendOTP={handleResendOTP} handleSubmitOTP={handleSubmitOTP} />
-        </Stack>
+        </motion.div>
       )}
     </>
   );
