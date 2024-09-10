@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import mongoose, { InferSchemaType } from 'mongoose';
 
 import STATUS_CODE from '@app/constants/responseStatus';
@@ -18,8 +18,6 @@ export interface IRequestCustom<T = any> extends Request {
 const verifyAccessToken = async (req: IRequestCustom, res: Response, next: NextFunction): Promise<void> => {
   const access_token = req.cookies['access_token'] as string;
   const client_id = req.cookies['client_id'] as string;
-
-  console.log({ access_token, client_id });
 
   if (!access_token || !client_id)
     return next(new CustomError('Unauthorized - no token provided', STATUS_CODE.UNAUTHORIZED));
@@ -41,8 +39,8 @@ const verifyAccessToken = async (req: IRequestCustom, res: Response, next: NextF
     const decoded = jwt.verify(access_token, key.public_key);
     req.user = decoded;
     return next();
-  } catch (err: any) {
-    if (err.name === 'TokenExpiredError') {
+  } catch (err) {
+    if (err instanceof TokenExpiredError) {
       return next(new CustomError('Access token expired', STATUS_CODE.UNAUTHORIZED));
     }
 

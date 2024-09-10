@@ -3,10 +3,11 @@ import jwt from 'jsonwebtoken';
 import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
 
-type payloadType = {
+export type payloadType = {
   username: string;
   email: string;
   _id: string;
+  isVerified: boolean;
 };
 
 type keyType = {

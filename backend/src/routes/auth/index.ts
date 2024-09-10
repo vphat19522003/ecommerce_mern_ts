@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
 import {
+  loginController,
+  logoutController,
   registerController,
   verifyOTPController,
   verifyRefreshTokenController
@@ -16,6 +18,9 @@ authRouter.get('', (req, res) => {
 
 authRouter.post('/register', reqHandler(registerController));
 authRouter.post('/verify-otp', verifyAccessToken, reqHandler(verifyOTPController));
+authRouter.post('/login', reqHandler(loginController));
+authRouter.post('/logout', reqHandler(logoutController));
+
 authRouter.post('/refresh-token', reqHandler(verifyRefreshTokenController));
 
 export default authRouter;

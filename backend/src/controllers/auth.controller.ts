@@ -19,6 +19,23 @@ export const verifyOTPController = async (req: Request, res: Response): Promise<
   });
 };
 
+export const loginController = async (req: Request, res: Response): Promise<Response> => {
+  const result = await AuthService.login(req, res);
+  return res.json({
+    message: 'Login successfully',
+    result,
+    status: STATUS_CODE.OK
+  });
+};
+
+export const logoutController = async (req: Request, res: Response): Promise<Response> => {
+  await AuthService.logout(req, res);
+  return res.json({
+    message: 'Logout successfully',
+    status: STATUS_CODE.OK
+  });
+};
+
 export const verifyRefreshTokenController = async (req: Request, res: Response): Promise<Response> => {
   await AuthService.verifyRefreshToken(req, res);
 

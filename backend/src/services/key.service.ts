@@ -38,6 +38,10 @@ class KeyService {
 
     return key?.toObject() as IKey;
   }
+
+  static async deleteKeyByUserId(userId: string): Promise<void> {
+    await KeyModel.deleteOne({ userId: new mongoose.Types.ObjectId(userId) });
+  }
 }
 
 export default KeyService;

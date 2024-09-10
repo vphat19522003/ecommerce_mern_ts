@@ -24,12 +24,10 @@ class UserRepository {
     return existEmail;
   }
 
-  static async findUserByUsername({
-    username
-  }: Pick<UserInfo, 'username'>): Promise<Pick<UserInfo, 'username'> | null> {
-    const existUsername = await UserModel.findOne({ username }).lean();
+  static async findUserByUsername({ username }: Pick<UserInfo, 'username'>): Promise<UserInfo> {
+    const user = await UserModel.findOne({ username });
 
-    return existUsername;
+    return user?.toObject() as UserInfo;
   }
 
   static async findUserById(userId: string): Promise<UserInfo> {

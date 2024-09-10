@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { Request, Response } from 'express';
-import jwt, { TokenExpiredError } from 'jsonwebtoken';
+import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { omit } from 'lodash';
 import mongoose, { Types } from 'mongoose';
 
@@ -42,7 +42,12 @@ class AuthService {
     const private_key = randomBytes(64).toString('hex');
 
     const { access_token, refresh_token } = createPairToken({
-      payload: { _id: userCreated._id as string, email: userCreated.email, username: userCreated.username },
+      payload: {
+        _id: userCreated._id as string,
+        email: userCreated.email,
+        username: userCreated.username,
+        isVerified: userCreated.isVerified as boolean
+      },
       key: {
         public_key,
         private_key
@@ -92,6 +97,86 @@ class AuthService {
     return omit(userCreated, 'password');
   }
 
+  static async login(req: Request, res: Response): Promise<Omit<UserInfo, 'password'>> {
+    const { username, password } = req.body;
+
+    const user = await UserRepository.findUserByUsername({ username });
+
+    if (!user) throw new CustomError('User not found', STATUS_CODE.BAD_REQUEST);
+
+    const comparePass = bcrypt.compareSync(password, user.password);
+    if (!comparePass) throw new CustomError('Wrong password', STATUS_CODE.UNAUTHORIZED);
+
+    const private_key = randomBytes(64).toString('hex');
+    const public_key = randomBytes(64).toString('hex');
+
+    const { access_token, refresh_token } = createPairToken({
+      payload: {
+        _id: user._id as string,
+        email: user.email,
+        isVerified: user.isVerified as boolean,
+        username: user.username
+      },
+      key: {
+        private_key,
+        public_key
+      }
+    });
+    const oldKeyStore = await KeyModel.findOneAndDelete({ userId: user._id }).lean();
+
+    await KeyModel.findOneAndUpdate(
+      { userId: new Types.ObjectId(user?._id) },
+
+      {
+        $set: { access_token, public_key, private_key, refresh_token },
+        $addToSet: { used_refresh_tokens: oldKeyStore?.refresh_token }
+      },
+      { upsert: true, new: true }
+    ).lean();
+
+    res.cookie('access_token', access_token, {
+      maxAge: ACCESS_TOKEN_TIME,
+      expires: ACCESS_TOKEN_EXPIRED,
+      secure: process.env.NODE_ENV !== 'development',
+      httpOnly: false,
+      sameSite: 'none'
+    });
+
+    res.cookie('refresh_token', refresh_token, {
+      maxAge: ACCESS_TOKEN_TIME,
+      expires: ACCESS_TOKEN_EXPIRED,
+      secure: process.env.NODE_ENV !== 'development',
+      httpOnly: false,
+      sameSite: 'none'
+    });
+
+    res.cookie('client_id', user._id?.toString(), {
+      maxAge: REFRESH_TOKEN_TIME,
+      expires: REFRESH_TOKEN_EXPIRED,
+      secure: process.env.NODE_ENV !== 'development',
+      httpOnly: false,
+      sameSite: 'none'
+    });
+
+    return omit(user, 'password');
+  }
+
+  static async logout(req: Request, res: Response): Promise<void> {
+    const client_id = req.cookies['client_id'];
+
+    if (!client_id) throw new CustomError('Not provided client_id', STATUS_CODE.UNAUTHORIZED);
+
+    const user = await UserRepository.findUserById(client_id);
+
+    if (!user) throw new CustomError('User not found', STATUS_CODE.UNAUTHORIZED);
+
+    await KeyService.deleteKeyByUserId(client_id);
+
+    res.clearCookie('client_id');
+    res.clearCookie('access_token');
+    res.clearCookie('refresh_token');
+  }
+
   static async verifyRefreshToken(req: Request, res: Response): Promise<void> {
     const refresh_token = req.cookies['refresh_token'];
     const client_id = req.cookies['client_id'];
@@ -128,7 +213,8 @@ class AuthService {
         payload: {
           _id: user._id as string,
           email: user.email,
-          username: user.username
+          username: user.username,
+          isVerified: user.isVerified as boolean
         },
         key: {
           private_key,
@@ -165,10 +251,10 @@ class AuthService {
       if (error instanceof TokenExpiredError) {
         throw new CustomError('Refresh token expired', STATUS_CODE.UNAUTHORIZED);
       }
-      console.log(error);
-      // if (error instanceof JsonWebTokenError) {
-      //   throw new CustomError('Invalid refresh token', STATUS_CODE.FORBIDDEN);
-      // }
+
+      if (error instanceof JsonWebTokenError) {
+        throw new CustomError('Invalid refresh token', STATUS_CODE.FORBIDDEN);
+      }
 
       throw new CustomError('Unknown error occurred', STATUS_CODE.INTERNAL_SERVER_ERROR);
     }
