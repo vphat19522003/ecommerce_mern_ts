@@ -1,3 +1,4 @@
+import { omit } from 'lodash';
 import mongoose from 'mongoose';
 
 import UserModel from '@app/models/user.model';
@@ -15,7 +16,7 @@ class UserRepository {
     const user = await UserModel.create({ email, username, password });
     if (!user) throw new Error('Failed to create user');
 
-    return user.toObject() as UserInfo;
+    return omit(user.toObject(), '__v', 'createdAt', 'updatedAt') as UserInfo;
   }
 
   static async findUserByEmail({ email }: Pick<UserInfo, 'email'>): Promise<Pick<UserInfo, 'email'> | null> {

@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { Step, StepLabel, Stepper } from '@mui/material';
 import { motion } from 'framer-motion';
 
+import { useSignUp } from '@app/api/hooks/auth.hook';
 import { useDevice } from '@app/hooks/useDevice';
 
 import { SignUpStepType } from './schemas';
@@ -15,6 +17,7 @@ const regist_step = ['Regist User Information', 'Verify OTP'];
 const SignUpPage = (): JSX.Element => {
   const [step, setStep] = useState<SignUpStepType>('regist_user_information');
   const [userEmail, setUserEmail] = useState<string>('');
+  const { mutate: signUp, isPending: isSignUpPending } = useSignUp();
 
   const { isMobile } = useDevice();
 
@@ -34,9 +37,18 @@ const SignUpPage = (): JSX.Element => {
 
   const handleSubmitInformation = (userInfo: UserInfoValidType) => {
     setUserEmail(userInfo.email);
-    handleNextStep();
 
     //signup
+    signUp(userInfo, {
+      onSuccess: () => {
+        toast.success('SignUp successfully');
+        handleNextStep();
+      },
+      onError: (err) => {
+        console.log(err);
+        toast.error(err as string);
+      }
+    });
   };
 
   const handleSubmitOTP = () => {};

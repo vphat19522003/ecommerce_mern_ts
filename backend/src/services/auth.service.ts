@@ -108,7 +108,7 @@ class AuthService {
     if (!user) throw new CustomError('User not found', STATUS_CODE.BAD_REQUEST);
 
     const comparePass = bcrypt.compareSync(password, user.password);
-    if (!comparePass) throw new CustomError('Wrong password', STATUS_CODE.UNAUTHORIZED);
+    if (!comparePass) throw new CustomError('Wrong password', STATUS_CODE.BAD_REQUEST);
 
     const private_key = randomBytes(64).toString('hex');
     const public_key = randomBytes(64).toString('hex');
@@ -161,7 +161,7 @@ class AuthService {
       sameSite: 'none'
     });
 
-    return omit(user, 'password');
+    return omit(user, 'password', '__v', 'createdAt', 'updatedAt');
   }
 
   static async logout(req: Request, res: Response): Promise<void> {
@@ -199,11 +199,11 @@ class AuthService {
 
     const key = await KeyService.findKeyByUserId(client_id);
     if (!key) {
-      throw new CustomError('Token not found', STATUS_CODE.BAD_REQUEST);
+      throw new CustomError('Token not found', STATUS_CODE.UNAUTHORIZED);
     }
 
     if (key.used_refresh_tokens?.includes(refresh_token)) {
-      throw new CustomError('Refresh token already used', STATUS_CODE.BAD_REQUEST);
+      throw new CustomError('Refresh token already used', STATUS_CODE.UNAUTHORIZED);
     }
 
     try {
@@ -300,7 +300,7 @@ class AuthService {
 
     if (!updatedUser) throw new CustomError('User not found or update failed', STATUS_CODE.INTERNAL_SERVER_ERROR);
 
-    return omit(updatedUser?.toObject() as UserInfo, 'password');
+    return omit(updatedUser?.toObject() as UserInfo, 'password', '__v', 'createdAt', 'updatedAt');
   }
 
   static async resendOTP(req: IRequestCustom): Promise<void> {

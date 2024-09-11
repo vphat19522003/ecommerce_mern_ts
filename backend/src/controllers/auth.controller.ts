@@ -14,11 +14,11 @@ export const registerController = async (req: Request, res: Response): Promise<R
 };
 
 export const verifyOTPController = async (req: Request, res: Response): Promise<Response> => {
-  const user = await AuthService.verifyOTP(req);
+  const result = await AuthService.verifyOTP(req);
   return res.json({
     message: 'Verify OTP successfully',
     status: STATUS_CODE.OK,
-    user
+    result
   });
 };
 

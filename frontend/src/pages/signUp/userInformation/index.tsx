@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Alert, Box, IconButton, Link, Snackbar, Stack, Typography } from '@mui/material';
 
@@ -10,7 +11,7 @@ import Label from '@app/components/atoms/label';
 import PasswordStrengthMeter from '@app/components/molecules/PasswordStrengthMeter';
 import { paths } from '@app/routes/paths';
 
-import { UserInfoPropsType, type UserInfoValidType } from './schema';
+import { UserInfoPropsType, UserInfoValidSchema, type UserInfoValidType } from './schema';
 
 const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.Element => {
   const {
@@ -18,7 +19,7 @@ const UserInformation = ({ handleSubmitInformation }: UserInfoPropsType): JSX.El
     control,
     formState: { errors }
   } = useForm<UserInfoValidType>({
-    //resolver: zodResolver(UserInfoValidSchema),
+    resolver: zodResolver(UserInfoValidSchema),
     defaultValues: {
       username: '',
       email: '',

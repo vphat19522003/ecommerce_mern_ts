@@ -8,3 +8,5 @@
 8. Tạo API login, logout, verify OTP
 9. Tạo API resend otp, fix middleware check verify account
 10. Ráp api, tạo struct gọi api front end
+11. Tạo custom axios, api hook with react query, axios
+12. Ráp api register user

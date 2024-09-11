@@ -20,10 +20,12 @@
     "axios": "^1.7.5",
     "clsx": "^2.1.1",
     "framer-motion": "^11.3.30",
+    "js-cookie": "^3.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.26.1",
+    "react-toastify": "^10.0.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
