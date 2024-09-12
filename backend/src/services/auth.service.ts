@@ -184,6 +184,8 @@ class AuthService {
     const refresh_token = req.cookies['refresh_token'];
     const client_id = req.cookies['client_id'];
 
+    console.log({ client_id, refresh_token });
+
     if (!refresh_token || !client_id) {
       throw new CustomError('Unauthorized - no refresh token or client id provided', STATUS_CODE.UNAUTHORIZED);
     }

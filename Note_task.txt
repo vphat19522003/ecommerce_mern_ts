@@ -10,3 +10,5 @@
 10. Ráp api, tạo struct gọi api front end
 11. Tạo custom axios, api hook with react query, axios
 12. Ráp api register user
+13. Ráp api verify otp, resend otp, login, cấu hình axios - verify refresh token
+14. Cấu trúc lại route - auth route - tìm hiểu redux để lưu state toàn cục

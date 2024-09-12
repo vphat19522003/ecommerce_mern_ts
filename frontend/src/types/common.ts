@@ -6,3 +6,13 @@ export type ResponseType = {
   message: string;
   status: number;
 };
+
+export interface IErrorResponse {
+  response: {
+    data: {
+      message: string;
+      error: string;
+    };
+    status: number;
+  };
+}

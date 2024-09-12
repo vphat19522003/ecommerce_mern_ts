@@ -4,8 +4,9 @@ import { toast } from 'react-toastify';
 import { Step, StepLabel, Stepper } from '@mui/material';
 import { motion } from 'framer-motion';
 
-import { useSignUp, useVerifyOTP } from '@app/api/hooks/auth.hook';
+import { useResendOTP, useSignUp, useVerifyOTP } from '@app/api/hooks/auth.hook';
 import { useDevice } from '@app/hooks/useDevice';
+import { IErrorResponse } from '@app/types/common';
 
 import { SignUpStepType } from './schemas';
 import UserInformation from './userInformation';
@@ -20,6 +21,7 @@ const SignUpPage = (): JSX.Element => {
   const [userEmail, setUserEmail] = useState<string>('');
   const { mutate: signUp, isPending: isSignUpPending } = useSignUp();
   const { mutate: verifyOTP, isPending: isVerifyOTPPending } = useVerifyOTP();
+  const { mutate: resendOTP, isPending: isResendOTPPending } = useResendOTP();
 
   const { isMobile } = useDevice();
 
@@ -46,9 +48,9 @@ const SignUpPage = (): JSX.Element => {
         toast.success(data.message);
         handleNextStep();
       },
-      onError: (err) => {
+      onError: (err: IErrorResponse) => {
         console.log(err);
-        toast.error(err as string);
+        toast.error(err.response.data.message as string);
       }
     });
   };
@@ -59,12 +61,26 @@ const SignUpPage = (): JSX.Element => {
         console.log(data);
         toast.success(data.message);
       },
-      onError: (err: any) => {
+      onError: (err: IErrorResponse) => {
         toast.error(err.response.data.message as string);
       }
     });
   };
-  const handleResendOTP = () => {};
+  const handleResendOTP = (resetTimer) => {
+    resetTimer();
+    resendOTP(
+      {},
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          toast.success(data.message);
+        },
+        onError: (err: IErrorResponse) => {
+          toast.error(err.response.data.message as string);
+        }
+      }
+    );
+  };
   return (
     <>
       {!isMobile && (

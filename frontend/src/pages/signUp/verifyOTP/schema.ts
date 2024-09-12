@@ -15,7 +15,7 @@ export type ResendOtpInfoSchemaType = {
 export type VerifyOTPSchemaType = {
   handleSubmitOTP: (verify_information: VerifyOTPInfoSchemaType) => void;
   userEmail: string;
-  handleResendOTP: (resetTimer: () => void, resend_information: ResendOtpInfoSchemaType) => void;
+  handleResendOTP: (resetTimer: () => void) => void;
 };
 
 export const VerifyOTPValidateSchema = zod.object({

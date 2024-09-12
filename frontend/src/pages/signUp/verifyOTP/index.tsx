@@ -83,7 +83,7 @@ const VerifyOTP = ({ userEmail, handleResendOTP, handleSubmitOTP }: VerifyOTPSch
   };
 
   const handleClickResendOTP = () => {
-    resetTimer();
+    handleResendOTP(resetTimer);
   };
 
   useEffect(() => {

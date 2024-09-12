@@ -1,16 +1,20 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Alert, Box, Checkbox, FormControlLabel, IconButton, Link, Snackbar, Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 
+import { useLogin } from '@app/api/hooks/auth.hook';
 import ButtonForm from '@app/components/atoms/button';
 import InputField from '@app/components/atoms/inputField';
 import Label from '@app/components/atoms/label';
 import ImageSlider from '@app/components/molecules/ImageSlider';
 import { paths } from '@app/routes/paths';
+import { IErrorResponse } from '@app/types/common';
 
 //import StitchLogo from '../../assets/stitch_icon.png';
 import viteLogo from '../../assets/vite.svg';
@@ -34,6 +38,10 @@ const LoginPage = (): JSX.Element => {
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
+  const { mutate: loginMutate, isPending } = useLogin();
+
   const handleKeyDown = useCallback((event) => {
     if (event.getModifierState('CapsLock')) {
       setOpenSnackbar(true);
@@ -50,9 +58,27 @@ const LoginPage = (): JSX.Element => {
     setShowPassword((prev) => !prev);
   };
 
-  const submitForm = (value) => {
-    console.log(value);
+  const submitForm = (value: LoginSchemaType) => {
+    loginMutate(value, {
+      onSuccess: (data) => {
+        if (rememberMe) localStorage.setItem('username', data.result.username);
+        else localStorage.removeItem('username');
+        toast.success(data.message);
+        navigate(paths.index);
+      },
+      onError: (err: IErrorResponse) => {
+        toast.error(err.response.data.message as string);
+      }
+    });
   };
+
+  useEffect(() => {
+    const userNameCache = localStorage.getItem('username');
+    if (userNameCache) {
+      setRememberMe(true);
+      setValue('username', userNameCache);
+    }
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -161,26 +187,28 @@ const LoginPage = (): JSX.Element => {
                     )}
                   />
                 </Stack>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color='primary'
-                      checked={rememberMe}
-                      onChange={() => setRememberMe((prev) => !prev)}
-                      name='Remember me'
-                    />
-                  }
-                  label='Remember me'
-                  sx={() => ({
-                    '.MuiFormControlLabel-label': {
-                      fontSize: '14px'
-                    }
-                  })}
-                />
               </Box>
-
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color='primary'
+                    checked={rememberMe}
+                    onChange={() => setRememberMe((prev) => !prev)}
+                    name='Remember me'
+                    style={{
+                      transform: 'scale(0.8)'
+                    }}
+                  />
+                }
+                label='Remember me'
+                sx={() => ({
+                  '.MuiFormControlLabel-label': {
+                    fontSize: '14px'
+                  }
+                })}
+              />
               <Stack marginTop={4} justifyContent='center' alignItems='flex-start'>
-                <Link href={paths.forgotPassword} className='no-underline text-md'>
+                <Link href={paths.forgotPassword} className='text-sm no-underline'>
                   Forgot Password?
                 </Link>
               </Stack>
@@ -191,12 +219,14 @@ const LoginPage = (): JSX.Element => {
 
               <hr className='w-full my-4 opacity-20' />
               <Stack flexDirection={'row'} alignItems={'center'}>
-                <Typography component='span' fontSize='13px'>
-                  No account yet?&nbsp;
+                <Typography component='span' className='text-sm'>
+                  Don't have an account?&nbsp;
                 </Typography>
-                <Link href={paths.signUp} className='text-sm text-pink-400 no-underline '>
-                  Sign Up
-                </Link>
+                <Typography component='span' className='text-sm'>
+                  <Link href={paths.signUp} className='text-sm text-pink-400 no-underline '>
+                    Join us now!
+                  </Link>
+                </Typography>
               </Stack>
             </Stack>
           </form>
