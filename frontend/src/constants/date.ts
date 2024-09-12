@@ -1,1 +1,1 @@
-export const OTPCountDownSeconds = 10;
+export const OTPCountDownSeconds = 120;

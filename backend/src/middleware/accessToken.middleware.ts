@@ -18,8 +18,9 @@ export interface IRequestCustom<T = any> extends Request {
 const verifyAccessToken = async (req: IRequestCustom, res: Response, next: NextFunction): Promise<void> => {
   const access_token = req.cookies['access_token'] as string;
   const client_id = req.cookies['client_id'] as string;
+  const refresh_token = req.cookies['refresh_token'] as string;
 
-  if (!access_token || !client_id)
+  if (!access_token || !client_id || !refresh_token)
     return next(new CustomError('Unauthorized - no token provided', STATUS_CODE.UNAUTHORIZED));
 
   // client_id format

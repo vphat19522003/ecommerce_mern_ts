@@ -73,6 +73,10 @@ const VerifyOTP = ({ userEmail, handleResendOTP, handleSubmitOTP }: VerifyOTPSch
     }
   };
 
+  const handleSubmitForm = (value: VerifyOTPValidateType) => {
+    handleSubmitOTP(value);
+  };
+
   const resetTimer = () => {
     setSeconds(OTPCountDownSeconds);
     setActive(true);
@@ -106,7 +110,7 @@ const VerifyOTP = ({ userEmail, handleResendOTP, handleSubmitOTP }: VerifyOTPSch
         href={paths.login}>
         {'< Login '}
       </Link>
-      <form>
+      <form onSubmit={handleSubmit(handleSubmitForm)}>
         <Stack direction='column' className='mt-4' alignItems='center' gap={3}>
           <Typography variant='h4' component='h4' className='font-bold text-center text-blue-600 '>
             OTP Verification
@@ -160,7 +164,12 @@ const VerifyOTP = ({ userEmail, handleResendOTP, handleSubmitOTP }: VerifyOTPSch
           </Typography>
         </Box>
         <Stack alignItems='center' flexDirection='column' gap='8px' className='mt-4'>
-          <ButtonForm type='submit' color='primary' variant='contained' className='h-12 w-80 md:w-120'>
+          <ButtonForm
+            type='submit'
+            color='primary'
+            variant='contained'
+            className='h-12 w-80 md:w-120'
+            disabled={!isActive}>
             Verify
           </ButtonForm>
           <ButtonForm

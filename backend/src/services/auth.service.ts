@@ -70,7 +70,7 @@ class AuthService {
       expires: ACCESS_TOKEN_EXPIRED,
       secure: process.env.NODE_ENV !== 'development',
       httpOnly: false,
-      sameSite: 'none'
+      sameSite: 'strict'
     });
 
     res.cookie('refresh_token', refresh_token, {
@@ -78,7 +78,7 @@ class AuthService {
       expires: REFRESH_TOKEN_EXPIRED,
       secure: process.env.NODE_ENV !== 'development',
       httpOnly: false,
-      sameSite: 'none'
+      sameSite: 'strict'
     });
 
     res.cookie('client_id', userCreated._id?.toString(), {
@@ -86,7 +86,7 @@ class AuthService {
       expires: REFRESH_TOKEN_EXPIRED,
       secure: process.env.NODE_ENV !== 'development',
       httpOnly: false,
-      sameSite: 'none'
+      sameSite: 'strict'
     });
 
     const otp = await OTPService.generateOTP({ userId: userCreated._id as string, email: userCreated.email });
@@ -142,7 +142,7 @@ class AuthService {
       expires: ACCESS_TOKEN_EXPIRED,
       secure: process.env.NODE_ENV !== 'development',
       httpOnly: false,
-      sameSite: 'none'
+      sameSite: 'strict'
     });
 
     res.cookie('refresh_token', refresh_token, {
@@ -150,7 +150,7 @@ class AuthService {
       expires: ACCESS_TOKEN_EXPIRED,
       secure: process.env.NODE_ENV !== 'development',
       httpOnly: false,
-      sameSite: 'none'
+      sameSite: 'strict'
     });
 
     res.cookie('client_id', user._id?.toString(), {
@@ -158,7 +158,7 @@ class AuthService {
       expires: REFRESH_TOKEN_EXPIRED,
       secure: process.env.NODE_ENV !== 'development',
       httpOnly: false,
-      sameSite: 'none'
+      sameSite: 'strict'
     });
 
     return omit(user, 'password', '__v', 'createdAt', 'updatedAt');
@@ -230,7 +230,6 @@ class AuthService {
 
         {
           $set: { access_token: token.access_token, public_key }
-          //$addToSet: { used_refresh_tokens: refresh_token }
         },
         { upsert: true, new: true }
       ).lean();
@@ -240,7 +239,7 @@ class AuthService {
         expires: ACCESS_TOKEN_EXPIRED,
         secure: process.env.NODE_ENV !== 'development',
         httpOnly: false,
-        sameSite: 'none'
+        sameSite: 'strict'
       });
 
       res.cookie('client_id', user._id?.toString(), {
@@ -248,7 +247,7 @@ class AuthService {
         expires: REFRESH_TOKEN_EXPIRED,
         secure: process.env.NODE_ENV !== 'development',
         httpOnly: false,
-        sameSite: 'none'
+        sameSite: 'strict'
       });
     } catch (error) {
       if (error instanceof TokenExpiredError) {
@@ -266,7 +265,7 @@ class AuthService {
   static async verifyOTP(req: IRequestCustom): Promise<Omit<UserInfo, 'password'>> {
     const { verify_otp } = req.body;
     const user = req.user as UserInfo;
-    console.log(user);
+    console.log(user.isVerified);
     if (user.isVerified) {
       throw new CustomError('User is already verified', STATUS_CODE.BAD_REQUEST);
     }

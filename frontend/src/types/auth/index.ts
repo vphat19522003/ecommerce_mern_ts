@@ -5,7 +5,7 @@ export type SignUpResult = {
   isVerified?: boolean;
 };
 
-export type SignUpResponseType = {
+export type ResultResponseType = {
   message: string;
   status: number;
   result: SignUpResult;
