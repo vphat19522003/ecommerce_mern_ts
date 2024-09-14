@@ -266,12 +266,13 @@ class AuthService {
 
   static async verifyOTP(req: IRequestCustom): Promise<Omit<UserInfo, 'password'>> {
     const { verify_otp } = req.body;
+    console.log({ verify_otp });
     const user = req.user as UserInfo;
     console.log(user.isVerified);
     if (user.isVerified) {
       throw new CustomError('User is already verified', STATUS_CODE.BAD_REQUEST);
     }
-
+    console.log({ user });
     const otp = await OTPService.findOTPByUserId(user._id as string);
 
     if (!otp) throw new CustomError('OTP Not found', STATUS_CODE.BAD_REQUEST);

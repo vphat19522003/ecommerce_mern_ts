@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { Step, StepLabel, Stepper } from '@mui/material';
@@ -6,6 +8,8 @@ import { motion } from 'framer-motion';
 
 import { useResendOTP, useSignUp, useVerifyOTP } from '@app/api/hooks/auth.hook';
 import { useDevice } from '@app/hooks/useDevice';
+import { setUser } from '@app/redux/authSlice';
+import { paths } from '@app/routes/paths';
 import { IErrorResponse } from '@app/types/common';
 
 import { SignUpStepType } from './schemas';
@@ -23,6 +27,9 @@ const SignUpPage = (): JSX.Element => {
   const { mutate: verifyOTP, isPending: isVerifyOTPPending } = useVerifyOTP();
   const { mutate: resendOTP, isPending: isResendOTPPending } = useResendOTP();
 
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
   const { isMobile } = useDevice();
 
   const stepIndex: Record<SignUpStepType, number> = {
@@ -58,8 +65,9 @@ const SignUpPage = (): JSX.Element => {
   const handleSubmitOTP = (value: VerifyOTPValidateType) => {
     verifyOTP(value, {
       onSuccess: (data) => {
-        console.log(data);
+        dispatch(setUser({ user: data.result }));
         toast.success(data.message);
+        navigate(paths.index);
       },
       onError: (err: IErrorResponse) => {
         toast.error(err.response.data.message as string);

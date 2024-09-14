@@ -6,7 +6,7 @@ import { VerifyOTPValidateType } from '@app/pages/signUp/verifyOTP/schema';
 import { ResultResponseType } from '@app/types/auth';
 import { IErrorResponse, ResponseType } from '@app/types/common';
 
-import { login, resendOTP, signUp, verifyOTP } from '../auth';
+import { login, logOut, resendOTP, signUp, verifyOTP } from '../auth';
 
 export const useLogin = (): UseMutationResult<ResultResponseType, IErrorResponse, LoginSchemaType> => {
   return useMutation({
@@ -33,5 +33,11 @@ export const useVerifyOTP = (): UseMutationResult<ResultResponseType, IErrorResp
 export const useResendOTP = (): UseMutationResult<ResponseType, IErrorResponse, unknown> => {
   return useMutation({
     mutationFn: resendOTP
+  });
+};
+
+export const useLogOut = (): UseMutationResult<ResponseType, IErrorResponse, unknown> => {
+  return useMutation({
+    mutationFn: logOut
   });
 };

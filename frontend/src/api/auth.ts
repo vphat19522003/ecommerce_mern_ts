@@ -37,3 +37,8 @@ export const resendOTP = async (): Promise<ResponseType> => {
   const res = await axiosCustom.post('/auth/resend-otp');
   return res.data;
 };
+
+export const logOut = async (): Promise<ResponseType> => {
+  const res = await axiosCustom.post('/auth/logout');
+  return res.data;
+};

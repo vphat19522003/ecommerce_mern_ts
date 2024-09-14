@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -6,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import './App.css';
 import AppRoutes from './routes/AppRoutes';
+import { RootState } from './store';
 import theme from './theme';
 
 const queryClient = new QueryClient({
@@ -18,6 +20,8 @@ const queryClient = new QueryClient({
 });
 
 function App(): JSX.Element {
+  const user = useSelector((state: RootState) => state.auth.user);
+  console.log({ user });
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>

@@ -2,6 +2,9 @@ import { toast } from 'react-toastify';
 
 import axios, { AxiosInstance } from 'axios';
 
+import { removeCookie } from '@app/utils/cacheCookie';
+import { removeUserFromCache } from '@app/utils/persistCache/auth';
+
 const API_URL =
   import.meta.env.MODE === 'development' ? import.meta.env.VITE_API_LOCAL_URL : import.meta.env.VITE_API_PRODUCT_URL;
 
@@ -43,14 +46,15 @@ axiosCustom.interceptors.response.use(
         return axiosCustom(originalRequest);
       } catch (refreshError: any) {
         // Xóa cookies nếu refresh token hết hạn
-        //removeCookie('access_token');
-        //removeCookie('refresh_token');
-        //removeCookie('client_id');
+        removeCookie('access_token');
+        removeCookie('refresh_token');
+        removeCookie('client_id');
+        removeUserFromCache();
 
         toast.warning('Logged out due to unauthoried', {
           autoClose: 3000,
           onClose: () => {
-            //window.location.href = '/login';
+            window.location.href = '/login';
           }
         });
 

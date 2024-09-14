@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -13,7 +14,9 @@ import ButtonForm from '@app/components/atoms/button';
 import InputField from '@app/components/atoms/inputField';
 import Label from '@app/components/atoms/label';
 import ImageSlider from '@app/components/molecules/ImageSlider';
+import { setUser } from '@app/redux/authSlice';
 import { paths } from '@app/routes/paths';
+import { RootState } from '@app/store';
 import { IErrorResponse } from '@app/types/common';
 
 //import StitchLogo from '../../assets/stitch_icon.png';
@@ -42,6 +45,10 @@ const LoginPage = (): JSX.Element => {
 
   const { mutate: loginMutate, isPending } = useLogin();
 
+  //redux
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const handleKeyDown = useCallback((event) => {
     if (event.getModifierState('CapsLock')) {
       setOpenSnackbar(true);
@@ -61,6 +68,7 @@ const LoginPage = (): JSX.Element => {
   const submitForm = (value: LoginSchemaType) => {
     loginMutate(value, {
       onSuccess: (data) => {
+        dispatch(setUser({ user: data.result }));
         if (rememberMe) localStorage.setItem('username', data.result.username);
         else localStorage.removeItem('username');
         toast.success(data.message);
