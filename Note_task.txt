@@ -12,3 +12,6 @@
 12. Ráp api register user
 13. Ráp api verify otp, resend otp, login, cấu hình axios - verify refresh token
 14. Cấu trúc lại route - auth route - tìm hiểu redux để lưu state toàn cục
+15. Protect route, implement redux, localstorage
+16. Create UI homepage - header
+17. Custom header -> sidebar -> footer

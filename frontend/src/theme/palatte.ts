@@ -10,6 +10,7 @@ declare module '@mui/material/styles' {
     red: Color;
     yellow: Color;
     black: Color;
+    pink: Color;
   }
 
   interface PaletteOptions {
@@ -18,6 +19,7 @@ declare module '@mui/material/styles' {
     red: Partial<Color>;
     yellow: Partial<Color>;
     black: Partial<Color>;
+    pink: Partial<Color>;
   }
 }
 

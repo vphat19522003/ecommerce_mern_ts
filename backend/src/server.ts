@@ -18,7 +18,7 @@ const app = express();
 //middlewares
 app.use(
   cors({
-    origin: 'http://localhost:3000', // URL frontend
+    origin: 'http://localhost:3033', // URL frontend
     credentials: true
   })
 );

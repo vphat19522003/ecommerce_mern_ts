@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import AuthLayout from '@app/layouts/authLayout';
+import MainLayout from '@app/layouts/mainLayout';
 import AccountVerify from '@app/pages/accountVerify';
 import ForgotPasswordPage from '@app/pages/forgotPassword';
 import HomePage from '@app/pages/homePage';
@@ -10,6 +11,7 @@ import SignUpPage from '@app/pages/signUp';
 import { RootState } from '@app/store';
 
 import AuthenticateLayout from './guards/authenticateLayout';
+import ProtectedLayout from './guards/protectedLayout';
 import { paths } from './paths';
 
 const AppRoutes = (): JSX.Element => {
@@ -36,13 +38,17 @@ const AppRoutes = (): JSX.Element => {
           }
         />
 
+        <Route element={<MainLayout />}>
+          <Route path={paths.index} element={<HomePage />} />
+          <Route element={<ProtectedLayout />}></Route>
+        </Route>
+
         <Route
           path={'*'}
           element={
             userAuthenticated ? <Navigate to={paths.pageNotFound} replace /> : <Navigate to={paths.login} replace />
           }
         />
-        <Route path={paths.index} element={<HomePage />} />
       </Routes>
     </Router>
   );

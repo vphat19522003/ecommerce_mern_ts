@@ -5,6 +5,13 @@ const customColors = require('./src/theme/colors');
 export default {
   content: ['./index.html', './src/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
+    container: {
+      padding: {
+        DEFAULT: '1rem',
+        sm: '2rem',
+        md: '14rem'
+      }
+    },
     extend: {
       fontFamily: {
         sans: ['Roboto', 'sans-serif']

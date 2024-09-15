@@ -19,6 +19,10 @@ type InputFieldProps = Omit<TextFieldProps, 'helperText' | 'error'> & {
   endAdornment?: React.ReactNode;
   variant?: TextFieldVariants;
   readOnly?: boolean;
+  description?: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  borderColorFocus?: string;
   size?: OverridableStringUnion<'small' | 'medium', TextFieldPropsSizeOverrides>;
 };
 
@@ -31,6 +35,10 @@ const InputField = forwardRef(
       readOnly,
       variant = 'filled',
       size = 'small',
+      description,
+      backgroundColor,
+      borderColor,
+      borderColorFocus,
       ...otherProps
     }: InputFieldProps,
     ref: Ref<HTMLInputElement>
@@ -46,7 +54,18 @@ const InputField = forwardRef(
           variant={variant}
           sx={({ palette }) => ({
             '.MuiInputBase-root': {
-              backgroundColor: palette.black[100]
+              backgroundColor: backgroundColor || palette.black[100]
+            },
+            '.MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: borderColor || palette.grey[300]
+              },
+              '&:hover fieldset': {
+                borderColor: borderColor || palette.grey[400]
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: borderColorFocus || palette.primary.main
+              }
             },
             'input::placeholder': {
               fontSize: '14px'
@@ -75,7 +94,7 @@ const InputField = forwardRef(
             sx={{
               marginTop: 1
             }}>
-            {error?.message}
+            {description ? description : error?.message}
           </FormHelperText>
         </Box>
       </Box>
