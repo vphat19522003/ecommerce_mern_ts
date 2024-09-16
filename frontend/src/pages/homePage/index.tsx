@@ -2,7 +2,6 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { useLogOut } from '@app/api/hooks/auth.hook';
-import ButtonForm from '@app/components/atoms/button';
 import { clearUser } from '@app/redux/authSlice';
 import { IErrorResponse } from '@app/types/common';
 
@@ -27,8 +26,7 @@ const HomePage = () => {
   };
   return (
     <>
-      <div>HOME PAGE</div>
-      <ButtonForm onClick={handleLogout}>Logout</ButtonForm>
+      <div className='mt-14'>HOME PAGE</div>
     </>
   );
 };

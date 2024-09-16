@@ -1,16 +1,22 @@
 import { Outlet } from 'react-router-dom';
 
-import { Stack } from '@mui/material';
+import { Box } from '@mui/material';
 
-import HeaderComponent from '@app/components/organisms/header';
+import Footer from '@app/components/organisms/footer';
+import Header from '@app/components/organisms/header';
+import MobileNavigator from '@app/components/organisms/mobileNavigator';
+import { useDevice } from '@app/hooks/useDevice';
 
 const MainLayout = (): JSX.Element => {
+  const { isMobile } = useDevice();
   return (
-    <Stack sx={{ height: '500vh' }}>
-      <HeaderComponent />
+    <Box>
+      <Header />
       <Outlet />
-      <footer>Footer</footer>
-    </Stack>
+      <Box sx={{ height: '500vh' }}></Box>
+      {isMobile && <MobileNavigator />}
+      <Footer />
+    </Box>
   );
 };
 

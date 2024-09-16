@@ -7,11 +7,16 @@ import { motion } from 'framer-motion';
 import HeaderAction from '@app/components/molecules/headerAction';
 import HeaderLogo from '@app/components/molecules/headerLogo';
 import HeaderSearch from '@app/components/molecules/headerSearch';
+import { useDevice } from '@app/hooks/useDevice';
 
-const HeaderComponent = () => {
+import MobileHeader from '../mobileHeader';
+
+const Header = () => {
   const [showStickyHeader, setShowStickyHeader] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
+
+  const { isMobile } = useDevice();
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -42,49 +47,54 @@ const HeaderComponent = () => {
 
   return (
     <>
-      <Box className='px-2 md:px-48 sm:px-20'>
-        <Stack className='w-full py-4 bg-white' direction={'row'} alignItems={'center'} spacing={10}>
-          <Box sx={{ flex: '1 1 10%' }}>
-            <HeaderLogo font_size='36px' img_size={15} />
-          </Box>
-          <Box sx={{ flex: '3 1 60%' }}>
-            <HeaderSearch />
-          </Box>
-          <Box className='-mt-4' sx={{ flex: '1 1 30%' }}>
-            <HeaderAction />
-          </Box>
-        </Stack>
-      </Box>
-      {/* Header phụ xuất hiện khi scroll */}
-      {showStickyHeader && (
-        <motion.div
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -100, opacity: 0 }}
-          transition={{ duration: 0.4, ease: 'easeInOut' }}
-          className='fixed top-0 left-0 z-50 w-full py-4 bg-white shadow-md'>
+      {isMobile && <MobileHeader />}
+      {!isMobile && (
+        <>
           <Box className='px-2 md:px-32 sm:px-20'>
-            <Stack direction={'row'} alignItems={'center'} spacing={10}>
+            <Stack className='w-full py-4 bg-white' direction={'row'} alignItems={'center'} spacing={10}>
               <Box sx={{ flex: '1 1 10%' }}>
-                <Stack direction={'row'} spacing={4}>
-                  <button onClick={toggleSidebar} className='p-2 text-black bg-gray-100 rounded-md'>
-                    <Stack alignItems={'center'}>
-                      <Menu />
-                      Menu
-                    </Stack>
-                  </button>
-                  <HeaderLogo font_size='30px' img_size={14} />
-                </Stack>
+                <HeaderLogo font_size='36px' img_size={15} />
               </Box>
-              <Box sx={{ flex: '1 1 60%' }}>
-                <HeaderSearch />
+              <Box sx={{ flex: '3 1 60%' }}>
+                <HeaderSearch description='Enter the product name you want to search' />
               </Box>
               <Box className='-mt-4' sx={{ flex: '1 1 30%' }}>
                 <HeaderAction />
               </Box>
             </Stack>
           </Box>
-        </motion.div>
+          {/* Header phụ xuất hiện khi scroll */}
+          {showStickyHeader && (
+            <motion.div
+              initial={{ y: -100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -100, opacity: 0 }}
+              transition={{ duration: 0.4, ease: 'easeInOut' }}
+              className='fixed top-0 left-0 z-50 w-full py-4 bg-white shadow-md'>
+              <Box className='px-2 md:px-32 sm:px-20'>
+                <Stack direction={'row'} alignItems={'center'} spacing={10}>
+                  <Box sx={{ flex: '1 1 10%' }}>
+                    <Stack direction={'row'} spacing={4}>
+                      <button onClick={toggleSidebar} className='p-2 text-black bg-gray-100 rounded-md border-none'>
+                        <Stack alignItems={'center'}>
+                          <Menu />
+                          Menu
+                        </Stack>
+                      </button>
+                      <HeaderLogo font_size='30px' img_size={14} />
+                    </Stack>
+                  </Box>
+                  <Box sx={{ flex: '1 1 60%' }}>
+                    <HeaderSearch description='Enter the product name you want to search' />
+                  </Box>
+                  <Box className='-mt-4' sx={{ flex: '1 1 30%' }}>
+                    <HeaderAction />
+                  </Box>
+                </Stack>
+              </Box>
+            </motion.div>
+          )}
+        </>
       )}
     </>
 
@@ -150,4 +160,4 @@ const HeaderComponent = () => {
   );
 };
 
-export default HeaderComponent;
+export default Header;

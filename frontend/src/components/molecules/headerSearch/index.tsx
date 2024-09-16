@@ -3,7 +3,7 @@ import { Box, IconButton } from '@mui/material';
 
 import InputField from '@app/components/atoms/inputField';
 
-const CustomIconButton = ({ children }: { children: React.ReactNode }) => (
+export const CustomIconButton = ({ children }: { children: React.ReactNode }): JSX.Element => (
   <IconButton
     sx={{
       fontSize: '14px',
@@ -21,14 +21,14 @@ const CustomIconButton = ({ children }: { children: React.ReactNode }) => (
   </IconButton>
 );
 
-const HeaderSearch = (): JSX.Element => {
+const HeaderSearch = ({ description }: { description?: string }): JSX.Element => {
   return (
     <Box>
       <InputField
         className='w-full border-8'
         startAdornment={<SearchSharp />}
         endAdornment={<CustomIconButton>Search</CustomIconButton>}
-        description='Enter the product name you want to search'
+        description={description}
         variant='outlined'
         borderColorFocus='blue.700'
         backgroundColor='transparent'

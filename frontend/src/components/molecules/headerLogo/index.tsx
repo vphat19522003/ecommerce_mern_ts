@@ -27,7 +27,7 @@ const HeaderLogo = ({ font_size = '38px', img_size = 16 }: HeaderLogoType): JSX.
         })}>
         Vite
       </Typography>
-      <img src={viteLogo} alt='Logo' className={`object-cover w-10 h-10 md:w-${img_size} md:h-${img_size}`} />
+      <img src={viteLogo} alt='Logo' className={`object-cover size-10 md:size-${img_size}`} />
       <Typography
         variant='h1'
         component='h1'
