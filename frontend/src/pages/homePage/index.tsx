@@ -24,11 +24,7 @@ const HomePage = () => {
       }
     );
   };
-  return (
-    <>
-      <div className='mt-14'>HOME PAGE</div>
-    </>
-  );
+  return <></>;
 };
 
 export default HomePage;

@@ -15,3 +15,5 @@
 15. Protect route, implement redux, localstorage
 16. Create UI homepage - header
 17. Custom header -> sidebar -> footer
+18. Create sidebar mobile - subsidebar
+19. Create main sidebar, banner slider
