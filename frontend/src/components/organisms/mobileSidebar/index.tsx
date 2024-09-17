@@ -18,14 +18,13 @@ export const categoryList = [
     id: 2,
     categoryName: 'Computer',
     categoryImg:
-      'https://image.similarpng.com/very-thumbnail/2020/12/Colorful-book-illustration-on-transparent-background-PNG.png',
+      'https://png.pngtree.com/png-clipart/20190920/original/pngtree-color-glare-computer-free-map-png-image_4651718.jpg',
     link: '/'
   },
   {
     id: 3,
     categoryName: 'Toys',
-    categoryImg:
-      'https://image.similarpng.com/very-thumbnail/2020/12/Colorful-book-illustration-on-transparent-background-PNG.png',
+    categoryImg: 'https://cdn.pixabay.com/photo/2020/03/03/18/03/bear-4899421_960_720.png',
     link: '/'
   }
 ];

@@ -9,11 +9,11 @@ const SubBanner = (): JSX.Element => {
   return (
     <Box className='px-2 lg:px-44 sm:px-16'>
       <Stack direction={'row'}>
-        <Box className='w-1/5'>
+        <Box className='w-1/6'>
           <Sidebar />
         </Box>
 
-        <Stack direction={'row'} className='w-4/5 px-5 text-xs text-blue-700' spacing={8}>
+        <Stack direction={'row'} className='w-5/6 px-5 text-xs text-blue-700' spacing={8}>
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
             <LocalPolice className='text-2xl' />
             <p>Quality guaranteed</p>

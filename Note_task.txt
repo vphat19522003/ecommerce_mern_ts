@@ -18,3 +18,4 @@
 18. Create sidebar mobile - subsidebar
 19. Create main sidebar, banner slider
 20. Create API USER, ẩn hiện route
+21. Tạo authenticateContext getuser để authenticate khi vào các route, Box hover, logout

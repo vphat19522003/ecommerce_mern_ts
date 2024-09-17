@@ -8,7 +8,7 @@ import { categoryList } from '../mobileSidebar';
 const Sidebar = (): JSX.Element => {
   const { isMobile } = useDevice();
   return (
-    <Stack direction={'column'} className='px-4 shadow-md relative'>
+    <Stack direction={'column'} className='relative px-4 shadow-md'>
       <Stack
         direction={'row'}
         alignItems={'center'}
@@ -22,9 +22,9 @@ const Sidebar = (): JSX.Element => {
 
       <Stack
         direction={'column'}
-        className={`absolute top-full left-0 bg-white w-full z-10 shadow-md rounded-br-lg rounded-bl-lg ${isMobile ? 'h-[220px] mt-[80px]' : 'h-[420px]'}`}>
+        className={`absolute top-full left-0 bg-white w-full z-10 shadow-md rounded-br-lg rounded-bl-lg ${isMobile ? 'h-[220px] mt-[80px]' : 'h-[460px]'}`}>
         {categoryList.map((category) => (
-          <Stack direction={'row'} spacing={2} key={category.id} className='py-2 px-4' alignItems={'center'}>
+          <Stack direction={'row'} spacing={2} key={category.id} className='px-4 py-2' alignItems={'center'}>
             <img src={category.categoryImg} alt='' className='object-contain size-10' />
 
             <Typography variant='h6' className='text-black text-md'>

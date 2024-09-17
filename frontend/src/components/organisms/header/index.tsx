@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Menu } from '@mui/icons-material';
 import { Box, Stack } from '@mui/material';
@@ -10,11 +10,13 @@ import HeaderLogo from '@app/components/molecules/headerLogo';
 import HeaderSearch from '@app/components/molecules/headerSearch';
 import { useDevice } from '@app/hooks/useDevice';
 import { closeSidebar, toggleSidebar } from '@app/redux/uiSlice';
+import { RootState } from '@app/store';
 
 import MobileHeader from '../mobileHeader';
 
 const Header = (): JSX.Element => {
   const [showStickyHeader, setShowStickyHeader] = useState(false);
+  const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
   const { isMobile } = useDevice();
@@ -49,7 +51,7 @@ const Header = (): JSX.Element => {
       {isMobile && <MobileHeader />}
       {!isMobile && (
         <>
-          <Box className='px-2 lg:px-44 sm:px-16 shadow-sm'>
+          <Box className='px-2 shadow-sm lg:px-44 sm:px-16'>
             <Stack className='w-full py-4 bg-white' direction={'row'} alignItems={'center'} spacing={10}>
               <Box sx={{ flex: '1 1 10%' }}>
                 <HeaderLogo font_size='36px' img_size={15} />
