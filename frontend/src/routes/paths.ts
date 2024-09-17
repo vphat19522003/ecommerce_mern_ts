@@ -5,5 +5,6 @@ export const paths = {
   verifyAccount: '/verify-account',
   forgotPassword: '/forgot-password',
   pageNotFound: '/page-not-found',
-  homePage: '/home-page'
+  homePage: '/home-page',
+  userSetting: '/user-setting'
 };

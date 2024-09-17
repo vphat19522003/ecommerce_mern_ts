@@ -8,6 +8,7 @@ import ForgotPasswordPage from '@app/pages/forgotPassword';
 import HomePage from '@app/pages/homePage';
 import LoginPage from '@app/pages/login';
 import SignUpPage from '@app/pages/signUp';
+import UserSetting from '@app/pages/userSetting';
 import { RootState } from '@app/store';
 
 import AuthenticateLayout from './guards/authenticateLayout';
@@ -40,7 +41,9 @@ const AppRoutes = (): JSX.Element => {
 
         <Route element={<MainLayout />}>
           <Route path={paths.index} element={<HomePage />} />
-          <Route element={<ProtectedLayout />}></Route>
+          <Route element={<ProtectedLayout />}>
+            <Route path={paths.userSetting} element={<UserSetting />} />
+          </Route>
         </Route>
 
         <Route
