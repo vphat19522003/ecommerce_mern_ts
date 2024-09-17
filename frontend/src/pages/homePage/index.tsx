@@ -5,7 +5,7 @@ import { useLogOut } from '@app/api/hooks/auth.hook';
 import { clearUser } from '@app/redux/authSlice';
 import { IErrorResponse } from '@app/types/common';
 
-const HomePage = () => {
+const HomePage = (): JSX.Element => {
   const { mutate: logOut } = useLogOut();
   const dispatch = useDispatch();
 

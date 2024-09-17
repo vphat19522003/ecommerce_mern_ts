@@ -1,4 +1,4 @@
-const ForgotPasswordPage = () => {
+const ForgotPasswordPage = (): JSX.Element => {
   return <div>ForgotPasswordPage</div>;
 };
 

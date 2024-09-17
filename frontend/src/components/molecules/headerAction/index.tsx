@@ -1,9 +1,7 @@
-import React from 'react';
-
 import { AccountCircle, ShoppingCart } from '@mui/icons-material';
 import { Stack } from '@mui/material';
 
-const HeaderAction = () => {
+const HeaderAction = (): JSX.Element => {
   return (
     <Stack direction={'row'} spacing={10} alignItems={'center'}>
       <Stack direction={'row'} spacing={2} alignItems={'center'}>

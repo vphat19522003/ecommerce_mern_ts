@@ -5,7 +5,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { paths } from '@app/routes/paths';
 import { RootState } from '@app/store';
 
-const ProtectedLayout = () => {
+const ProtectedLayout = (): JSX.Element => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   if (!user) return <Navigate to={paths.login} replace />;
