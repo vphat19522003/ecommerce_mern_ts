@@ -49,7 +49,7 @@ const Header = (): JSX.Element => {
       {isMobile && <MobileHeader />}
       {!isMobile && (
         <>
-          <Box className='px-2 lg:px-44 sm:px-16'>
+          <Box className='px-2 lg:px-44 sm:px-16 shadow-sm'>
             <Stack className='w-full py-4 bg-white' direction={'row'} alignItems={'center'} spacing={10}>
               <Box sx={{ flex: '1 1 10%' }}>
                 <HeaderLogo font_size='36px' img_size={15} />

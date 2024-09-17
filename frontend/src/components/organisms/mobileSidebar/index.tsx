@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { toggleSidebar } from '@app/redux/uiSlice';
 import { RootState } from '@app/store';
 
-const categoryList = [
+export const categoryList = [
   {
     id: 1,
     categoryName: 'Books',
