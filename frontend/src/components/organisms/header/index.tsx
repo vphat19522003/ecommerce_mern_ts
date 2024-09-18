@@ -51,7 +51,7 @@ const Header = (): JSX.Element => {
       {isMobile && <MobileHeader />}
       {!isMobile && (
         <>
-          <Box className='px-2 shadow-sm lg:px-44 sm:px-16'>
+          <Box className='px-2 shadow-sm lg:px-44 md:px-20 sm:px-16'>
             <Stack className='w-full py-4 bg-white' direction={'row'} alignItems={'center'} spacing={10}>
               <Box sx={{ flex: '1 1 10%' }}>
                 <HeaderLogo font_size='36px' img_size={15} />
@@ -72,7 +72,7 @@ const Header = (): JSX.Element => {
               exit={{ y: -100, opacity: 0 }}
               transition={{ duration: 0.4, ease: 'easeInOut' }}
               className='fixed top-0 left-0 z-50 w-full py-4 bg-white shadow-md'>
-              <Box className='px-2 lg:px-44 sm:px-16'>
+              <Box className='px-2 lg:px-44 md:px-20 sm:px-16'>
                 <Stack direction={'row'} alignItems={'center'} spacing={10}>
                   <Box sx={{ flex: '1 1 10%' }}>
                     <Stack direction={'row'} spacing={4}>

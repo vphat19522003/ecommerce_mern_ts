@@ -146,8 +146,8 @@ class AuthService {
     });
 
     res.cookie('refresh_token', refresh_token, {
-      maxAge: ACCESS_TOKEN_TIME,
-      expires: ACCESS_TOKEN_EXPIRED,
+      maxAge: REFRESH_TOKEN_TIME,
+      expires: REFRESH_TOKEN_EXPIRED,
       secure: process.env.NODE_ENV !== 'development',
       httpOnly: false,
       sameSite: 'strict'
