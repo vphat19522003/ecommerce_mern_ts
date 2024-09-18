@@ -14,10 +14,10 @@ const HeaderAction = (): JSX.Element => {
   const [isHovering, setIsHovering] = useState(false);
 
   return (
-    <Stack direction={'row'} spacing={10} alignItems={'center'}>
+    <Stack direction={'row'} spacing={4} alignItems={'center'}>
       <Box onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className='relative'>
         <Link
-          to={user ? '/user-setting' : '/login'}
+          to={user ? 'user/account' : '/login'}
           className='text-sm text-blue-700 no-underline transition-colors duration-300 hover:text-blue-600 cursor-pointer'>
           <Stack
             direction={'row'}

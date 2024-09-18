@@ -11,7 +11,7 @@ type HeaderLogoType = {
 
 const HeaderLogo = ({ font_size = '38px', img_size = 16 }: HeaderLogoType): JSX.Element => {
   return (
-    <Stack flexDirection={'row'} gap={1} alignItems={'center'}>
+    <Stack flexDirection={'row'} gap={1} alignItems={'center'} className='max-w-[200px]'>
       <Typography
         variant='h5'
         component='h5'

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import MainLayout from '@app/layouts/mainLayout';
 import { clearUser } from '@app/redux/authSlice';
 import { paths } from '@app/routes/paths';
 import { RootState } from '@app/store';
@@ -27,7 +28,11 @@ const ProtectedLayout = (): JSX.Element => {
 
   if (!user.isVerified) return <Navigate to={paths.verifyAccount} replace />;
 
-  return <Outlet />;
+  return (
+    <MainLayout>
+      <Outlet />
+    </MainLayout>
+  );
 };
 
 export default ProtectedLayout;

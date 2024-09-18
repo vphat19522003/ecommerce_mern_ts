@@ -29,7 +29,7 @@ const HeaderBoxHover = (): JSX.Element => {
   };
   return (
     <Stack direction={'column'} spacing={2} className='bg-white w-full'>
-      <Link to={paths.userSetting} className='px-2 py-4 m-0 no-underline text-blue-700 hover:bg-slate-200'>
+      <Link to={'user/account'} className='px-2 py-4 m-0 no-underline text-blue-700 hover:bg-slate-200'>
         Account Info
       </Link>
 

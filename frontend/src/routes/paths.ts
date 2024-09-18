@@ -6,5 +6,12 @@ export const paths = {
   forgotPassword: '/forgot-password',
   pageNotFound: '/page-not-found',
   homePage: '/home-page',
-  userSetting: '/user-setting'
+  user: {
+    index: '/user',
+    account: 'account',
+    history: 'order_history',
+    security: 'security',
+    share: 'share',
+    favorite: 'favorite'
+  }
 };
