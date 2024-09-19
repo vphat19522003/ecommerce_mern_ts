@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import { ArrowBack, Home, Person } from '@mui/icons-material';
 import { Box, Stack } from '@mui/material';
 
@@ -12,7 +14,9 @@ const MobileNavigator = (): JSX.Element => {
           <Home />
         </Box>
         <Box>
-          <Person />
+          <Link to={'user/account'}>
+            <Person />
+          </Link>
         </Box>
       </Stack>
     </Box>
