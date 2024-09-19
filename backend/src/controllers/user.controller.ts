@@ -13,3 +13,22 @@ export const getUserController = async (req: IRequestCustom, res: Response): Pro
     status: STATUS_CODE.OK
   });
 };
+
+export const updateUserController = async (req: IRequestCustom, res: Response): Promise<Response> => {
+  const result = await UserService.updateUser(req);
+
+  return res.json({
+    message: 'Update user successfully',
+    result,
+    status: STATUS_CODE.OK
+  });
+};
+
+export const changePasswordController = async (req: IRequestCustom, res: Response): Promise<Response> => {
+  await UserService.changePassword(req);
+
+  return res.json({
+    message: 'Change password successfully',
+    status: STATUS_CODE.OK
+  });
+};

@@ -98,7 +98,7 @@ const Footer = (): JSX.Element => {
           backgroundColor='white'
         />
       </Stack>
-      <Box className='px-2 py-4 lg:px-28'>
+      <Box className='px-2 py-4 lg:px-28 xl:px-72'>
         <Stack
           direction={isMobile ? 'column' : 'row'}
           className='bottom-0 left-0 w-full'

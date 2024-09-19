@@ -161,7 +161,7 @@ class AuthService {
       sameSite: 'strict'
     });
 
-    return omit(user, 'password', '__v', 'createdAt', 'updatedAt');
+    return omit(user, 'password', '__v', 'updatedAt');
   }
 
   static async logout(req: Request, res: Response): Promise<void> {
@@ -169,9 +169,13 @@ class AuthService {
 
     if (!client_id) throw new CustomError('Not provided client_id', STATUS_CODE.UNAUTHORIZED);
 
+    console.log('ID day', { client_id });
+
     const user = await UserRepository.findUserById(client_id);
 
-    if (!user) throw new CustomError('User not found', STATUS_CODE.UNAUTHORIZED);
+    console.log('BI GI VAY', { user });
+
+    if (!user) throw new CustomError('User not found ????? LOI GI VAY', STATUS_CODE.UNAUTHORIZED);
 
     await KeyService.deleteKeyByUserId(client_id);
 
@@ -302,7 +306,7 @@ class AuthService {
 
     if (!updatedUser) throw new CustomError('User not found or update failed', STATUS_CODE.INTERNAL_SERVER_ERROR);
 
-    return omit(updatedUser?.toObject() as UserInfo, 'password', '__v', 'createdAt', 'updatedAt');
+    return omit(updatedUser?.toObject() as UserInfo, 'password', '__v', 'updatedAt');
   }
 
   static async resendOTP(req: IRequestCustom): Promise<void> {

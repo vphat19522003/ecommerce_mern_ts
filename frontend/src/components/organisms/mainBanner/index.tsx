@@ -13,7 +13,8 @@ const MainBanner = (): JSX.Element => {
   const { isMobile } = useDevice();
 
   return (
-    <Box className={`px-2 lg:px-28  bg-slate-100 py-4 ${isMobile && 'mt-[80px]'} h-[260px] sm:h-[320px] md:h-[440px]`}>
+    <Box
+      className={`px-2 lg:px-28  xl:px-72  bg-slate-100 py-4 ${isMobile && 'mt-[80px]'} h-[260px] sm:h-[320px] md:h-[440px]`}>
       <Stack direction='row' spacing={2} className='h-full px-2'>
         {!isMobile ? (
           <>

@@ -7,7 +7,7 @@ import Sidebar from '../sidebar';
 
 const SubBanner = (): JSX.Element => {
   return (
-    <Box className='lg:px-28 px-2'>
+    <Box className='px-2 lg:px-28 xl:px-72'>
       <Stack direction={'row'}>
         <Box className='w-3/12'>
           <Sidebar />
