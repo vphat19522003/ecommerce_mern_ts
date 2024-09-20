@@ -16,3 +16,9 @@ export interface IErrorResponse {
     status: number;
   };
 }
+
+export type DropdownDataType = {
+  value: string | number;
+  label: string;
+  name?: string;
+};

@@ -11,6 +11,7 @@ import SignUpPage from '@app/pages/signUp';
 import UserSetting from '@app/pages/userSetting';
 import PurchasedHistory from '@app/pages/userSetting/purchasedHistory';
 import UserAccount from '@app/pages/userSetting/userAccount';
+import UserAddress from '@app/pages/userSetting/userAddress';
 import UserFavorite from '@app/pages/userSetting/userFavorite';
 import UserSecurity from '@app/pages/userSetting/userSecurity';
 import UserShare from '@app/pages/userSetting/userShare';
@@ -54,6 +55,7 @@ const AppRoutes = (): JSX.Element => {
             <Route path={paths.user.history} element={<PurchasedHistory />} />
             <Route path={paths.user.security} element={<UserSecurity />} />
             <Route path={paths.user.favorite} element={<UserFavorite />} />
+            <Route path={paths.user.address} element={<UserAddress />} />
             <Route path={paths.user.share} element={<UserShare />} />
           </Route>
         </Route>

@@ -12,6 +12,7 @@ export const paths = {
     history: 'order_history',
     security: 'security',
     share: 'share',
+    address: 'address',
     favorite: 'favorite'
   }
 };

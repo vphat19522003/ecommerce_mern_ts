@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 
-import { Favorite, ManageAccounts, Security, Share, ShoppingCart } from '@mui/icons-material';
+import { Favorite, ManageAccounts, Map, Security, Share, ShoppingCart } from '@mui/icons-material';
 import { Stack } from '@mui/material';
 
 import { useDevice } from '@app/hooks/useDevice';
@@ -42,6 +42,14 @@ const UserMenu = (): JSX.Element => {
             </Stack>
           </Link>
           <Link
+            to={paths.user.address}
+            className={`no-underline p-4 text-[#6e7480] border-x-0 border-t-0 border-b-[0.1px] border-solid border-b-gray-200 hover:text-black ${pathName === '/user/address' ? activeStyle : 'text-[#6e7480]'}`}>
+            <Stack direction={'row'} spacing={4} alignItems={'center'}>
+              <Map />
+              <p>Shipping Address</p>
+            </Stack>
+          </Link>
+          <Link
             to={paths.user.favorite}
             className={`no-underline p-4 text-[#6e7480] border-x-0 border-t-0 border-b-[0.1px] border-solid border-b-gray-200 hover:text-black ${pathName === '/user/favorite' ? activeStyle : 'text-[#6e7480]'}`}>
             <Stack direction={'row'} spacing={4} alignItems={'center'}>
@@ -79,6 +87,13 @@ const UserMenu = (): JSX.Element => {
             className={`flex-1 no-underline p-4 hover:text-black ${pathName === '/user/security' ? mobileActiveStyle : 'text-[#6e7480]'}`}>
             <Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
               <Security />
+            </Stack>
+          </Link>
+          <Link
+            to={paths.user.address}
+            className={`flex-1 no-underline p-4 hover:text-black ${pathName === '/user/address' ? mobileActiveStyle : 'text-[#6e7480]'}`}>
+            <Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
+              <Map />
             </Stack>
           </Link>
           <Link

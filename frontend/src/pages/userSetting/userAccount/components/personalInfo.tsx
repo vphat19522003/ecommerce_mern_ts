@@ -2,6 +2,7 @@ import { Map } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
 import ButtonForm from '@app/components/atoms/button';
+import CustomComboBox from '@app/components/atoms/comboBox';
 import InputField from '@app/components/atoms/inputField';
 import { useDevice } from '@app/hooks/useDevice';
 
@@ -16,7 +17,13 @@ const PersonalInfo = (): JSX.Element => {
           <InputField variant='outlined' backgroundColor='transparent' label='Phone' />
           <InputField variant='outlined' backgroundColor='transparent' label='Email' />
           <InputField variant='outlined' backgroundColor='transparent' label='ID/Passport' />
-          <InputField variant='outlined' backgroundColor='transparent' label='Gender' />
+          <CustomComboBox
+            label='Gender'
+            data={[
+              { name: 'Male', value: 'Male', label: 'Male' },
+              { name: 'Female', value: 'Female', label: 'Female' }
+            ]}
+          />
           <Stack
             direction={'row'}
             spacing={4}

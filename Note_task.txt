@@ -22,4 +22,5 @@
 22. Tạo UI User page
 23. Tạo API User -> route -> controller -> service -> repository
 24. Update model user, thêm các field, Tạo api user -> cập nhật,  đổi mật khẩu
-25. Tạo model address., thêm địa chỉ giao hàng, lưu ảnh -> ráp api vào giao diện. Tìm hiểu lỗi logout
+25. Tạo model address, thêm model địa chỉ giao hàng, tạo ui thêm địa chỉ giao hàng
+api lưu ảnh -> ráp api vào giao diện. Tìm hiểu lỗi logout
