@@ -1,4 +1,4 @@
-import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectProps } from '@mui/material';
+import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectProps, Stack } from '@mui/material';
 
 import { DropdownDataType, IPlainObject } from '@app/types/common';
 
@@ -20,20 +20,37 @@ const CustomComboBox = ({
   ...otherProps
 }: ComboBoxProps): JSX.Element => {
   return (
-    <>
+    <Stack
+      direction={'column'}
+      sx={{
+        width: '100%'
+      }}>
       {labelType === 'outside' && <InputLabel>{otherProps.label}</InputLabel>}
-      <FormControl>
+      <FormControl
+        sx={({ palette }) => ({
+          width: '100%',
+          '.MuiInputBase-root': {
+            '& fieldset': {
+              borderColor: palette.grey[300],
+              borderWidth: '1px'
+            },
+            '&:hover fieldset': {
+              borderColor: palette.grey[400]
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: palette.primary.main
+            }
+          },
+          '& .MuiSelect-select': {
+            paddingTop: '10px'
+          }
+        })}>
         {labelType === 'inside' && <InputLabel>{otherProps.label}</InputLabel>}
         <Select
           defaultValue=''
           label={labelType === 'inside' ? otherProps.label : undefined}
           disabled={isDisabled}
-          {...otherProps}
-          sx={{
-            '.MuiSelect-select': {
-              paddingBottom: '8px'
-            }
-          }}>
+          {...otherProps}>
           <MenuItem value=''>Choose Option</MenuItem>
           {data.map((item, idx) => (
             <MenuItem key={item.toString() + idx} value={item.value}>
@@ -51,7 +68,7 @@ const CustomComboBox = ({
           {description ? description : error?.message}
         </FormHelperText>
       </Box>
-    </>
+    </Stack>
   );
 };
 

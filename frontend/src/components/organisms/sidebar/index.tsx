@@ -34,7 +34,7 @@ const Sidebar = (): JSX.Element => {
         spacing={2}
         className={`border-b-[1px] border-solid border-t-0 border-x-0 border-gray-100 py-2 pl-2 ${isActivePath && 'cursor-pointer'}`}>
         <List />
-        <Typography variant='h5' className={`py-1 text-xl font-bold ${isActivePath ? 'text-white' : 'text-blue-500'}`}>
+        <Typography variant='h5' className={`py-1 text-xl font-bold ${isActivePath ? 'text-white' : 'text-blue-700'}`}>
           Menu
         </Typography>
       </Stack>

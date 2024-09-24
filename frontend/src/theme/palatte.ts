@@ -26,10 +26,10 @@ declare module '@mui/material/styles' {
 const paletteConfig: PaletteOptions = {
   ...colors,
   primary: {
-    main: colors.blue[500]
+    main: colors.blue[700]
   },
   secondary: {
-    main: colors.blue[300]
+    main: colors.pink[500]
   }
 };
 
