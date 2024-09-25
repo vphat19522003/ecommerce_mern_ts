@@ -1,14 +1,14 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { model, Schema } from 'mongoose';
 
-enum addressType {
+export enum addressType {
   home = 'Home',
   company = 'Company',
   private = 'Private'
 }
 
-type AddressItemType = {
+export type AddressItemType = {
   code: string;
-  text: string;
+  name: string;
 };
 
 interface IAddress extends Document {
@@ -38,18 +38,15 @@ const addressSchema = new Schema<IAddress>(
       required: true
     },
     address_city: {
-      text: { type: String },
-      code: { type: String },
+      type: { name: { type: String }, code: { type: String } },
       required: true
     },
     address_district: {
-      text: { type: String },
-      code: { type: String },
+      type: { name: { type: String }, code: { type: String } },
       required: true
     },
     address_ward: {
-      text: { type: String },
-      code: { type: String },
+      type: { name: { type: String }, code: { type: String } },
       required: true
     },
     address_type: {
@@ -68,6 +65,6 @@ const addressSchema = new Schema<IAddress>(
   }
 );
 
-const AddressModel = mongoose.model('Address', addressSchema);
+const AddressModel = model('Address', addressSchema);
 
 export default AddressModel;

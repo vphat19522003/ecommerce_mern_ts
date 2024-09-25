@@ -4,6 +4,7 @@ import { omit } from 'lodash';
 import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
 import { IRequestCustom } from '@app/middleware/accessToken.middleware';
+import LocationRepository, { AddressInfo } from '@app/repository/location.repository';
 import UserRepository, { UserInfo } from '@app/repository/user.repository';
 
 class UserService {
@@ -40,6 +41,30 @@ class UserService {
 
     const newPasswordUser = await UserRepository.updateUserPassword({ _id, hashedPassword });
     if (!newPasswordUser) throw new CustomError("Can't change password", STATUS_CODE.INTERNAL_SERVER_ERROR);
+  }
+
+  static async addAddress(req: IRequestCustom): Promise<AddressInfo> {
+    const { _id } = req.user as UserInfo;
+    const { address_city, address_district, address_ward, address_street, address_type } = req.body as AddressInfo;
+
+    if (!address_city) throw new CustomError('Address city is required', STATUS_CODE.BAD_REQUEST);
+    if (!address_district) throw new CustomError('Address district is required', STATUS_CODE.BAD_REQUEST);
+    if (!address_ward) throw new CustomError('Address ward is required', STATUS_CODE.BAD_REQUEST);
+    if (!address_type) throw new CustomError('Address type is required', STATUS_CODE.BAD_REQUEST);
+    if (!address_street) throw new CustomError('Address street is required', STATUS_CODE.BAD_REQUEST);
+
+    const address_detail = `${address_street} ${address_ward} ${address_district} ${address_city}`;
+    const newAddress = await LocationRepository.createLocation({
+      userId: _id,
+      address_city,
+      address_district,
+      address_ward,
+      address_street,
+      address_detail,
+      address_type
+    });
+
+    return newAddress;
   }
 }
 

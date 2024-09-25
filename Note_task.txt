@@ -27,3 +27,5 @@
 27. Tạo popup
 28. Tạo ui thêm địa chỉ giao hàng , form thêm địa chỉ
 29. Tạo api địa chỉ người dùng,api CRU setting user,api lưu ảnh -> ráp api vào giao diện 
+    Bộ api address: Tìm tỉnh thành, tìm quận huyện, tìm xã
+                    Thêm địa chỉ, xóa địa chỉ, đặt địa chỉ làm mặc định

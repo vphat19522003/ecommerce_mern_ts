@@ -32,3 +32,13 @@ export const changePasswordController = async (req: IRequestCustom, res: Respons
     status: STATUS_CODE.OK
   });
 };
+
+export const addAddressController = async (req: IRequestCustom, res: Response): Promise<Response> => {
+  const result = await UserService.addAddress(req);
+
+  return res.json({
+    message: 'Add address successfully',
+    status: STATUS_CODE.OK,
+    result
+  });
+};
