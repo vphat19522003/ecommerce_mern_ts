@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,14 +21,14 @@ const queryClient = new QueryClient({
 
 function App(): JSX.Element {
   const user = useSelector((state: RootState) => state.auth.user);
-  const location = window.location.pathname;
+  // const location = window.location.pathname;
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0
-    });
-  }, [location]);
+  // useEffect(() => {
+  //   window.scrollTo({
+  //     top: 0,
+  //     left: 0
+  //   });
+  // }, [location]);
   console.log({ user });
   return (
     <QueryClientProvider client={queryClient}>

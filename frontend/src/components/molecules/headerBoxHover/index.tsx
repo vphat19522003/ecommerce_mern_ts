@@ -28,17 +28,17 @@ const HeaderBoxHover = (): JSX.Element => {
     );
   };
   return (
-    <Stack direction={'column'} spacing={2} className='bg-white w-full'>
-      <Link to={'user/account'} className='px-2 py-4 m-0 no-underline text-blue-700 hover:bg-slate-200'>
+    <Stack direction={'column'} className='w-full bg-white'>
+      <Link to={'user/account'} className='px-2 py-4 m-0 text-blue-700 no-underline hover:bg-slate-200'>
         Account Info
       </Link>
 
-      <Link to={paths.index} className='px-2 py-4 m-0 no-underline text-blue-700 hover:bg-slate-200'>
+      <Link to={paths.index} className='px-2 py-4 m-0 text-blue-700 no-underline hover:bg-slate-200'>
         Your Notification
       </Link>
 
       <Stack
-        className='hover:bg-slate-200 cursor-pointer'
+        className='cursor-pointer hover:bg-slate-200'
         spacing={2}
         direction={'row'}
         alignItems={'center'}

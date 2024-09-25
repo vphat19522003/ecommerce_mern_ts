@@ -21,7 +21,7 @@ const HomePageLayout = (): JSX.Element => {
       <Header />
       {!isMobile && <SubBanner />}
       <MainBanner />
-      <Box className='px-2 lg:px-28 xl:px-72 bg-[#f6f5fa] '>
+      <Box className='px-2 lg:px-28 xl:px-96 bg-[#f6f5fa] '>
         <Outlet />
       </Box>
       <Box sx={{ height: '100vh' }} className='bg-[#f6f5fa]'></Box>

@@ -29,3 +29,5 @@
 29. Tạo api địa chỉ người dùng,api CRU setting user,api lưu ảnh -> ráp api vào giao diện 
     Bộ api address: Tìm tỉnh thành, tìm quận huyện, tìm xã
                     Thêm địa chỉ, xóa địa chỉ, đặt địa chỉ làm mặc định
+30. -API get list address, xóa address : DONE
+    -Ráp api create address - ráp api province, district, ward, set default

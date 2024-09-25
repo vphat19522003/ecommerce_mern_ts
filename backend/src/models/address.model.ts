@@ -22,6 +22,14 @@ interface IAddress extends Document {
   isSetDefault: boolean;
 }
 
+// const addressItemSchema = new Schema<AddressItemType>(
+//   {
+//     name: { type: String, required: true },
+//     code: { type: String, required: true }
+//   },
+//   { _id: false }
+// );
+
 const addressSchema = new Schema<IAddress>(
   {
     userId: {
@@ -38,15 +46,15 @@ const addressSchema = new Schema<IAddress>(
       required: true
     },
     address_city: {
-      type: { name: { type: String }, code: { type: String } },
+      type: String,
       required: true
     },
     address_district: {
-      type: { name: { type: String }, code: { type: String } },
+      type: String,
       required: true
     },
     address_ward: {
-      type: { name: { type: String }, code: { type: String } },
+      type: String,
       required: true
     },
     address_type: {
