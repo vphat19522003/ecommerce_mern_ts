@@ -13,9 +13,14 @@ const shippingPlace = {
 type addressListPropsType = {
   addressList: UserAddressResponseType[];
   handleDeleteAddress: (addressId: string) => void;
+  handleSetDefaultAddress: (addressId: string) => void;
 };
 
-const AddressList = ({ addressList, handleDeleteAddress }: addressListPropsType): JSX.Element => {
+const AddressList = ({
+  addressList,
+  handleDeleteAddress,
+  handleSetDefaultAddress
+}: addressListPropsType): JSX.Element => {
   return (
     <>
       {addressList.length > 0 &&
@@ -25,7 +30,11 @@ const AddressList = ({ addressList, handleDeleteAddress }: addressListPropsType)
               <Typography className='px-2 text-white bg-blue-700 rounded-full'>{idx + 1}</Typography>
 
               <Stack direction={'row'}>
-                <IconButton color='primary'>
+                <IconButton
+                  disabled={address.isSetDefault}
+                  className='disabled:text-green-500'
+                  color='primary'
+                  onClick={() => handleSetDefaultAddress(address._id)}>
                   <Anchor />
                 </IconButton>
                 <IconButton
@@ -44,15 +53,11 @@ const AddressList = ({ addressList, handleDeleteAddress }: addressListPropsType)
               </Stack>
               <Stack direction={'row'} spacing={4} className='text-md' alignItems={'center'}>
                 <p className='w-28'>City</p>
-                <p className='font-black'>{address.address_city}</p>
+                <p className='font-black'>{address.address_city.name}</p>
               </Stack>
               <Stack direction={'row'} spacing={4} className='text-md' alignItems={'center'}>
                 <p className='w-28'>District</p>
-                <p className='font-black'>{address.address_district}</p>
-              </Stack>
-              <Stack direction={'row'} spacing={4} className='text-md' alignItems={'center'}>
-                <p className='w-28'>Detail</p>
-                <p className='font-black'>{address.address_detail}</p>
+                <p className='font-black'>{address.address_district.name}</p>
               </Stack>
               <Stack direction={'row'} spacing={4} className='text-md' alignItems={'center'}>
                 <p className='w-28'>Place</p>

@@ -6,7 +6,7 @@ import reqHandler from '@app/utils/reqHandler';
 const locationRouter = Router();
 
 locationRouter.get('/get-province', reqHandler(getProvinceController));
-locationRouter.get('/get-district', reqHandler(getDistrictController));
-locationRouter.get('/get-ward', reqHandler(getWardController));
+locationRouter.post('/get-district', reqHandler(getDistrictController));
+locationRouter.post('/get-ward', reqHandler(getWardController));
 
 export default locationRouter;

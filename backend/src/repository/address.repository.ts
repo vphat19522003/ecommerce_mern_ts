@@ -2,16 +2,16 @@ import mongoose, { Types } from 'mongoose';
 
 import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
-import AddressModel, { addressType } from '@app/models/address.model';
+import AddressModel, { AddressItemType, addressType } from '@app/models/address.model';
 
 export type AddressInfo = {
   _id?: string;
   userId: string;
   address_detail: string;
   address_street: string;
-  address_city: string;
-  address_district: string;
-  address_ward: string;
+  address_city: AddressItemType;
+  address_district: AddressItemType;
+  address_ward: AddressItemType;
   address_type: addressType;
   isSetDefault?: boolean;
 };

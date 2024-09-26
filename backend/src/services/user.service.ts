@@ -3,6 +3,9 @@ import { Request } from 'express';
 import { omit } from 'lodash';
 import mongoose from 'mongoose';
 
+import { district } from '@app/asset/location/district';
+import { provinces } from '@app/asset/location/province';
+import { ward } from '@app/asset/location/ward';
 import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
 import { IRequestCustom } from '@app/middleware/accessToken.middleware';
@@ -56,7 +59,7 @@ class UserService {
 
   static async addAddress(req: IRequestCustom): Promise<AddressInfo> {
     const { _id } = req.user as UserInfo;
-    const { address_city, address_district, address_ward, address_street, address_type } = req.body as AddressInfo;
+    const { address_city, address_district, address_ward, address_street, address_type } = req.body;
 
     if (!address_city) throw new CustomError('Address city is required', STATUS_CODE.BAD_REQUEST);
     if (!address_district) throw new CustomError('Address district is required', STATUS_CODE.BAD_REQUEST);
@@ -64,16 +67,35 @@ class UserService {
     if (!address_type) throw new CustomError('Address type is required', STATUS_CODE.BAD_REQUEST);
     if (!address_street) throw new CustomError('Address street is required', STATUS_CODE.BAD_REQUEST);
 
-    const address_detail = `${address_street} ${address_ward} ${address_district} ${address_city}`;
-    const newAddress = await AddressRepository.createAddress({
+    const city = provinces.find((province) => province.code === address_city);
+    const districtItem = district.find((item) => item.code === address_district);
+    const wardItem = ward.find((item) => item.code === address_ward);
+
+    if (!city || !districtItem || !wardItem) throw new CustomError('Not found address data', STATUS_CODE.BAD_REQUEST);
+
+    const address_detail = `${address_street} ${wardItem?.name} ${districtItem?.name} ${city?.name}`;
+
+    console.log({ address_detail });
+
+    const customAddress = {
       userId: _id,
-      address_city,
-      address_district,
-      address_ward,
       address_street,
       address_detail,
-      address_type
-    });
+      address_type,
+      address_city: {
+        name: city.name,
+        code: city.code
+      },
+      address_ward: {
+        name: wardItem.name,
+        code: wardItem.code
+      },
+      address_district: {
+        name: districtItem.name,
+        code: districtItem.code
+      }
+    };
+    const newAddress = await AddressRepository.createAddress(customAddress);
 
     return omit(newAddress, 'createdAt', 'updatedAt', '__v');
   }

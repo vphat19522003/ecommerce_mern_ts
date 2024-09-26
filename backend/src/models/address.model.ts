@@ -22,13 +22,13 @@ interface IAddress extends Document {
   isSetDefault: boolean;
 }
 
-// const addressItemSchema = new Schema<AddressItemType>(
-//   {
-//     name: { type: String, required: true },
-//     code: { type: String, required: true }
-//   },
-//   { _id: false }
-// );
+const addressItemSchema = new Schema<AddressItemType>(
+  {
+    name: { type: String, required: true },
+    code: { type: String, required: true }
+  },
+  { _id: false }
+);
 
 const addressSchema = new Schema<IAddress>(
   {
@@ -46,15 +46,15 @@ const addressSchema = new Schema<IAddress>(
       required: true
     },
     address_city: {
-      type: String,
+      type: addressItemSchema,
       required: true
     },
     address_district: {
-      type: String,
+      type: addressItemSchema,
       required: true
     },
     address_ward: {
-      type: String,
+      type: addressItemSchema,
       required: true
     },
     address_type: {

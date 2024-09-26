@@ -27,6 +27,7 @@ const CustomComboBox = ({
       }}>
       {labelType === 'outside' && <InputLabel>{otherProps.label}</InputLabel>}
       <FormControl
+        error={!!error}
         sx={({ palette }) => ({
           width: '100%',
           '.MuiInputBase-root': {
@@ -52,11 +53,12 @@ const CustomComboBox = ({
           disabled={isDisabled}
           {...otherProps}>
           <MenuItem value=''>Choose Option</MenuItem>
-          {data.map((item, idx) => (
-            <MenuItem key={item.toString() + idx} value={item.value}>
-              {item.label}
-            </MenuItem>
-          ))}
+          {data.length > 0 &&
+            data.map((item, idx) => (
+              <MenuItem key={item.toString() + idx} value={item.value}>
+                {item.label}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
       <Box className='h-2'>
