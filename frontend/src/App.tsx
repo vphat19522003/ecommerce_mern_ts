@@ -21,7 +21,7 @@ const queryClient = new QueryClient({
 
 function App(): JSX.Element {
   const user = useSelector((state: RootState) => state.auth.user);
-  // const location = window.location.pathname;
+  const location = window.location.pathname;
 
   // useEffect(() => {
   //   window.scrollTo({

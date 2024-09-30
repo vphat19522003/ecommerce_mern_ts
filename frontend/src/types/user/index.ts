@@ -5,6 +5,11 @@ export type UserTypeResponse = {
   username: string;
   email: string;
   isVerified: boolean;
+  fullName?: string;
+  phone?: string;
+  passport?: string;
+  gender?: string;
+  createdAt?: string;
 };
 
 export type locationResponseType = {

@@ -32,3 +32,11 @@
 30. -API get list address, xóa address : DONE
     -Ráp api create address - ráp api province, district, ward, set default
 31. -Tạo giao diện đổi mật khẩu - user setting - security, ráp api
+32. -Ráp api sửa thông tin người dùng.
+33. -Tạo giao diện sửa đổi ảnh đại diện, tạo api: 
+        -Học về stream : writablestream, readablestream, chunk, pipe, Multer, buffer
+        -Test tạo 1 file và writablestream, readablestream từ file đó
+        -Tạo giao diện để upload file
+        -Test sử dụng multer middleware: gửi request sau đó dùng middleware multer để nhận nội dung file, in ra nội dung và cái thuộc tính của nó
+        -Test lưu file ở ổ cứng trước sau đó là buffer (Vùng nhớ ram) in ra nội dung nhận được
+        -Test upload lên cloudinary khi lưu trên ổ cứng, test upload lên cloudinary khi lưu trên buffer

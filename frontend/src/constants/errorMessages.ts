@@ -12,5 +12,6 @@ export const errorMessages = {
   phoneNumberInvalid: 'Invalid phone number',
   usernameTooLong: 'Username is too long, max: 16 characters',
   usernameInvalid: 'Invalid username',
-  noSpacesAllowed: 'No spaces allowed'
+  noSpacesAllowed: 'No spaces allowed',
+  fullNameMinLength: 'Full name must be at least 5 characters long'
 };

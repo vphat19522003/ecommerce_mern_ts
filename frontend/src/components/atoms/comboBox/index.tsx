@@ -9,6 +9,7 @@ type ComboBoxProps = Omit<SelectProps, 'error' | 'multiple'> & {
   isDisabled?: boolean;
   description?: string;
   emptyItem?: boolean;
+  value?: string;
 };
 
 const CustomComboBox = ({
@@ -17,6 +18,7 @@ const CustomComboBox = ({
   labelType = 'inside',
   isDisabled = false,
   description,
+  value,
   ...otherProps
 }: ComboBoxProps): JSX.Element => {
   return (
@@ -48,7 +50,7 @@ const CustomComboBox = ({
         })}>
         {labelType === 'inside' && <InputLabel>{otherProps.label}</InputLabel>}
         <Select
-          defaultValue=''
+          value={value}
           label={labelType === 'inside' ? otherProps.label : undefined}
           disabled={isDisabled}
           {...otherProps}>

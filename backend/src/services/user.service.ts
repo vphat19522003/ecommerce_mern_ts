@@ -36,10 +36,14 @@ class UserService {
 
   static async changePassword(req: IRequestCustom): Promise<void> {
     const { _id, password } = req.user as UserInfo;
-    const { old_password, new_password } = req.body;
+    const { current_password, password: new_password } = req.body;
 
-    const comparePass = bcrypt.compareSync(old_password, password);
+    const comparePass = bcrypt.compareSync(current_password, password);
     if (!comparePass) throw new CustomError('Current password is not match', STATUS_CODE.BAD_REQUEST);
+
+    const compareWithOldPass = bcrypt.compareSync(new_password, password);
+    if (compareWithOldPass)
+      throw new CustomError('Should not be similar to recently used passwords', STATUS_CODE.BAD_REQUEST);
 
     // Hash the password
     const saltRounds = await bcrypt.genSalt(10); // Number of salt rounds to use for hashing

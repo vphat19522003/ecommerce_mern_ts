@@ -1,11 +1,21 @@
 import { useMutation, UseMutationResult, useQuery, UseQueryResult } from '@tanstack/react-query';
 
+import { PersonalInfoType } from '@app/pages/userSetting/userAccount/components/schemas';
 import { AddressFormSchemaType } from '@app/pages/userSetting/userAddress/components/schemas';
+import { SecurityPasswordType } from '@app/pages/userSetting/userSecurity/components/schemas';
 import { ResultResponseType } from '@app/types/auth';
 import { IErrorResponse, ResponseType } from '@app/types/common';
 import { UserAddressResponseType, UserTypeResponse } from '@app/types/user';
 
-import { addAddress, deleteAddress, getListAddress, getUser, setDefaultAddress } from '../user';
+import {
+  addAddress,
+  changePassword,
+  deleteAddress,
+  getListAddress,
+  getUser,
+  setDefaultAddress,
+  updateUserProfile
+} from '../user';
 
 export const useGetUser = (): UseQueryResult<UserTypeResponse> => {
   return useQuery({
@@ -13,6 +23,12 @@ export const useGetUser = (): UseQueryResult<UserTypeResponse> => {
     queryFn: async () => {
       return getUser();
     }
+  });
+};
+
+export const useUpdateUserProfile = (): UseMutationResult<ResultResponseType, IErrorResponse, PersonalInfoType> => {
+  return useMutation({
+    mutationFn: updateUserProfile
   });
 };
 
@@ -40,5 +56,11 @@ export const useAddAddress = (): UseMutationResult<ResultResponseType, IErrorRes
 export const useSetDefaultAddress = (): UseMutationResult<ResultResponseType, IErrorResponse, string> => {
   return useMutation({
     mutationFn: setDefaultAddress
+  });
+};
+
+export const useChangePassword = (): UseMutationResult<ResponseType, IErrorResponse, SecurityPasswordType> => {
+  return useMutation({
+    mutationFn: changePassword
   });
 };
