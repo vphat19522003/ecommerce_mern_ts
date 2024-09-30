@@ -3,7 +3,9 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { config } from 'dotenv';
 import express from 'express';
+import fs from 'fs';
 import morgan from 'morgan';
+import path from 'path';
 
 import connectDB from './db/connectDB';
 import errorHandler from './middleware/error.middleware';
@@ -27,6 +29,16 @@ app.use(morgan('combined', { stream: createLogFile(__dirname) }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+//test writable stream and readable stream
+app.get('/', () => {
+  const testFile = path.join(__dirname, 'testfile.txt');
+  const writeStream = fs.createWriteStream('log.txt');
+
+  const readStream = fs.createReadStream(testFile);
+
+  readStream.pipe(writeStream);
+});
 
 //Connect database
 connectDB();

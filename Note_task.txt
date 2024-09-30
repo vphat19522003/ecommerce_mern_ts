@@ -34,9 +34,10 @@
 31. -Tạo giao diện đổi mật khẩu - user setting - security, ráp api
 32. -Ráp api sửa thông tin người dùng.
 33. -Tạo giao diện sửa đổi ảnh đại diện, tạo api: 
-        -Học về stream : writablestream, readablestream, chunk, pipe, Multer, buffer
-        -Test tạo 1 file và writablestream, readablestream từ file đó
-        -Tạo giao diện để upload file
-        -Test sử dụng multer middleware: gửi request sau đó dùng middleware multer để nhận nội dung file, in ra nội dung và cái thuộc tính của nó
-        -Test lưu file ở ổ cứng trước sau đó là buffer (Vùng nhớ ram) in ra nội dung nhận được
-        -Test upload lên cloudinary khi lưu trên ổ cứng, test upload lên cloudinary khi lưu trên buffer
+        -Học về stream : writablestream, readablestream, chunk, pipe, Multer, buffer - DONE
+        -Test tạo 1 file và writablestream, readablestream từ file đó - DONE
+        -Tạo giao diện để upload file - DONE
+        -Test sử dụng multer middleware: gửi request sau đó dùng middleware multer để nhận nội dung file, in ra nội dung và cái thuộc tính của nó - DONE
+        -Test lưu file ở ổ cứng trước sau đó là buffer (Vùng nhớ ram) in ra nội dung nhận được - DONE
+        -Test upload lên cloudinary khi lưu trên ổ cứng, test upload lên cloudinary khi lưu trên buffer(RAM) - DONE
+34. Tìm hiểu cách thêm ảnh thông qua input file, tạo api upload avatar lên cloudinary, ráp api upload avatar, gắn avatar data vào UI

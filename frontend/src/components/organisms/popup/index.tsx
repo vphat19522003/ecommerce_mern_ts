@@ -14,7 +14,7 @@ export interface IDialogRef {
 type ConfirmPopUpPropsType = {
   title: string;
   children: React.ReactNode;
-
+  setClose?: boolean;
   hiddenTitleIcon?: boolean;
   size?: PopupSizeType;
 };
@@ -29,7 +29,10 @@ const Transition = forwardRef(function Transition(
 });
 
 const PopUp = forwardRef(
-  ({ title, children, hiddenTitleIcon = false, size = 'xs' }: ConfirmPopUpPropsType, ref: Ref<IDialogRef>) => {
+  (
+    { title, children, hiddenTitleIcon = false, setClose = false, size = 'xs' }: ConfirmPopUpPropsType,
+    ref: Ref<IDialogRef>
+  ) => {
     const [open, setOpen] = useState<boolean>(false);
 
     const popupMaxWidth = popupSize[size];
@@ -53,6 +56,9 @@ const PopUp = forwardRef(
     return (
       <Dialog
         open={open}
+        onClose={() => {
+          setClose && handleClose();
+        }}
         fullWidth
         scroll='paper'
         TransitionComponent={Transition}

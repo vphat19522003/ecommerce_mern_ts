@@ -7,6 +7,7 @@ import { IconButton, Stack, Typography } from '@mui/material';
 
 import ButtonForm from '@app/components/atoms/button';
 import InputField from '@app/components/atoms/inputField';
+import { useDevice } from '@app/hooks/useDevice';
 
 import { SecurityPasswordSchema, SecurityPasswordType } from './schemas';
 
@@ -30,6 +31,8 @@ const SecurityPasswordForm = ({ handleChangePassword }: SecurityPasswordFormProp
     }
   });
 
+  const { isMobile } = useDevice();
+
   const handleSubmitForm = (value: SecurityPasswordType) => {
     console.log('Change password form value: ', value);
     handleChangePassword(value);
@@ -52,18 +55,13 @@ const SecurityPasswordForm = ({ handleChangePassword }: SecurityPasswordFormProp
             render={({ field: { onChange, value } }) => (
               <InputField
                 backgroundColor='transparent'
-                className='w-5/6'
+                className={`${isMobile ? 'w-5/6' : 'w-3/6'}`}
                 variant='outlined'
                 placeholder='Current password'
-                type={showPassword ? 'text' : 'password'}
+                type={'password'}
                 value={value}
                 onChange={onChange}
                 error={errors.current_password}
-                endAdornment={
-                  <IconButton onPointerUp={handleToggleShowPassword} onPointerDown={handleToggleShowPassword}>
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                }
               />
             )}
           />
@@ -73,7 +71,7 @@ const SecurityPasswordForm = ({ handleChangePassword }: SecurityPasswordFormProp
             render={({ field: { onChange, value } }) => (
               <InputField
                 backgroundColor='transparent'
-                className='w-5/6'
+                className={`${isMobile ? 'w-5/6' : 'w-3/6'}`}
                 variant='outlined'
                 placeholder='New password'
                 type={showPassword ? 'text' : 'password'}
@@ -94,7 +92,7 @@ const SecurityPasswordForm = ({ handleChangePassword }: SecurityPasswordFormProp
             render={({ field: { onChange, value } }) => (
               <InputField
                 backgroundColor='transparent'
-                className='w-5/6'
+                className={`${isMobile ? 'w-5/6' : 'w-3/6'}`}
                 variant='outlined'
                 placeholder='Confirm password'
                 type='password'
