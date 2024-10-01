@@ -64,3 +64,14 @@ export const changePassword = async ({ current_password, password }: SecurityPas
   });
   return res.data;
 };
+
+export const updateUserAvatar = async (file: File): Promise<ResultResponseType> => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await axiosCustom.post('/user/upload-avatar', formData, {
+    headers: { 'content-Type': 'multipart/form-data' }
+  });
+
+  return res.data;
+};

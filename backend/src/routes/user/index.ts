@@ -7,10 +7,12 @@ import {
   getListAddressController,
   getUserController,
   setDefaultAddressController,
-  updateUserController
+  updateUserController,
+  uploadAvatarController
 } from '@app/controllers/user.controller';
 import verifyAccessToken from '@app/middleware/accessToken.middleware';
 import verifyAccountHandler from '@app/middleware/verifyAccount.middleware';
+import { upload } from '@app/utils/multerConfig';
 import reqHandler from '@app/utils/reqHandler';
 
 const userRouter = Router();
@@ -26,5 +28,12 @@ userRouter.post(
   verifyAccessToken,
   verifyAccountHandler,
   reqHandler(setDefaultAddressController)
+);
+userRouter.post(
+  '/upload-avatar',
+  verifyAccessToken,
+  verifyAccountHandler,
+  upload.single('file'),
+  reqHandler(uploadAvatarController)
 );
 export default userRouter;

@@ -175,7 +175,7 @@ class AuthService {
 
     console.log('BI GI VAY', { user });
 
-    if (!user) throw new CustomError('User not found ????? LOI GI VAY', STATUS_CODE.UNAUTHORIZED);
+    if (!user) throw new CustomError('User not found', STATUS_CODE.UNAUTHORIZED);
 
     await KeyService.deleteKeyByUserId(client_id);
 

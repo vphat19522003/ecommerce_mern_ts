@@ -10,6 +10,10 @@ export type UserTypeResponse = {
   passport?: string;
   gender?: string;
   createdAt?: string;
+  avatar?: {
+    avatar_public_id: string;
+    avatar_url: string;
+  };
 };
 
 export type locationResponseType = {

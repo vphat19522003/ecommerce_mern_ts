@@ -11,6 +11,11 @@ export enum Role {
   user = 'User'
 }
 
+export interface AvatarType {
+  avatar_public_id: string;
+  avatar_url: string;
+}
+
 export interface IUser extends Document {
   username: string;
   email: string;
@@ -21,8 +26,16 @@ export interface IUser extends Document {
   passport: string;
   gender?: Gender;
   role: Role;
-  avatar_url: string;
+  avatar: AvatarType;
 }
+
+const avatarSchema = new Schema<AvatarType>(
+  {
+    avatar_url: { type: String, required: true },
+    avatar_public_id: { type: String, required: true }
+  },
+  { _id: false }
+);
 
 const userSchema = new Schema<IUser>(
   {
@@ -56,7 +69,7 @@ const userSchema = new Schema<IUser>(
       default: Role.user,
       required: true
     },
-    avatar_url: { type: String }
+    avatar: { type: avatarSchema }
   },
   { timestamps: true }
 );

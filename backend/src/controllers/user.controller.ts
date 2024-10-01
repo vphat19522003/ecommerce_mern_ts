@@ -71,3 +71,13 @@ export const setDefaultAddressController = async (req: IRequestCustom, res: Resp
     result
   });
 };
+
+export const uploadAvatarController = async (req: IRequestCustom, res: Response): Promise<Response> => {
+  const result = await UserService.uploadAvatar(req);
+
+  return res.json({
+    message: 'Upload avatar successfully',
+    status: STATUS_CODE.OK,
+    result
+  });
+};

@@ -1,16 +1,48 @@
 import { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { Visibility } from '@mui/icons-material';
 import { Stack } from '@mui/material';
 
-import stitchAvatar from '@app/assets/stitch_icon.png';
+import { useUpdateUserAvater } from '@app/api/hooks/user.hook';
+// import stitchAvatar from '@app/assets/stitch_icon.png';
 import viteAvatar from '@app/assets/vite.svg';
 import { IDialogRef } from '@app/components/organisms/confirmPopup';
 import PopUp from '@app/components/organisms/popup';
+import { imageFileTypes, MAX_FILE_SIZE } from '@app/constants/file';
+import { setUser } from '@app/redux/authSlice';
+import { RootState } from '@app/store';
+import { IErrorResponse } from '@app/types/common';
+
+// const uploadAvatarSchema = zod.object({
+//   file: zod
+//     .any()
+//     .refine((file) => file.length === 1, { message: 'Can only upload 1 file at a time' })
+//     .refine((file) => file[0].size <= 5 * 1024 * 1024, {
+//       message: 'Can only upload file has size less than 5MB'
+//     })
+// });
 
 const AvatarInfo = (): JSX.Element => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const avatarPopupRef = useRef<IDialogRef>(null);
+
+  const { mutate: uploadAvatar } = useUpdateUserAvater();
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
+
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   formState: { errors }
+  // } = useForm({
+  //   resolver: zodResolver(uploadAvatarSchema),
+  //   defaultValues: {
+  //     file: ''
+  //   }
+  // });
   const handleMouseEnterAvatar = () => {
     setIsHovering(true);
   };
@@ -21,6 +53,27 @@ const AvatarInfo = (): JSX.Element => {
 
   const handleOpenAvatar = () => {
     avatarPopupRef.current?.show();
+  };
+
+  const handleUploadFile = (fileList: FileList) => {
+    if (fileList.length < 0) return toast.error('Please choose 1 file to upload');
+
+    if (fileList.length > 1) return toast.error('Only one file can be uploaded');
+
+    if (fileList[0].size > MAX_FILE_SIZE) return toast.error('Can only upload file has size less than 5MB');
+
+    if (!imageFileTypes.includes(fileList[0].type))
+      return toast.error("Can only upload file: image/jpeg', 'image/jpg', 'image/png', 'image/gif'");
+
+    uploadAvatar(fileList[0], {
+      onSuccess: (data) => {
+        toast.success(data.message);
+        dispatch(setUser({ user: data.result }));
+      },
+      onError: (err: IErrorResponse) => {
+        toast.error(err.response.data.message);
+      }
+    });
   };
   return (
     <>
@@ -35,7 +88,7 @@ const AvatarInfo = (): JSX.Element => {
           onMouseLeave={handleMouseLeaveAvatar}
           onClick={() => handleOpenAvatar()}>
           <img
-            src={viteAvatar}
+            src={user?.avatar ? user.avatar.avatar_url : viteAvatar}
             alt=''
             className='w-[140px] h-[140px] rounded-full border-solid border-gray-200 object-cover border-2 '
           />
@@ -48,13 +101,18 @@ const AvatarInfo = (): JSX.Element => {
           />
         </Stack>
         <Stack>
-          <input type='file' />
+          <input
+            type='file'
+            onChange={(e) => handleUploadFile(e.target.files as FileList)}
+            multiple={false}
+            accept='.jpg,.jpeg,.png,.gif'
+          />
           <p className='text-gray-500 text-md'>Please choose image has size less than 5MB</p>
         </Stack>
       </Stack>
       <PopUp title='Avatar' ref={avatarPopupRef} setClose>
         <Stack>
-          <img src={stitchAvatar} alt='' className='object-cover w-full h-full' />
+          <img src={user?.avatar ? user.avatar.avatar_url : viteAvatar} alt='' className='object-cover w-full h-full' />
         </Stack>
       </PopUp>
     </>

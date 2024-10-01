@@ -12,6 +12,8 @@ import { IRequestCustom } from '@app/middleware/accessToken.middleware';
 import { AddressInfo } from '@app/repository/address.repository';
 import AddressRepository from '@app/repository/address.repository';
 import UserRepository, { UserInfo } from '@app/repository/user.repository';
+import cloudinary, { uploadToCloudinary } from '@app/utils/cloudinaryConfig';
+import { isValidImage } from '@app/utils/validateFileType.util';
 
 class UserService {
   static async getUser(req: IRequestCustom): Promise<Omit<UserInfo, 'password'>> {
@@ -127,6 +129,35 @@ class UserService {
     const defaultAddress = await AddressRepository.updateStatusAddress(_id, addressId);
 
     return defaultAddress;
+  }
+
+  static async uploadAvatar(req: IRequestCustom): Promise<Omit<UserInfo, 'password'>> {
+    const user = req.user as UserInfo;
+    const file = req.file;
+    const folder = `user/${user.username}/avatar`;
+
+    if (!file) throw new CustomError('No file provided', STATUS_CODE.BAD_REQUEST);
+
+    if (!isValidImage(file)) throw new CustomError("File doesn't have valid type", STATUS_CODE.BAD_REQUEST);
+
+    try {
+      const uploadResult = await uploadToCloudinary(file, folder);
+      const oldAvatarId = user.avatar?.avatar_public_id;
+
+      if (oldAvatarId) await cloudinary.uploader.destroy(user.avatar?.avatar_public_id as string);
+
+      const updateUser = await UserRepository.updateUserAvatar({
+        _id: user._id,
+        avatar: {
+          avatar_url: uploadResult.url,
+          avatar_public_id: uploadResult.public_id
+        }
+      });
+
+      return omit(updateUser, 'password', '__v', 'updatedAt');
+    } catch (error) {
+      throw new CustomError('Failed to upload avatar', STATUS_CODE.INTERNAL_SERVER_ERROR);
+    }
   }
 }
 

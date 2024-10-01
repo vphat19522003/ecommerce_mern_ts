@@ -1,7 +1,7 @@
 import { omit } from 'lodash';
 import mongoose, { Types } from 'mongoose';
 
-import UserModel, { Gender, Role } from '@app/models/user.model';
+import UserModel, { AvatarType, Gender, Role } from '@app/models/user.model';
 
 export type UserInfo = {
   _id: string;
@@ -14,7 +14,7 @@ export type UserInfo = {
   passport: string;
   gender?: Gender;
   role: Role;
-  avatar_url: string;
+  avatar?: AvatarType;
   createdAt?: string;
 };
 
@@ -82,6 +82,19 @@ class UserRepository {
       { new: true }
     );
 
+    return updatedUser?.toObject() as UserInfo;
+  }
+
+  static async updateUserAvatar({ _id, avatar }: { _id: string; avatar: AvatarType }): Promise<UserInfo> {
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { _id: new Types.ObjectId(_id) },
+      {
+        $set: {
+          avatar
+        }
+      },
+      { new: true }
+    );
     return updatedUser?.toObject() as UserInfo;
   }
 }

@@ -14,6 +14,7 @@ import {
   getListAddress,
   getUser,
   setDefaultAddress,
+  updateUserAvatar,
   updateUserProfile
 } from '../user';
 
@@ -62,5 +63,11 @@ export const useSetDefaultAddress = (): UseMutationResult<ResultResponseType, IE
 export const useChangePassword = (): UseMutationResult<ResponseType, IErrorResponse, SecurityPasswordType> => {
   return useMutation({
     mutationFn: changePassword
+  });
+};
+
+export const useUpdateUserAvater = (): UseMutationResult<ResultResponseType, IErrorResponse, File> => {
+  return useMutation({
+    mutationFn: updateUserAvatar
   });
 };
