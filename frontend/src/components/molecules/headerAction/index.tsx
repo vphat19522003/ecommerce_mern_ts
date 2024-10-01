@@ -24,7 +24,16 @@ const HeaderAction = (): JSX.Element => {
             spacing={2}
             alignItems={'center'}
             className='relative transition-colors duration-300 cursor-pointer hover:text-blue-500'>
-            <AccountCircle fontSize='large' className='mr-2 text-blue-700' />
+            {user?.avatar ? (
+              <img
+                src={user.avatar.avatar_url}
+                alt=''
+                className='w-[36px] h-[36px] rounded-full border-solid border-gray-200 object-cover border-2 mr-2'
+              />
+            ) : (
+              <AccountCircle fontSize='large' className='mr-2 text-blue-700' />
+            )}
+
             {user ? user.username : 'Login'}
           </Stack>
         </Link>

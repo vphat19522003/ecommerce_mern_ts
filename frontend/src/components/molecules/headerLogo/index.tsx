@@ -13,7 +13,7 @@ type HeaderLogoType = {
 
 const HeaderLogo = ({ font_size = '38px', img_size = 16 }: HeaderLogoType): JSX.Element => {
   return (
-    <Link to={paths.index} className='my-auto no-underline'>
+    <Link to={paths.index} className='my-auto no-underline mr-8'>
       <Stack flexDirection={'row'} gap={1} alignItems={'center'} className='max-w-[200px]'>
         <Typography
           variant='h5'

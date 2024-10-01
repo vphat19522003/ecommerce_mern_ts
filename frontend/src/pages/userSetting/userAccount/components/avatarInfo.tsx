@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { Visibility } from '@mui/icons-material';
-import { Stack } from '@mui/material';
+import { CircularProgress, Stack } from '@mui/material';
 
 import { useUpdateUserAvater } from '@app/api/hooks/user.hook';
 // import stitchAvatar from '@app/assets/stitch_icon.png';
@@ -28,21 +28,11 @@ const AvatarInfo = (): JSX.Element => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const avatarPopupRef = useRef<IDialogRef>(null);
 
-  const { mutate: uploadAvatar } = useUpdateUserAvater();
+  const { mutate: uploadAvatar, isPending } = useUpdateUserAvater();
 
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
-  // const {
-  //   control,
-  //   handleSubmit,
-  //   formState: { errors }
-  // } = useForm({
-  //   resolver: zodResolver(uploadAvatarSchema),
-  //   defaultValues: {
-  //     file: ''
-  //   }
-  // });
   const handleMouseEnterAvatar = () => {
     setIsHovering(true);
   };
@@ -106,8 +96,10 @@ const AvatarInfo = (): JSX.Element => {
             onChange={(e) => handleUploadFile(e.target.files as FileList)}
             multiple={false}
             accept='.jpg,.jpeg,.png,.gif'
+            disabled={isPending}
           />
           <p className='text-gray-500 text-md'>Please choose image has size less than 5MB</p>
+          {isPending && <CircularProgress />}
         </Stack>
       </Stack>
       <PopUp title='Avatar' ref={avatarPopupRef} setClose>
