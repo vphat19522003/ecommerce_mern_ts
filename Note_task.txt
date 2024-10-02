@@ -41,6 +41,12 @@
         -Test lưu file ở ổ cứng trước sau đó là buffer (Vùng nhớ ram) in ra nội dung nhận được - DONE
         -Test upload lên cloudinary khi lưu trên ổ cứng, test upload lên cloudinary khi lưu trên buffer(RAM) - DONE
 34. Tìm hiểu cách thêm ảnh thông qua input file, tạo api upload avatar lên cloudinary, ráp api upload avatar, gắn avatar data vào UI
+
 35. Tạo model category, product, subModel: book, electronics, toys, game
+    -- DONE tạo model category
+    -- DONE api create category, get main category, get sub category, delete
+    -- NEXT -> tạo api get category by id lấy nguyên cây category
+    -- NEXT -> tạo model product
+
 36. Tạo api create product, create category, get productList, get categories, get product
 37. Tạo một giao diện đơn giản để implement api thêm products

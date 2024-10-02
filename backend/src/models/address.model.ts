@@ -73,6 +73,6 @@ const addressSchema = new Schema<IAddress>(
   }
 );
 
-const AddressModel = model('Address', addressSchema);
+const AddressModel = model<IAddress>('Address', addressSchema);
 
 export default AddressModel;
