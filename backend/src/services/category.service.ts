@@ -90,6 +90,22 @@ class CategoryService {
     if (result.deletedCount !== 1)
       throw new CustomError('Failed to delete category', STATUS_CODE.INTERNAL_SERVER_ERROR);
   }
+
+  static async getTreeCategory(req: Request): Promise<unknown> {
+    const { category_id } = req.query;
+    let listCategory = [];
+    const categoryTree = [];
+
+    if (!category_id) listCategory = await this.getMainCategory();
+    else listCategory.push(category_id);
+
+    for (let idx = 0; idx < listCategory.length; idx++) {
+      const categoryTreeItem = await CategoryRepository.getTreeCategory(listCategory[idx] as string);
+      categoryTree.push(categoryTreeItem);
+    }
+
+    return categoryTree;
+  }
 }
 
 export default CategoryService;

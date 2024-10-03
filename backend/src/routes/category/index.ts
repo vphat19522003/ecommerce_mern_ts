@@ -4,7 +4,8 @@ import {
   createCategoryController,
   deleteCategoryController,
   getMainCategoryController,
-  getSubCategoryController
+  getSubCategoryController,
+  getTreeCategoryController
 } from '@app/controllers/category.controller';
 import { upload } from '@app/utils/multerConfig';
 import reqHandler from '@app/utils/reqHandler';
@@ -15,6 +16,6 @@ categoryRouter.post('/create-category', upload.single('file'), reqHandler(create
 categoryRouter.get('/get-main-category', reqHandler(getMainCategoryController));
 categoryRouter.get('/get-sub-category', reqHandler(getSubCategoryController));
 categoryRouter.post('/delete-category', reqHandler(deleteCategoryController));
-categoryRouter.get('/get-category');
+categoryRouter.get('/get-tree-category', reqHandler(getTreeCategoryController));
 
 export default categoryRouter;

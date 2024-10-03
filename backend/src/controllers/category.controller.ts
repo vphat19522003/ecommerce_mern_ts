@@ -41,3 +41,13 @@ export const deleteCategoryController = async (req: Request, res: Response): Pro
     status: STATUS_CODE.OK
   });
 };
+
+export const getTreeCategoryController = async (req: Request, res: Response): Promise<Response> => {
+  const result = await CategoryService.getTreeCategory(req);
+
+  return res.json({
+    message: 'Get tree category successfully',
+    status: STATUS_CODE.OK,
+    result
+  });
+};

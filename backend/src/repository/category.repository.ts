@@ -1,5 +1,8 @@
+import { omit } from 'lodash';
 import mongoose, { Types } from 'mongoose';
 
+import STATUS_CODE from '@app/constants/responseStatus';
+import { CustomError } from '@app/core/response.error';
 import CategoryModel, { CategoryImageType } from '@app/models/category.model';
 
 export type CategoryInfo = {
@@ -43,6 +46,26 @@ class CategoryRepository {
     const result = await CategoryModel.deleteOne({ _id: new Types.ObjectId(category_id) });
 
     return result;
+  }
+
+  static async getTreeCategory(category_id: string): Promise<unknown> {
+    const category = (await CategoryModel.findById(category_id).lean()) as any;
+
+    if (!category) {
+      throw new CustomError('Category not found', STATUS_CODE.BAD_REQUEST);
+    }
+
+    const subCategories = await CategoryModel.find({ parentCategory: category_id }).lean();
+
+    if (subCategories.length > 0) {
+      category.subCategories = await Promise.all(
+        subCategories.map(async (subCategory) => {
+          return await this.getTreeCategory(subCategory._id as string);
+        })
+      );
+    }
+
+    return omit(category, '__v', 'updatedAt');
   }
 }
 

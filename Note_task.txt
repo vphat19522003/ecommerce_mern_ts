@@ -45,7 +45,7 @@
 35. Tạo model category, product, subModel: book, electronics, toys, game
     -- DONE tạo model category
     -- DONE api create category, get main category, get sub category, delete
-    -- NEXT -> tạo api get category by id lấy nguyên cây category
+    -- DONE -> tạo api get category by id => lấy nguyên cây category
     -- NEXT -> tạo model product
 
 36. Tạo api create product, create category, get productList, get categories, get product
