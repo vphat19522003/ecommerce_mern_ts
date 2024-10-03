@@ -37,7 +37,7 @@
         -Học về stream : writablestream, readablestream, chunk, pipe, Multer, buffer - DONE
         -Test tạo 1 file và writablestream, readablestream từ file đó - DONE
         -Tạo giao diện để upload file - DONE
-        -Test sử dụng multer middleware: gửi request sau đó dùng middleware multer để nhận nội dung file, in ra nội dung và cái thuộc tính của nó - DONE
+        -Test sử dụng multer middleware: gửi request sau đó dùng middleware multer để nhận nội dung file, in ra nội dung và các thuộc tính của nó - DONE
         -Test lưu file ở ổ cứng trước sau đó là buffer (Vùng nhớ ram) in ra nội dung nhận được - DONE
         -Test upload lên cloudinary khi lưu trên ổ cứng, test upload lên cloudinary khi lưu trên buffer(RAM) - DONE
 34. Tìm hiểu cách thêm ảnh thông qua input file, tạo api upload avatar lên cloudinary, ráp api upload avatar, gắn avatar data vào UI
@@ -46,7 +46,8 @@
     -- DONE tạo model category
     -- DONE api create category, get main category, get sub category, delete
     -- DONE -> tạo api get category by id => lấy nguyên cây category
-    -- NEXT -> tạo model product
+    -- DONE -> tạo model product: 
+                                -Sub model: Pending
 
-36. Tạo api create product, create category, get productList, get categories, get product
-37. Tạo một giao diện đơn giản để implement api thêm products
+36. Tạo api create product, get productList, get product : PENDING
+37. Tạo một giao diện đơn giản để implement api thêm products : Phân chia quyền Admin vs User : PENDING
