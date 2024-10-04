@@ -1,18 +1,18 @@
 import mongoose, { Document, model, Schema } from 'mongoose';
 
-interface ProductImgType {
+export interface ProductImgType {
   public_id: string;
   url: string;
 }
 
 interface IProduct extends Document {
-  prdt_name: string;
-  prdt_price: number;
-  prdt_thumb_img: Array<ProductImgType>;
+  productName: string;
+  productPrice: number;
+  productThumbImg: Array<ProductImgType>;
   description: string;
-  prdt_desc_img: Array<ProductImgType>;
+  productDescImg: Array<ProductImgType>;
   category: mongoose.Types.ObjectId;
-  prdt_vote_rate: number;
+  productVoteRate: number;
   stockQuantity: number;
   soldQuantity: number;
   availableQuantity: number;
@@ -20,6 +20,13 @@ interface IProduct extends Document {
   tag: Array<string>;
   createdBy: mongoose.Types.ObjectId;
   isDeleted: boolean;
+}
+
+interface IBookProduct extends Document {
+  productId: mongoose.Types.ObjectId;
+  author: string;
+  page_number: number;
+  publisher: string;
 }
 
 const productImgSchema = new Schema<ProductImgType>(
@@ -32,26 +39,26 @@ const productImgSchema = new Schema<ProductImgType>(
 
 const productSchemas = new Schema<IProduct>(
   {
-    prdt_name: {
+    productName: {
       type: String,
       required: true
     },
-    prdt_price: {
+    productPrice: {
       type: Number,
       required: true
     },
-    prdt_thumb_img: { type: [productImgSchema], required: true, default: [] },
+    productThumbImg: { type: [productImgSchema], required: true, default: [] },
     description: {
       type: String,
       required: true
     },
-    prdt_desc_img: { type: [productImgSchema], required: true, default: [] },
+    productDescImg: { type: [productImgSchema], required: true, default: [] },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
       required: true
     },
-    prdt_vote_rate: {
+    productVoteRate: {
       type: Number,
       default: 0
     },
@@ -90,6 +97,27 @@ const productSchemas = new Schema<IProduct>(
   }
 );
 
+const bookSchemas = new Schema<IBookProduct>({
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true
+  },
+  author: {
+    type: String,
+    required: true
+  },
+  page_number: {
+    type: Number,
+    required: true
+  },
+  publisher: {
+    type: String,
+    required: true
+  }
+});
+
 const ProductModel = model<IProduct>('Product', productSchemas);
+export const BookProductModel = model<IBookProduct>('Book', bookSchemas);
 
 export default ProductModel;

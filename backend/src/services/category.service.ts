@@ -106,6 +106,18 @@ class CategoryService {
 
     return categoryTree;
   }
+
+  static async findTopParentCategory(categoryId: string): Promise<unknown> {
+    if (!categoryId) throw new CustomError('No provided categoryID', STATUS_CODE.BAD_REQUEST);
+
+    const findCategory = await CategoryRepository.getTreeCategory(categoryId as string);
+
+    if (!findCategory) throw new CustomError('Not found category', STATUS_CODE.BAD_REQUEST);
+
+    const category = await CategoryRepository.findTopParentCategory(categoryId);
+
+    return category;
+  }
 }
 
 export default CategoryService;

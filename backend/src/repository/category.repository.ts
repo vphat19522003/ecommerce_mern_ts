@@ -3,10 +3,10 @@ import mongoose, { Types } from 'mongoose';
 
 import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
-import CategoryModel, { CategoryImageType } from '@app/models/category.model';
+import CategoryModel, { CategoryImageType, ICategory } from '@app/models/category.model';
 
 export type CategoryInfo = {
-  _id?: string;
+  _id?: string | Types.ObjectId;
   name: string;
   description?: string;
   categoryImg: CategoryImageType;
@@ -66,6 +66,16 @@ class CategoryRepository {
     }
 
     return omit(category, '__v', 'updatedAt');
+  }
+
+  static async findTopParentCategory(categoryId: string | mongoose.Types.ObjectId): Promise<ICategory> {
+    const category = await CategoryModel.findById(categoryId).populate('parentCategory').lean();
+
+    if (!category!.parentCategory) {
+      return category as ICategory;
+    }
+
+    return this.findTopParentCategory(category!.parentCategory._id);
   }
 }
 
