@@ -47,7 +47,9 @@
     -- DONE api create category, get main category, get sub category, delete
     -- DONE -> tạo api get category by id => lấy nguyên cây category
     -- DONE -> tạo model product: 
-                                -Sub model: Pending
+                                -Sub model: DONE
 
 36. Tạo api create product, get productList, get product : PENDING
+                                    -Tạo productFactory: DONE
+                                    -Tạo class product, class book : PENDING
 37. Tạo một giao diện đơn giản để implement api thêm products : Phân chia quyền Admin vs User : PENDING

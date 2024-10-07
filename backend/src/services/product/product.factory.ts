@@ -1,19 +1,20 @@
+import Book from './class/book';
 import Product from './class/product';
-import { ProductType } from './type';
+import { IBook, IProduct } from './type';
 
 class ProductFactory {
-  static initProduct(product: ProductType, type: string): Product {
+  static initProduct(product: IProduct, type: string): Product {
     switch (type) {
       case 'Book':
-        return 0; //new BookProduct(product as BookProductType);
+        return new Book(product as IBook);
       default:
-        return 0; //new Product(product as ProductType);
+        return new Product(product as IProduct);
     }
   }
 
-  static async createProduct(product: ProductType, type: string): Promise<void> {
+  static async createProduct(product: IProduct, type: string): Promise<any> {
     const productInstance = ProductFactory.initProduct(product, type);
-    //return productInstance.createProduct();
+    return productInstance.createProduct();
   }
 }
 

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 import { ProductImgType } from '@app/models/product.model';
 
-export type ProductType = {
+export interface IProduct {
   _id?: string;
   productName: string;
   productPrice: number;
@@ -18,11 +18,19 @@ export type ProductType = {
   tag: Array<string>;
   createdBy: mongoose.Types.ObjectId;
   isDeleted: boolean;
-};
+}
 
-export type BookProductType = ProductType & {
+export interface IProductStrategy extends IProduct {
+  createProduct: () => Promise<IProduct>;
+}
+
+export interface IBook extends IProduct {
   productId: string;
   author: string;
   page_number: number;
   publisher: string;
-};
+}
+
+export interface IBookStrategy extends IProduct {
+  createProduct: () => Promise<IBook>;
+}

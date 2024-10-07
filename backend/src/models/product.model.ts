@@ -89,7 +89,8 @@ const productSchemas = new Schema<IProduct>(
     },
     isDeleted: {
       type: Boolean,
-      required: true
+      required: true,
+      default: false
     }
   },
   {

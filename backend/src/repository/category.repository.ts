@@ -49,13 +49,13 @@ class CategoryRepository {
   }
 
   static async getTreeCategory(category_id: string): Promise<unknown> {
-    const category = (await CategoryModel.findById(category_id).lean()) as any;
+    const category = (await CategoryModel.findById(new Types.ObjectId(category_id)).lean()) as any;
 
     if (!category) {
       throw new CustomError('Category not found', STATUS_CODE.BAD_REQUEST);
     }
 
-    const subCategories = await CategoryModel.find({ parentCategory: category_id }).lean();
+    const subCategories = await CategoryModel.find({ parentCategory: new Types.ObjectId(category_id) }).lean();
 
     if (subCategories.length > 0) {
       category.subCategories = await Promise.all(
@@ -69,7 +69,7 @@ class CategoryRepository {
   }
 
   static async findTopParentCategory(categoryId: string | mongoose.Types.ObjectId): Promise<ICategory> {
-    const category = await CategoryModel.findById(categoryId).populate('parentCategory').lean();
+    const category = await CategoryModel.findById(new Types.ObjectId(categoryId)).populate('parentCategory').lean();
 
     if (!category!.parentCategory) {
       return category as ICategory;
