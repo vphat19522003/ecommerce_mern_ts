@@ -21,7 +21,7 @@ export interface IProduct {
 }
 
 export interface IProductStrategy extends IProduct {
-  createProduct: () => Promise<IProduct>;
+  createProduct: (session?: mongoose.ClientSession) => Promise<IProduct>;
 }
 
 export interface IBook extends IProduct {
@@ -32,5 +32,5 @@ export interface IBook extends IProduct {
 }
 
 export interface IBookStrategy extends IProduct {
-  createProduct: () => Promise<IBook>;
+  createProduct: (session?: mongoose.ClientSession) => Promise<IBook>;
 }

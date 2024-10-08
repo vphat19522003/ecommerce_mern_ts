@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 import ProductModel, { ProductImgType } from '@app/models/product.model';
 
@@ -53,12 +53,25 @@ class Product implements IProductStrategy {
     this.isDeleted = isDeleted;
   }
 
-  async createProduct(): Promise<IProduct> {
-    const createdProduct = await ProductModel.create({
-      ...this
-    });
+  async createProduct(session?: mongoose.ClientSession): Promise<IProduct> {
+    if (session) {
+      const createdProduct = await ProductModel.create(
+        [
+          {
+            ...this
+          }
+        ],
+        { session }
+      );
 
-    return createdProduct.toObject() as unknown as IProduct;
+      return createdProduct[0].toObject() as unknown as IProduct;
+    } else {
+      const createdProduct = await ProductModel.create({
+        ...this
+      });
+
+      return createdProduct.toObject() as unknown as IProduct;
+    }
   }
 }
 

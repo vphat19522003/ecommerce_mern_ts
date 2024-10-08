@@ -51,5 +51,8 @@
 
 36. Tạo api create product, get productList, get product : PENDING
                                     -Tạo productFactory: DONE
-                                    -Tạo class product, class book : PENDING
-37. Tạo một giao diện đơn giản để implement api thêm products : Phân chia quyền Admin vs User : PENDING
+                                    -Tạo class product, class book : DONE
+                                    -Tạo API create product: DONE
+                                    -Tạo API get list products đơn giản: PENDING
+                                    -Tìm hiểu cách thêm list ảnh thumbnail, ảnh mô tả
+37. Tạo giao diện trang admin, create product, create category - implement create product và get product, phần quyền Admin user: PENDING

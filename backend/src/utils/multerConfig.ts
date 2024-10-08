@@ -10,3 +10,8 @@ export const upload = multer({
     fileSize: MAX_FILE_SIZE
   }
 });
+
+export const uploadImages = upload.fields([
+  { name: 'productThumbImg', maxCount: 8 },
+  { name: 'productDescImg', maxCount: 8 }
+]);

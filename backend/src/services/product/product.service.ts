@@ -1,20 +1,21 @@
-import { Request } from 'express';
 import { Types } from 'mongoose';
 
 import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
-import { CategoryInfo } from '@app/repository/category.repository';
+import { IRequestCustom } from '@app/middleware/accessToken.middleware';
+import { UserInfo } from '@app/repository/user.repository';
 import { uploadToCloudinary } from '@app/utils/cloudinaryConfig';
 import { isValidImage } from '@app/utils/validateFileType.util';
 
-import CategoryService from '../category.service';
 import ProductFactory from './product.factory';
 import { IProduct } from './type';
 
 class ProductService {
-  static async createProduct(req: Request) {
+  static async createProduct(req: IRequestCustom): Promise<IProduct> {
     const data = req.body as IProduct;
+    const categoryType = req.body.categoryType;
     const file = req.file;
+    const user = req.user as UserInfo;
 
     const folder = `product/${data.productName}`;
 
@@ -28,6 +29,7 @@ class ProductService {
 
     const product = {
       ...data,
+      createdBy: new Types.ObjectId(user._id),
       productThumbImg: [
         {
           url: uploadResult.url,
@@ -42,19 +44,7 @@ class ProductService {
       ]
     };
 
-    if (!Types.ObjectId.isValid(data.category))
-      throw new CustomError('Category is not valid type', STATUS_CODE.BAD_REQUEST);
-
-    const categoryType = (await CategoryService.findTopParentCategory(
-      data.category as unknown as string
-    )) as CategoryInfo;
-
-    if (!categoryType) throw new CustomError('Category not found', STATUS_CODE.BAD_REQUEST);
-
-    if (!Types.ObjectId.isValid(data.createdBy))
-      throw new CustomError('CreatedBy ID is not valid type', STATUS_CODE.BAD_REQUEST);
-
-    const productEntity = await ProductFactory.createProduct(product, categoryType.name);
+    const productEntity = await ProductFactory.createProduct(product, categoryType);
 
     return productEntity;
   }

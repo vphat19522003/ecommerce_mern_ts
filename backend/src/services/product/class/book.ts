@@ -54,16 +54,24 @@ class Book extends Product implements IBookStrategy {
   }
 
   async createProduct(): Promise<IBook> {
-    const createProduct = await super.createProduct();
+    const session = await BookProductModel.startSession();
+    let newBook = {} as IBook;
+    try {
+      await session.withTransaction(async () => {
+        const createProduct = await super.createProduct(session);
+        const createBook = await BookProductModel.create([{ ...this, productId: createProduct._id }], { session });
 
-    const createBook = await BookProductModel.create({ ...this, productId: createProduct._id });
-
-    if (!createBook) throw new CustomError('Can not create book', STATUS_CODE.INTERNAL_SERVER_ERROR);
-
-    return {
-      ...createProduct,
-      ...createBook.toObject()
-    } as unknown as IBook;
+        newBook = {
+          ...createProduct,
+          ...createBook[0].toObject()
+        } as unknown as IBook;
+      });
+      return newBook;
+    } catch (error) {
+      throw new CustomError(`Error when create book ${error}`, STATUS_CODE.BAD_REQUEST);
+    } finally {
+      await session.endSession();
+    }
   }
 }
 
