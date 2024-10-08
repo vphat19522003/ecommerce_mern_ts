@@ -33,4 +33,14 @@ export const uploadToCloudinary = (file: Express.Multer.File, folder: string): P
   });
 };
 
+export const deleteFromCloudinary = async (public_id: string): Promise<void> => {
+  return cloudinary.uploader.destroy(public_id, (error, result) => {
+    if (error) {
+      console.error('Error deleting image:', error);
+    } else {
+      console.log('Image deleted:', result);
+    }
+  });
+};
+
 export default cloudinary;

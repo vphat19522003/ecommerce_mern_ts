@@ -6,7 +6,7 @@ export interface IProduct {
   _id?: string;
   productName: string;
   productPrice: number;
-  productThumbImg: Array<ProductImgType>;
+  productThumbImg: ProductImgType;
   description: string;
   productDescImg: Array<ProductImgType>;
   category: mongoose.Types.ObjectId;

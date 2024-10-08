@@ -11,9 +11,25 @@ import productValidators from '@app/validation/product.validate';
 const productRouter = Router();
 
 productRouter.post(
+  '/test-uploadimage',
+  upload.fields([
+    { name: 'avatar', maxCount: 1 },
+    { name: 'gallery', maxCount: 8 }
+  ]),
+  (req, res) => {
+    const files = Object.assign({}, req.files);
+
+    console.log(files);
+  }
+);
+
+productRouter.post(
   '/create-product',
   verifyAccessToken,
-  upload.single('file'),
+  upload.fields([
+    { name: 'thumbImg', maxCount: 8 },
+    { name: 'descImg', maxCount: 8 }
+  ]),
   verifyCategory,
   validateRequest(productValidators.createProduct),
   reqHandler(createProductController)

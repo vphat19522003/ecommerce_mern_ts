@@ -8,7 +8,7 @@ export interface ProductImgType {
 interface IProduct extends Document {
   productName: string;
   productPrice: number;
-  productThumbImg: Array<ProductImgType>;
+  productThumbImg: ProductImgType;
   description: string;
   productDescImg: Array<ProductImgType>;
   category: mongoose.Types.ObjectId;
@@ -47,7 +47,7 @@ const productSchemas = new Schema<IProduct>(
       type: Number,
       required: true
     },
-    productThumbImg: { type: [productImgSchema], required: true, default: [] },
+    productThumbImg: { type: productImgSchema, required: true },
     description: {
       type: String,
       required: true

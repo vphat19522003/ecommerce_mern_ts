@@ -8,7 +8,7 @@ class Product implements IProductStrategy {
   _id?: string | undefined;
   productName: string;
   productPrice: number;
-  productThumbImg: ProductImgType[];
+  productThumbImg: ProductImgType;
   description: string;
   productDescImg: ProductImgType[];
   category: Types.ObjectId;

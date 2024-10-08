@@ -54,5 +54,6 @@
                                     -Tạo class product, class book : DONE
                                     -Tạo API create product: DONE
                                     -Tạo API get list products đơn giản: PENDING
-                                    -Tìm hiểu cách thêm list ảnh thumbnail, ảnh mô tả
+                                    -Tìm hiểu cách thêm list ảnh thumbnail, ảnh mô tả : DONE
+                                     Lỗi postman test api create product - khi thêm ảnh: Thêm được 1 field, field ảnh còn lại ko thêm được: FIXED - chuyển sang dùng app postman
 37. Tạo giao diện trang admin, create product, create category - implement create product và get product, phần quyền Admin user: PENDING
