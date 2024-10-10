@@ -15,7 +15,7 @@ const uiSlice = createSlice({
       state.showSidebar = !state.showSidebar;
     },
     closeSidebar: (state) => {
-      state.showSidebar = false; // Action để đóng sidebar
+      state.showSidebar = false;
     }
   }
 });
