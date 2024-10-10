@@ -16,7 +16,9 @@ import UserFavorite from '@app/pages/userSetting/userFavorite';
 import UserSecurity from '@app/pages/userSetting/userSecurity';
 import UserShare from '@app/pages/userSetting/userShare';
 import { RootState } from '@app/store';
+import { USER_ROLE } from '@app/types/user';
 
+import AdminProtectedLayout from './guards/adminProtectedLayout';
 import AuthenticateLayout from './guards/authenticateLayout';
 import ProtectedLayout from './guards/protectedLayout';
 import { paths } from './paths';
@@ -45,11 +47,13 @@ const AppRoutes = (): JSX.Element => {
           }
         />
 
+        {/* HOMEPAGE */}
         <Route element={<HomePageLayout />}>
           <Route path={paths.index} element={<HomePage />} />
         </Route>
 
-        <Route element={<ProtectedLayout />}>
+        {/* SHOP PAGE */}
+        <Route element={<ProtectedLayout allowRoles={[USER_ROLE.ADMIN, USER_ROLE.USER]} />}>
           <Route path={paths.user.index} element={<UserSetting />}>
             <Route path={paths.user.account} element={<UserAccount />} />
             <Route path={paths.user.history} element={<PurchasedHistory />} />
@@ -60,12 +64,19 @@ const AppRoutes = (): JSX.Element => {
           </Route>
         </Route>
 
+        {/* MANAGEMENT PAGE */}
+        <Route element={<AdminProtectedLayout allowRoles={[USER_ROLE.ADMIN]} />}>
+          <Route path={paths.admin.index} element={'test ADMIN PAGE'} />
+        </Route>
+
+        {/* PAGE NOT FOUND */}
         <Route
           path={'*'}
           element={
             userAuthenticated ? <Navigate to={paths.pageNotFound} replace /> : <Navigate to={paths.login} replace />
           }
         />
+        <Route path={paths.pageNotFound} element={'PAGE NOT FOUND'} />
       </Routes>
     </Router>
   );

@@ -14,5 +14,8 @@ export const paths = {
     share: 'share',
     address: 'address',
     favorite: 'favorite'
+  },
+  admin: {
+    index: '/dashboard'
   }
 };

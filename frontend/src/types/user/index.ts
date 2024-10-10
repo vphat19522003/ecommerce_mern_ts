@@ -1,5 +1,9 @@
 import { ResponseType } from '../common';
 
+export enum USER_ROLE {
+  ADMIN = 'Admin',
+  USER = 'User'
+}
 export type UserTypeResponse = {
   _id: string;
   username: string;
@@ -14,6 +18,7 @@ export type UserTypeResponse = {
     avatar_public_id: string;
     avatar_url: string;
   };
+  role: USER_ROLE;
 };
 
 export type locationResponseType = {
