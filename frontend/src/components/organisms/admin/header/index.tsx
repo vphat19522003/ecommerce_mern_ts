@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Menu } from '@mui/icons-material';
-import { AppBar, Box, IconButton, Stack } from '@mui/material';
+import { AppBar, IconButton, Stack } from '@mui/material';
 
 import AdminHeaderAction from '@app/components/molecules/admin/headerAction';
+import { useDevice } from '@app/hooks/useDevice';
+import { toggleAdminSidebar } from '@app/redux/uiSlice';
+import { RootState } from '@app/store';
 
 const AdminHeader = (): JSX.Element => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const showAdminSidebar = useSelector((state: RootState) => state.ui.showAdminSidebar);
+  const dispatch = useDispatch();
+  const { isMobile } = useDevice();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,23 +32,19 @@ const AdminHeader = (): JSX.Element => {
   }, []);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position='fixed'
-        className='shadow-none'
-        sx={{
-          backdropFilter: isScrolled ? 'blur(2px)' : 'none',
-          backgroundColor: isScrolled ? 'transparent' : '#ffffff',
-          transition: 'all 0.3s ease'
-        }}>
-        <Stack direction={'row'} justifyContent={'space-between'} className='box-border w-full px-2 py-4'>
-          <IconButton>
-            <Menu />
-          </IconButton>
-          <AdminHeaderAction />
-        </Stack>
-      </AppBar>
-    </Box>
+    <AppBar
+      position='fixed'
+      className={`shadow-none bg-transparent px-6 py-3 transition-all duration-200 ease-in-out z-30 ${showAdminSidebar ? (isMobile ? 'w-full left-0' : 'left-64 w-[calc(100%-256px)]') : 'w-full left-0'}`}
+      sx={{
+        backdropFilter: isScrolled ? 'blur(8px)' : 'none'
+      }}>
+      <Stack direction={'row'} justifyContent={'space-between'} className='box-border w-full'>
+        <IconButton onClick={() => dispatch(toggleAdminSidebar())}>
+          <Menu />
+        </IconButton>
+        <AdminHeaderAction />
+      </Stack>
+    </AppBar>
   );
 };
 
