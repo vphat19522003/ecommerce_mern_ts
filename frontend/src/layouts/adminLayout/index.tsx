@@ -30,7 +30,6 @@ const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
     <Stack direction={'row'}>
       {/* Sidebar */}
       {showAdminSidebar && <AdminSidebar />}
-
       {/* Main content */}
       <Stack
         direction={'column'}
