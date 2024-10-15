@@ -59,4 +59,4 @@
 37. Tạo giao diện trang admin, create product, create category - implement create product và get product, phần quyền Admin user: PENDING
                 - admin layout - header, sidebar: DONE
 38. Apply lazy load
-39. Chia route admin, tạo list item trên sidebar
+39. Chia route admin, tạo list item trên sidebar : DONE - update giao diện listItemButton, collapse - UPDATE LATER

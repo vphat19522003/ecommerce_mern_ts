@@ -1,3 +1,5 @@
+import { AutoAwesome, Dashboard, FiberManualRecord, ShoppingCart } from '@mui/icons-material';
+
 import { RouteItemConfig } from '@app/types/route';
 import {
   ForgotPasswordPage,
@@ -30,7 +32,13 @@ export const paths = {
     favorite: 'favorite'
   },
   admin: {
-    index: '/dashboard'
+    dashboard: '/dashboard',
+    ecommerce: {
+      index: '/ecommerce',
+      category: 'category',
+      products: 'products',
+      createProduct: 'create-product'
+    }
   }
 };
 
@@ -66,7 +74,241 @@ export const shopRoute: RouteItemConfig[] = [
 
 export const adminRoute: RouteItemConfig[] = [
   {
-    element: 'test ADMIN PAGE',
-    path: paths.admin.index
+    element: 'Dashboard',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Dashboard',
+      icon: <Dashboard />
+    }
+  },
+  {
+    element: 'Ecommerce',
+    path: paths.admin.ecommerce.index,
+    sidebarProps: {
+      displayText: 'Ecommerce',
+      icon: <ShoppingCart />
+    },
+    child: [
+      {
+        element: 'Category',
+        path: paths.admin.ecommerce.category,
+        sidebarProps: {
+          displayText: 'Category',
+          icon: <FiberManualRecord className='text-[8px]' />
+        }
+      },
+      {
+        element: 'Product List',
+        path: paths.admin.ecommerce.products,
+        sidebarProps: {
+          displayText: 'Product List',
+          icon: <FiberManualRecord className='text-[8px]' />
+        }
+      },
+      {
+        element: 'Create Product',
+        path: paths.admin.ecommerce.createProduct,
+        sidebarProps: {
+          displayText: 'Add New Product',
+          icon: <FiberManualRecord className='text-[8px]' />
+        }
+      }
+    ]
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    },
+    child: [
+      {
+        element: 'Category',
+        path: paths.admin.ecommerce.category,
+        sidebarProps: {
+          displayText: 'Category',
+          icon: <FiberManualRecord className='text-[8px]' />
+        },
+        child: [
+          {
+            element: 'Category',
+            path: paths.admin.ecommerce.category,
+            sidebarProps: {
+              displayText: 'Category',
+              icon: <FiberManualRecord className='text-[8px]' />
+            }
+          }
+        ]
+      },
+      {
+        element: 'Product List',
+        path: paths.admin.ecommerce.products,
+        sidebarProps: {
+          displayText: 'Product List',
+          icon: <FiberManualRecord className='text-[8px]' />
+        }
+      }
+    ]
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
+  },
+  {
+    element: 'Test',
+    path: paths.admin.dashboard,
+    sidebarProps: {
+      displayText: 'Test',
+      icon: <AutoAwesome />
+    }
   }
 ];

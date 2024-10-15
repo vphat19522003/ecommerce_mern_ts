@@ -8,7 +8,11 @@ import { RootState } from '@app/store';
 const AuthenticateLayout = (): JSX.Element => {
   const userAuthenticated = useSelector((state: RootState) => state.auth.user);
 
-  if (userAuthenticated && userAuthenticated.isVerified) return <Navigate to={paths.index} replace />;
+  if (userAuthenticated && userAuthenticated.isVerified) {
+    if (userAuthenticated.role === 'User') return <Navigate to={paths.index} replace />;
+
+    return <Navigate to={paths.admin.dashboard} replace />;
+  }
 
   if (userAuthenticated) {
     return <Navigate to={paths.verifyAccount} replace />;

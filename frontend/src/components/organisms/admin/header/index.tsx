@@ -34,9 +34,10 @@ const AdminHeader = (): JSX.Element => {
   return (
     <AppBar
       position='fixed'
-      className={`shadow-none bg-transparent px-6 py-3 transition-all duration-200 ease-in-out z-30 ${showAdminSidebar ? (isMobile ? 'w-full left-0' : 'left-64 w-[calc(100%-256px)]') : 'w-full left-0'}`}
+      className={`shadow-sm bg-transparent px-6 py-3 transition-all duration-200 ease-in-out z-30 ${showAdminSidebar ? (isMobile ? 'w-full left-0' : 'left-64 w-[calc(100%-256px)]') : 'w-full left-0'}`}
       sx={{
-        backdropFilter: isScrolled ? 'blur(8px)' : 'none'
+        backdropFilter: isScrolled ? 'blur(7px)' : 'none',
+        background: isScrolled ? '#f4f7fab3' : 'transparent'
       }}>
       <Stack direction={'row'} justifyContent={'space-between'} className='box-border w-full'>
         <IconButton onClick={() => dispatch(toggleAdminSidebar())}>

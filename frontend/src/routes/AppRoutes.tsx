@@ -5,6 +5,7 @@ import AuthLayout from '@app/layouts/authLayout';
 import HomePageLayout from '@app/layouts/homepageLayout';
 import AccountVerify from '@app/pages/accountVerify';
 import HomePage from '@app/pages/homePage';
+import NotFoundPage from '@app/pages/notFound';
 import { RootState } from '@app/store';
 import { USER_ROLE } from '@app/types/user';
 
@@ -55,7 +56,7 @@ const AppRoutes = (): JSX.Element => {
             userAuthenticated ? <Navigate to={paths.pageNotFound} replace /> : <Navigate to={paths.login} replace />
           }
         />
-        <Route path={paths.pageNotFound} element={'PAGE NOT FOUND'} />
+        <Route path={paths.pageNotFound} element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

@@ -45,6 +45,7 @@ const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
                 id.
               </Typography>
             ))}
+            {children}
           </Box>
         </Box>
       </Stack>

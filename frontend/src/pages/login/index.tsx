@@ -72,7 +72,8 @@ const LoginPage = (): JSX.Element => {
         if (rememberMe) localStorage.setItem('username', data.result.username);
         else localStorage.removeItem('username');
         toast.success(data.message);
-        navigate(paths.index);
+        if (data.result.role === 'User') navigate(paths.index);
+        else if (data.result.role === 'Admin') navigate(paths.admin.dashboard);
       },
       onError: (err: IErrorResponse) => {
         toast.error(err.response.data.message as string);
