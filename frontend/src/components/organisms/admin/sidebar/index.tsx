@@ -26,9 +26,9 @@ const ListMenuItem = React.memo((): JSX.Element => {
       } else {
         return route.sidebarProps ? (
           route.child ? (
-            <SidebarItemCollapse item={route} />
+            <SidebarItemCollapse item={route} key={index + route.path} />
           ) : (
-            <SidebarItem item={route} />
+            <SidebarItem item={route} key={index + route.path} />
           )
         ) : null;
       }
