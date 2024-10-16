@@ -56,7 +56,7 @@ const AdminSidebar = (): JSX.Element => {
           animate={{ opacity: 0.5 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className='fixed inset-0 z-10 bg-gray-700'
+          className='fixed inset-0 z-40 bg-gray-700'
           onClick={() => dispatch(toggleAdminSidebar())}
         />
       )}
@@ -67,7 +67,9 @@ const AdminSidebar = (): JSX.Element => {
         </Box>
 
         <Box className='px-4 flex-grow scrollable-content'>
-          <ListMenuItem />
+          <Box className='w-56'>
+            <ListMenuItem />
+          </Box>
         </Box>
         <Stack
           direction={'row'}

@@ -1,3 +1,5 @@
+import { Navigate } from 'react-router-dom';
+
 import { AutoAwesome, Dashboard, FiberManualRecord, ShoppingCart } from '@mui/icons-material';
 
 import { RouteItemConfig } from '@app/types/route';
@@ -82,6 +84,10 @@ export const adminRoute: RouteItemConfig[] = [
     }
   },
   {
+    path: paths.admin.ecommerce.index,
+    element: <Navigate to={'/ecommerce/category'} />
+  },
+  {
     element: 'Ecommerce',
     path: paths.admin.ecommerce.index,
     sidebarProps: {
@@ -91,7 +97,7 @@ export const adminRoute: RouteItemConfig[] = [
     child: [
       {
         element: 'Category',
-        path: paths.admin.ecommerce.category,
+        path: '/ecommerce/category',
         sidebarProps: {
           displayText: 'Category',
           icon: <FiberManualRecord className='text-[8px]' />
@@ -99,7 +105,7 @@ export const adminRoute: RouteItemConfig[] = [
       },
       {
         element: 'Product List',
-        path: paths.admin.ecommerce.products,
+        path: '/ecommerce/products',
         sidebarProps: {
           displayText: 'Product List',
           icon: <FiberManualRecord className='text-[8px]' />
@@ -107,7 +113,7 @@ export const adminRoute: RouteItemConfig[] = [
       },
       {
         element: 'Create Product',
-        path: paths.admin.ecommerce.createProduct,
+        path: '/ecommerce/create-product',
         sidebarProps: {
           displayText: 'Add New Product',
           icon: <FiberManualRecord className='text-[8px]' />
@@ -115,45 +121,10 @@ export const adminRoute: RouteItemConfig[] = [
       }
     ]
   },
+
   {
     element: 'Test',
-    path: paths.admin.dashboard,
-    sidebarProps: {
-      displayText: 'Test',
-      icon: <AutoAwesome />
-    },
-    child: [
-      {
-        element: 'Category',
-        path: paths.admin.ecommerce.category,
-        sidebarProps: {
-          displayText: 'Category',
-          icon: <FiberManualRecord className='text-[8px]' />
-        },
-        child: [
-          {
-            element: 'Category',
-            path: paths.admin.ecommerce.category,
-            sidebarProps: {
-              displayText: 'Category',
-              icon: <FiberManualRecord className='text-[8px]' />
-            }
-          }
-        ]
-      },
-      {
-        element: 'Product List',
-        path: paths.admin.ecommerce.products,
-        sidebarProps: {
-          displayText: 'Product List',
-          icon: <FiberManualRecord className='text-[8px]' />
-        }
-      }
-    ]
-  },
-  {
-    element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -161,7 +132,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -169,7 +140,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -177,7 +148,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -185,7 +156,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -193,7 +164,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -201,7 +172,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -209,7 +180,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -217,7 +188,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -225,7 +196,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -233,7 +204,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -241,7 +212,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -249,7 +220,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />
@@ -257,55 +228,7 @@ export const adminRoute: RouteItemConfig[] = [
   },
   {
     element: 'Test',
-    path: paths.admin.dashboard,
-    sidebarProps: {
-      displayText: 'Test',
-      icon: <AutoAwesome />
-    }
-  },
-  {
-    element: 'Test',
-    path: paths.admin.dashboard,
-    sidebarProps: {
-      displayText: 'Test',
-      icon: <AutoAwesome />
-    }
-  },
-  {
-    element: 'Test',
-    path: paths.admin.dashboard,
-    sidebarProps: {
-      displayText: 'Test',
-      icon: <AutoAwesome />
-    }
-  },
-  {
-    element: 'Test',
-    path: paths.admin.dashboard,
-    sidebarProps: {
-      displayText: 'Test',
-      icon: <AutoAwesome />
-    }
-  },
-  {
-    element: 'Test',
-    path: paths.admin.dashboard,
-    sidebarProps: {
-      displayText: 'Test',
-      icon: <AutoAwesome />
-    }
-  },
-  {
-    element: 'Test',
-    path: paths.admin.dashboard,
-    sidebarProps: {
-      displayText: 'Test',
-      icon: <AutoAwesome />
-    }
-  },
-  {
-    element: 'Test',
-    path: paths.admin.dashboard,
+    path: '/test',
     sidebarProps: {
       displayText: 'Test',
       icon: <AutoAwesome />

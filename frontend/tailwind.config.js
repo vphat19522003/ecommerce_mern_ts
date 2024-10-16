@@ -15,6 +15,10 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Roboto', 'sans-serif']
+      },
+      animation: {
+        'spin-slow': 'spin 2s linear infinite',
+        'spin-fast': 'spin 0.5s linear infinite'
       }
     },
     screens: {

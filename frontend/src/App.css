@@ -16,7 +16,7 @@ body {
 }
 
 .scrollable-content::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 /* (scrollbar thumb) */
@@ -24,4 +24,17 @@ body {
   background-color: #d6def1;
   border-radius: 10px;
   opacity: 0.33;
+}
+
+.rotate-icon {
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
