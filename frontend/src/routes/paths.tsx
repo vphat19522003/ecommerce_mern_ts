@@ -2,6 +2,9 @@ import { Navigate } from 'react-router-dom';
 
 import { AutoAwesome, Dashboard, FiberManualRecord, ShoppingCart } from '@mui/icons-material';
 
+import EcommercePage from '@app/pages/admin/ecommerce';
+import AddNewProductPage from '@app/pages/admin/ecommerce/addNewProductPage';
+import CategoryPage from '@app/pages/admin/ecommerce/categoryPage';
 import { RouteItemConfig } from '@app/types/route';
 import {
   ForgotPasswordPage,
@@ -88,7 +91,7 @@ export const adminRoute: RouteItemConfig[] = [
     element: <Navigate to={'/ecommerce/category'} />
   },
   {
-    element: 'Ecommerce',
+    element: <EcommercePage />,
     path: paths.admin.ecommerce.index,
     sidebarProps: {
       displayText: 'Ecommerce',
@@ -96,7 +99,7 @@ export const adminRoute: RouteItemConfig[] = [
     },
     child: [
       {
-        element: 'Category',
+        element: <CategoryPage />,
         path: '/ecommerce/category',
         sidebarProps: {
           displayText: 'Category',
@@ -112,7 +115,7 @@ export const adminRoute: RouteItemConfig[] = [
         }
       },
       {
-        element: 'Add new Product',
+        element: <AddNewProductPage />,
         path: '/ecommerce/add-new-product',
         sidebarProps: {
           displayText: 'Add New Product',

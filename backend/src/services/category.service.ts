@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { omit } from 'lodash';
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
@@ -82,13 +82,35 @@ class CategoryService {
 
   static async deleteCategory(req: Request): Promise<void> {
     const { category_id } = req.query;
+    let parentCategory: string | Types.ObjectId = '';
 
     if (!category_id) throw new CustomError('No category ID provided', STATUS_CODE.BAD_REQUEST);
+    try {
+      const category = await CategoryModel.findById(new Types.ObjectId(category_id as string));
 
-    const result = (await CategoryRepository.deleteCategory(category_id as string)) as mongoose.mongo.DeleteResult;
+      if (!category) throw new CustomError('No category found', STATUS_CODE.BAD_REQUEST);
 
-    if (result.deletedCount !== 1)
+      parentCategory = category.parentCategory;
+
+      const result = (await CategoryRepository.deleteCategory(category_id as string)) as mongoose.mongo.DeleteResult;
+
+      if (result.deletedCount !== 1)
+        throw new CustomError('Failed to delete category', STATUS_CODE.INTERNAL_SERVER_ERROR);
+      else {
+        if (parentCategory)
+          await CategoryModel.findByIdAndUpdate(
+            parentCategory,
+            {
+              $pull: { subCategories: category_id }
+            },
+            {
+              new: true
+            }
+          );
+      }
+    } catch (error) {
       throw new CustomError('Failed to delete category', STATUS_CODE.INTERNAL_SERVER_ERROR);
+    }
   }
 
   static async getTreeCategory(req: Request): Promise<unknown> {

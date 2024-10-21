@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 
 import Breadcrumb from '@app/components/organisms/admin/breadcrumb';
 import AdminHeader from '@app/components/organisms/admin/header';
@@ -34,17 +34,11 @@ const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
       {/* Main content */}
       <Stack
         direction={'column'}
-        className={`bg-[#f3f7fa] transition-all duration-200 ease-in-out block w-full px-6 ${showAdminSidebar ? (isMobile ? 'ml-0' : 'ml-64') : 'ml-0'}`}>
+        className={`transition-all duration-200 ease-in-out block w-full px-6 ${showAdminSidebar ? (isMobile ? 'ml-0' : 'ml-64') : 'ml-0'}`}>
         <AdminHeader />
         {/* Nội dung trang bên dưới header */}
-        <Box sx={{ pt: 18, px: 3 }}>
+        <Box className='px-2 pt-16 pb-8'>
           <Breadcrumb />
-          {[...Array(30)].map((_, index) => (
-            <Typography key={index} variant='body1' paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet pretium leo. Fusce et mi euismod,
-              bibendum nisl id, accumsan enim. Cras porta sodales lacus, sit amet viverra augue ullamcorper id.
-            </Typography>
-          ))}
           {children}
         </Box>
       </Stack>

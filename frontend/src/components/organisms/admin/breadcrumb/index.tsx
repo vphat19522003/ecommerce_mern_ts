@@ -22,7 +22,7 @@ const Breadcrumb = (): JSX.Element => {
     return path[0].toUpperCase() + path.slice(1, path.length);
   };
   return (
-    <Breadcrumbs separator='›' aria-label='breadcrumb' className='mt-5 text-md'>
+    <Breadcrumbs separator='›' aria-label='breadcrumb' className='mt-4 text-md'>
       <Link to={'/dashboard'} className='no-underline text-[#39465f] hover:text-blue-700'>
         <Stack direction={'row'} alignItems={'center'} spacing={1}>
           <Home className='text-blue-700 text-xl' />
