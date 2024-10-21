@@ -26,7 +26,7 @@ const SidebarItemCollapse = ({ item }: { item: RouteItemConfig }): JSX.Element =
   return (
     <Box>
       <ListItemButton
-        className={`rounded-lg ${topParent && !haveParent && isCurrentPath && 'bg-[#e5f6fe]'}`}
+        className={`rounded-lg mt-1 ${topParent && !haveParent && isCurrentPath && 'bg-[#e5f6fe]'}`}
         disabled={item.disabled}
         onClick={() => setOpen((prev) => !prev)}
         onMouseEnter={() => setIsHover(true)}

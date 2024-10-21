@@ -15,7 +15,7 @@ const SidebarItem = ({ item }: { item: RouteItemConfig }): JSX.Element => {
 
   return item.sidebarProps && item.path ? (
     <ListItemButton
-      className={`rounded-lg ${topParent && !haveParent && isCurrentPath && 'bg-[#e5f6fe]'}`}
+      className={`rounded-lg mt-1 ${topParent && !haveParent && isCurrentPath && 'bg-[#e5f6fe]'}`}
       disabled={item.disabled}
       component={Link}
       to={item.path}

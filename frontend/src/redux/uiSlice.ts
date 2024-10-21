@@ -6,7 +6,7 @@ type initialStateType = {
 };
 const initialState: initialStateType = {
   showSidebar: false,
-  showAdminSidebar: false
+  showAdminSidebar: true
 };
 
 const uiSlice = createSlice({

@@ -61,12 +61,12 @@ const AdminSidebar = (): JSX.Element => {
         />
       )}
       <Stack
-        className={`shadow-sm fixed top-0 h-full bg-white w-64 z-40 duration-300 ease-in-out overflow-hidden ${showAdminSidebar ? 'left-0' : 'left-[-100%]'}`}>
-        <Box className='pt-6 mx-auto px-4 '>
+        className={`shadow-md fixed top-0 h-full bg-white w-64 z-40 duration-300 ease-in-out overflow-hidden ${showAdminSidebar ? 'left-0' : 'left-[-100%]'}`}>
+        <Box className='px-4 pt-6 mx-auto '>
           <HeaderLogo font_size='32px' />
         </Box>
 
-        <Box className='px-4 flex-grow scrollable-content'>
+        <Box className='flex-grow px-4 scrollable-content'>
           <Box className='w-56'>
             <ListMenuItem />
           </Box>
