@@ -60,4 +60,7 @@
                 - admin layout - header, sidebar: DONE
 38. Apply lazy load
 39. Chia route admin, tạo list item trên sidebar : DONE - update giao diện listItemButton, collapse - DONE
-40. Create admin - ecommerce - add new product page
+40. Tạo breadcrumb - DONE
+41. Create admin/ ecommerce/add new product page
+                                - Tạm thời set cứng category
+                                - Get list category và tạo add new product - book

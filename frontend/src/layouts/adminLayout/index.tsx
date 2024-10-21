@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { Box, Stack, Typography } from '@mui/material';
 
+import Breadcrumb from '@app/components/organisms/admin/breadcrumb';
 import AdminHeader from '@app/components/organisms/admin/header';
 import AdminSidebar from '@app/components/organisms/admin/sidebar';
 import { useDevice } from '@app/hooks/useDevice';
@@ -35,18 +36,16 @@ const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
         direction={'column'}
         className={`bg-[#f3f7fa] transition-all duration-200 ease-in-out block w-full px-6 ${showAdminSidebar ? (isMobile ? 'ml-0' : 'ml-64') : 'ml-0'}`}>
         <AdminHeader />
-        <Box>
-          {/* Nội dung trang bên dưới header */}
-          <Box sx={{ pt: 18, px: 3 }}>
-            {[...Array(30)].map((_, index) => (
-              <Typography key={index} variant='body1' paragraph>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet pretium leo. Fusce et mi
-                euismod, bibendum nisl id, accumsan enim. Cras porta sodales lacus, sit amet viverra augue ullamcorper
-                id.
-              </Typography>
-            ))}
-            {children}
-          </Box>
+        {/* Nội dung trang bên dưới header */}
+        <Box sx={{ pt: 18, px: 3 }}>
+          <Breadcrumb />
+          {[...Array(30)].map((_, index) => (
+            <Typography key={index} variant='body1' paragraph>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet pretium leo. Fusce et mi euismod,
+              bibendum nisl id, accumsan enim. Cras porta sodales lacus, sit amet viverra augue ullamcorper id.
+            </Typography>
+          ))}
+          {children}
         </Box>
       </Stack>
     </Stack>

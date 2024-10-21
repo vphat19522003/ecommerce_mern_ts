@@ -105,15 +105,15 @@ export const adminRoute: RouteItemConfig[] = [
       },
       {
         element: 'Product List',
-        path: '/ecommerce/products',
+        path: '/ecommerce/product-list',
         sidebarProps: {
           displayText: 'Product List',
           icon: <FiberManualRecord className='text-[8px]' />
         }
       },
       {
-        element: 'Create Product',
-        path: '/ecommerce/create-product',
+        element: 'Add new Product',
+        path: '/ecommerce/add-new-product',
         sidebarProps: {
           displayText: 'Add New Product',
           icon: <FiberManualRecord className='text-[8px]' />
