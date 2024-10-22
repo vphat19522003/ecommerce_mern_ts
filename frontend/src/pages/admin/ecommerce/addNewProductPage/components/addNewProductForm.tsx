@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-import { AddCircle, UploadFile } from '@mui/icons-material';
+import { AddCircle, AttachMoney, Discount, Inventory, PointOfSale, UploadFile } from '@mui/icons-material';
 import { Box, Stack, Typography } from '@mui/material';
 
 import CustomComboBox from '@app/components/atoms/comboBox';
 import InputField from '@app/components/atoms/inputField';
 import Label from '@app/components/atoms/label';
+import NumberField from '@app/components/atoms/numberFormatCustom';
 import TextArea from '@app/components/atoms/textArea';
 import { useDevice } from '@app/hooks/useDevice';
 import { CategoryResponseType } from '@app/types/category';
@@ -19,6 +20,7 @@ const AddNewProductForm = ({ mainCategory }: AddNewProductFormProps): JSX.Elemen
   const [productType, setProductType] = useState('');
   const [thumbnailImage, setThumbnailImage] = useState('');
   const [descriptionImages, setDescriptionImages] = useState<string[]>([]);
+  const [value, setValue] = useState('');
   const { isMobile } = useDevice();
   console.log({ productType });
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,11 +81,16 @@ const AddNewProductForm = ({ mainCategory }: AddNewProductFormProps): JSX.Elemen
               <Stack className='w-full'>
                 <Stack direction='column' className='gap-2'>
                   <Label title='Price' />
-                  <InputField
+                  <NumberField
                     className='w-full border-8'
                     variant='outlined'
                     borderColorFocus='blue.700'
                     backgroundColor='#eeeeee'
+                    startAdornment={<AttachMoney />}
+                    decimalScale={3}
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                    }}
                   />
                 </Stack>
                 <Stack direction='column' className='gap-2'>
@@ -93,6 +100,17 @@ const AddNewProductForm = ({ mainCategory }: AddNewProductFormProps): JSX.Elemen
                     variant='outlined'
                     borderColorFocus='blue.700'
                     backgroundColor='#eeeeee'
+                    type='number'
+                    value={value}
+                    startAdornment={<Inventory />}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const newValue = e.target.value;
+
+                      // Kiểm tra nếu người dùng nhập số âm hoặc lớn hơn giá trị tối đa
+                      if (Number(newValue) >= 0 && Number(newValue) <= 100) {
+                        setValue(newValue);
+                      }
+                    }}
                   />
                 </Stack>
               </Stack>
@@ -104,6 +122,7 @@ const AddNewProductForm = ({ mainCategory }: AddNewProductFormProps): JSX.Elemen
                     variant='outlined'
                     borderColorFocus='blue.700'
                     backgroundColor='#eeeeee'
+                    startAdornment={<Discount />}
                   />
                 </Stack>
                 <Stack direction='column' className='gap-2'>
@@ -113,6 +132,7 @@ const AddNewProductForm = ({ mainCategory }: AddNewProductFormProps): JSX.Elemen
                     variant='outlined'
                     borderColorFocus='blue.700'
                     backgroundColor='#eeeeee'
+                    startAdornment={<PointOfSale />}
                   />
                 </Stack>
               </Stack>
@@ -166,7 +186,7 @@ const AddNewProductForm = ({ mainCategory }: AddNewProductFormProps): JSX.Elemen
                     <label
                       htmlFor={`upload-thumbnail-${index}`}
                       className={`px-2 py-2 text-center transition-all duration-300 bg-white border-2 border-gray-400 border-dashed cursor-pointer ${isMobile ? 'h-24' : 'h-27'} grow text-slate-400 rounded-2xl hover:bg-slate-100 hover:text-white`}>
-                      <AddCircle className='mt-7 text-3xl text-blue-700' />
+                      <AddCircle className='text-3xl text-blue-700 mt-7' />
                     </label>
                   )}
                   {descriptionImages[index] && (

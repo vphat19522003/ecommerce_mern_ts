@@ -24,6 +24,8 @@ type InputFieldProps = Omit<TextFieldProps, 'helperText' | 'error'> & {
   borderColor?: string;
   borderColorFocus?: string;
   size?: OverridableStringUnion<'small' | 'medium', TextFieldPropsSizeOverrides>;
+  min?: number;
+  max?: number;
 };
 
 const InputField = forwardRef(
@@ -35,6 +37,8 @@ const InputField = forwardRef(
       readOnly,
       variant = 'filled',
       size = 'small',
+      min = 0,
+      max = 100,
       description,
       backgroundColor,
       borderColor,
@@ -85,7 +89,14 @@ const InputField = forwardRef(
                 <>{endAdornment}</>
               </InputAdornment>
             ) : undefined,
-            readOnly: readOnly
+            readOnly: readOnly,
+            inputProps:
+              otherProps.type === 'number'
+                ? {
+                    min,
+                    max
+                  }
+                : {}
           }}
         />
         <Box className='h-2'>
