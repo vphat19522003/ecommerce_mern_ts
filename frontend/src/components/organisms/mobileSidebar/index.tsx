@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 
+import { useGetMainCategory } from '@app/api/hooks/category.hook';
 import { toggleSidebar } from '@app/redux/uiSlice';
 import { RootState } from '@app/store';
 
@@ -32,6 +33,7 @@ export const categoryList = [
 const MobileSideBar = (): JSX.Element => {
   const isOpen = useSelector((state: RootState) => state.ui.showSidebar);
   const dispatch = useDispatch();
+  const { data: mainCategory = [] } = useGetMainCategory();
 
   return (
     <>
@@ -56,12 +58,12 @@ const MobileSideBar = (): JSX.Element => {
           Category
         </Typography>
         <Stack direction={'column'}>
-          {categoryList.map((category) => (
-            <Stack direction={'row'} spacing={2} key={category.id} className='px-4 py-2 lg:pl-8' alignItems={'center'}>
-              <img src={category.categoryImg} alt='' className='object-contain size-10' />
+          {mainCategory.map((category) => (
+            <Stack direction={'row'} spacing={2} key={category._id} className='px-4 py-2 lg:pl-8' alignItems={'center'}>
+              <img src={category.categoryImg.category_img_url} alt={category.name} className='object-contain size-10' />
 
               <Typography variant='h6' className='text-black text-md'>
-                {category.categoryName}
+                {category.name}
               </Typography>
             </Stack>
           ))}

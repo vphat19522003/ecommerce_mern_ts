@@ -68,7 +68,7 @@ class CategoryService {
 
   static async getMainCategory(): Promise<CategoryInfo[]> {
     const listCategory = await CategoryRepository.getMainCategory();
-    return listCategory;
+    return listCategory.map((category) => omit(category, '__v', 'updatedAt'));
   }
 
   static async getSubCategory(req: Request): Promise<CategoryInfo[]> {
@@ -77,7 +77,7 @@ class CategoryService {
     if (!parent_id) throw new CustomError('No parent ID provided', STATUS_CODE.BAD_REQUEST);
 
     const listSubCategory = await CategoryRepository.getSubCategory(parent_id as string);
-    return listSubCategory;
+    return listSubCategory.map((category) => omit(category, '__v', 'updatedAt'));
   }
 
   static async deleteCategory(req: Request): Promise<void> {

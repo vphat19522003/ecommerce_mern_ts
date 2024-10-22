@@ -64,4 +64,7 @@
 41. Tạo common component text area - DONE
 42. Create admin/ ecommerce/add new product page
                                 - Tạm thời set cứng category - DONE
-                                - Get list category và tạo add new product - book - PENDING
+                                - Get list category và tạo add new product - book - DONE
+                                - Implement get main category api to frontend -fix ui : DONE
+                                - create input price componenent, tạo giao diện thêm sản phẩm cho từng category và implement
+                                  add new product - PENDING

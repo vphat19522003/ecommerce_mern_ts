@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { AddCircle, UploadFile } from '@mui/icons-material';
 import { Box, Stack, Typography } from '@mui/material';
@@ -8,12 +8,19 @@ import InputField from '@app/components/atoms/inputField';
 import Label from '@app/components/atoms/label';
 import TextArea from '@app/components/atoms/textArea';
 import { useDevice } from '@app/hooks/useDevice';
+import { CategoryResponseType } from '@app/types/category';
+import { mapCategoryData } from '@app/utils/mapLocationData';
 
-const AddNewProductForm = (): JSX.Element => {
+type AddNewProductFormProps = {
+  mainCategory: CategoryResponseType[];
+};
+
+const AddNewProductForm = ({ mainCategory }: AddNewProductFormProps): JSX.Element => {
+  const [productType, setProductType] = useState('');
   const [thumbnailImage, setThumbnailImage] = useState('');
   const [descriptionImages, setDescriptionImages] = useState<string[]>([]);
   const { isMobile } = useDevice();
-
+  console.log({ productType });
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const thumbnailImage = e.target.files?.[0];
     if (thumbnailImage) {
@@ -159,7 +166,7 @@ const AddNewProductForm = (): JSX.Element => {
                     <label
                       htmlFor={`upload-thumbnail-${index}`}
                       className={`px-2 py-2 text-center transition-all duration-300 bg-white border-2 border-gray-400 border-dashed cursor-pointer ${isMobile ? 'h-24' : 'h-27'} grow text-slate-400 rounded-2xl hover:bg-slate-100 hover:text-white`}>
-                      <AddCircle className='mt-8 text-3xl text-blue-700' />
+                      <AddCircle className='mt-7 text-3xl text-blue-700' />
                     </label>
                   )}
                   {descriptionImages[index] && (
@@ -183,13 +190,17 @@ const AddNewProductForm = (): JSX.Element => {
             </Typography>
             <CustomComboBox
               label='Category'
-              data={[
-                { name: 'Book', value: 'Book', label: 'Book' },
-                { name: 'Electronics', value: 'Electronics', label: 'Electronics' }
-              ]}
+              data={mapCategoryData(mainCategory)}
+              onChange={(e, newValue) => {
+                if (React.isValidElement(newValue)) {
+                  const label = newValue.props.children;
+                  setProductType(label);
+                }
+              }}
             />
           </Box>
         </Stack>
+        {productType === 'Book' && <div>{productType}</div>}
       </Stack>
     </form>
   );

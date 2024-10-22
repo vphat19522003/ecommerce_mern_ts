@@ -3,15 +3,15 @@ import { useState } from 'react';
 import { List } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
+import { useGetMainCategory } from '@app/api/hooks/category.hook';
 import { useDevice } from '@app/hooks/useDevice';
-
-import { categoryList } from '../mobileSidebar';
 
 const Sidebar = (): JSX.Element => {
   const checkPath = ['user'];
   const isActivePath = checkPath.includes(window.location.pathname.split('/')[1]);
 
   const [isHovering, setIsHovering] = useState<boolean>(!isActivePath);
+  const { data: mainCategory = [] } = useGetMainCategory();
   const { isMobile } = useDevice();
 
   const handleMouseLeave = () => {
@@ -42,12 +42,12 @@ const Sidebar = (): JSX.Element => {
         <Stack
           direction={'column'}
           className={`absolute top-full left-0 transition-all duration-300 ease-in-out ${isHovering ? 'opacity-100 visible' : 'opacity-0 invisible'} bg-white w-full z-10 shadow-md rounded-br-lg rounded-bl-lg ${isMobile ? 'h-[220px] mt-[80px]' : 'h-[460px]'}`}>
-          {categoryList.map((category) => (
-            <Stack direction={'row'} spacing={2} key={category.id} className='py-2 pl-2' alignItems={'center'}>
-              <img src={category.categoryImg} alt='' className='object-contain size-10' />
+          {mainCategory.map((category) => (
+            <Stack direction={'row'} spacing={2} key={category._id} className='py-2 pl-2' alignItems={'center'}>
+              <img src={category.categoryImg.category_img_url} alt={category.name} className='object-contain size-10' />
 
               <Typography variant='h6' className='text-black text-md'>
-                {category.categoryName}
+                {category.name}
               </Typography>
             </Stack>
           ))}
