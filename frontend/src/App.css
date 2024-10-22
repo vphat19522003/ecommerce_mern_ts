@@ -7,6 +7,16 @@ body {
   font-family: 'Roboto';
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6def1;
+  border-radius: 10px;
+  opacity: 0.33;
+}
+
 .scrollable-content {
   overflow: hidden;
 }

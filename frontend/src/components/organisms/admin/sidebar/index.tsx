@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AccountCircle, Apps } from '@mui/icons-material';
@@ -11,6 +11,7 @@ import { toggleAdminSidebar } from '@app/redux/uiSlice';
 import { adminRoute } from '@app/routes/paths';
 import { RootState } from '@app/store';
 
+import ActionMenu from '../actionMenu';
 import SidebarItem from './components/SidebarItem';
 import SidebarItemCollapse from './components/SidebarItemCollapse';
 
@@ -43,6 +44,7 @@ const ListMenuItem = React.memo((): JSX.Element => {
 });
 
 const AdminSidebar = (): JSX.Element => {
+  const [openActionMenu, setOpenActionMenu] = useState(false);
   const user = useSelector((state: RootState) => state.auth.user);
   const showAdminSidebar = useSelector((state: RootState) => state.ui.showAdminSidebar);
   const dispatch = useDispatch();
@@ -57,7 +59,10 @@ const AdminSidebar = (): JSX.Element => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           className='fixed inset-0 z-40 bg-gray-700'
-          onClick={() => dispatch(toggleAdminSidebar())}
+          onClick={() => {
+            dispatch(toggleAdminSidebar());
+            setOpenActionMenu(false);
+          }}
         />
       )}
       <Stack
@@ -87,9 +92,16 @@ const AdminSidebar = (): JSX.Element => {
             </Typography>
           </Stack>
           <Stack className='w-2/12'>
-            <IconButton className='hover:text-[#ffd328] transition-all duration-300'>
+            <IconButton
+              className='hover:text-[#ffd328] transition-all duration-300 relative'
+              onClick={() => setOpenActionMenu((prev) => !prev)}>
               <Apps />
             </IconButton>
+            {openActionMenu && (
+              <Box className='absolute shadow-2xl  bottom-16 right-6 bg-white rounded-lg border-[0.5px] border-solid border-slate-200'>
+                <ActionMenu />
+              </Box>
+            )}
           </Stack>
         </Stack>
       </Stack>
