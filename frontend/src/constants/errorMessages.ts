@@ -13,5 +13,7 @@ export const errorMessages = {
   usernameTooLong: 'Username is too long, max: 16 characters',
   usernameInvalid: 'Invalid username',
   noSpacesAllowed: 'No spaces allowed',
-  fullNameMinLength: 'Full name must be at least 5 characters long'
+  fullNameMinLength: 'Full name must be at least 5 characters long',
+  productNameMinLength: 'Product name must be at least 3 characters long',
+  descriptionMinLength: 'Description must be at least 5 characters long'
 };
