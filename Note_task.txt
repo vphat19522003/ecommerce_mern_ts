@@ -70,3 +70,6 @@
 43. Create action sidebar menu - DONE
 44. Create input price component - DONE
 45. Tạo giao diện thêm sản phẩm cho từng category và implement API (UI :Validation, react hook form, Gắn API thử thêm 1 sản phẩm) - PENDING
+                        - UI - add product book - DONE
+                        - Schemas validate product - DONE
+                        - Implement API create product - PENDING

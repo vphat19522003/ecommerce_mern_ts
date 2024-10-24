@@ -27,7 +27,7 @@ type AddNewProductFormProps = {
 const AddNewProductForm = ({ mainCategory, handleAddNewProduct }: AddNewProductFormProps): JSX.Element => {
   const [productType, setProductType] = useState('');
   const [thumbnailImage, setThumbnailImage] = useState<File>();
-  const [descriptionImages, setDescriptionImages] = useState<string[]>([]);
+  const [descriptionImages, setDescriptionImages] = useState<File[]>([]);
   const { isMobile } = useDevice();
 
   const {
@@ -43,7 +43,7 @@ const AddNewProductForm = ({ mainCategory, handleAddNewProduct }: AddNewProductF
       productPrice: 0,
       productThumbImg: '',
       description: '',
-      //productDescImg: [],
+      productDescImg: [],
       category: '',
       stockQuantity: 0,
       author: '',
@@ -53,20 +53,18 @@ const AddNewProductForm = ({ mainCategory, handleAddNewProduct }: AddNewProductF
   });
 
   const handleChangeDescriptionImage = (e: React.ChangeEvent<HTMLInputElement>, index) => {
-    const descriptionImages = e.target.files?.[0];
-
-    if (descriptionImages) {
-      const newImageURL = URL.createObjectURL(descriptionImages);
-      setDescriptionImages((prev) => {
-        const updateImages = [...prev];
-        updateImages[index] = newImageURL;
-        return updateImages;
-      });
-    }
+    // const descriptionImages = e.target.files?.[0];
+    // if (descriptionImages) {
+    //   const newImageURL = URL.createObjectURL(descriptionImages);
+    //   setDescriptionImages((prev) => {
+    //     const updateImages = [...prev];
+    //     updateImages[index] = newImageURL;
+    //     return updateImages;
+    //   });
+    // }
   };
 
   const handleSubmitForm = (value: AddNewProductFormType) => {
-    console.log({ errors });
     handleAddNewProduct(value);
   };
 
@@ -260,33 +258,53 @@ const AddNewProductForm = ({ mainCategory, handleAddNewProduct }: AddNewProductF
             {/* Description Images */}
             <Stack direction={'row'} gap={2}>
               {[...Array(4)].map((_, index) => (
-                <Stack
+                <Controller
+                  control={control}
+                  name={`productDescImg.${index}`}
                   key={'description' + index}
-                  className={`border-[1px] rounded-2xl w-1/4 ${isMobile ? 'h-24' : 'h-27'}`}>
-                  <input
-                    type='file'
-                    id={`upload-thumbnail-${index}`}
-                    accept='image/*'
-                    hidden
-                    onChange={(e) => handleChangeDescriptionImage(e, index)}
-                  />
-                  {!descriptionImages[index] && (
-                    <label
-                      htmlFor={`upload-thumbnail-${index}`}
-                      className={`px-2 py-2 text-center transition-all duration-300 bg-white border-2 border-gray-400 border-dashed cursor-pointer ${isMobile ? 'h-24' : 'h-27'} grow text-slate-400 rounded-2xl hover:bg-slate-100 hover:text-white`}>
-                      <AddCircle className='text-3xl text-blue-700 mt-7' />
-                    </label>
+                  render={({ field: { value, onChange } }) => (
+                    <Stack className={`border-[1px] rounded-2xl w-1/4 ${isMobile ? 'h-24' : 'h-27'}`}>
+                      <input
+                        type='file'
+                        id={`upload-description-${index}`}
+                        accept='image/*'
+                        hidden
+                        onChange={(e) => {
+                          handleChangeDescriptionImage(e, index);
+
+                          const descriptionImages = e.target.files?.[0];
+                          if (descriptionImages) {
+                            setDescriptionImages((prev) => {
+                              const updateImages = [...prev];
+                              updateImages[index] = descriptionImages;
+                              return updateImages;
+                            });
+
+                            const newImageURL = URL.createObjectURL(descriptionImages);
+                            onChange(newImageURL);
+                          }
+                        }}
+                      />
+                      {!value && (
+                        <label
+                          htmlFor={`upload-description-${index}`}
+                          className={`${!!errors?.productDescImg?.[index] && 'border-red-500'} border-gray-400 px-2 py-2 text-center transition-all duration-300 bg-white border-2  border-dashed cursor-pointer ${isMobile ? 'h-24' : 'h-27'} grow text-slate-400 rounded-2xl hover:bg-slate-100 hover:text-white`}>
+                          <AddCircle className='text-3xl text-blue-700 mt-7' />
+                        </label>
+                      )}
+                      {value && (
+                        <label
+                          htmlFor={`upload-description-${index}`}
+                          className={`relative flex overflow-hidden text-center transition-all duration-300 bg-white border-2 border-gray-400 border-solid cursor-pointer ${isMobile ? 'h-24' : 'h-27'} text-slate-400 rounded-2xl hover:border-blue-700`}>
+                          <img src={value} className='object-cover w-full h-full' />
+                        </label>
+                      )}
+                    </Stack>
                   )}
-                  {descriptionImages[index] && (
-                    <label
-                      htmlFor={`upload-thumbnail-${index}`}
-                      className={`relative flex overflow-hidden text-center transition-all duration-300 bg-white border-2 border-gray-400 border-solid cursor-pointer ${isMobile ? 'h-24' : 'h-27'} text-slate-400 rounded-2xl hover:border-blue-700`}>
-                      <img src={descriptionImages[index]} className='object-cover w-full h-full' />
-                    </label>
-                  )}
-                </Stack>
+                />
               ))}
             </Stack>
+            {!!errors?.productDescImg && <p className='text-red-500 text-sm'>{errors.productDescImg.message}</p>}
           </Stack>
           {/* Category */}
           <Stack className='bg-[#f9f9f9] rounded-lg p-4'>
@@ -309,6 +327,7 @@ const AddNewProductForm = ({ mainCategory, handleAddNewProduct }: AddNewProductF
                       const label = newValue.props.children;
                       setProductType(label);
                       onChange(e.target.value);
+                      setValue('categoryLabel', label);
                     }
                   }}
                   error={errors.category}

@@ -1,9 +1,9 @@
 import * as zod from 'zod';
 
 import { errorMessages } from '@app/constants/errorMessages';
+import { zodAlwaysRefine } from '@app/utils/zodAlwaysRefine';
 
-const imageSchema = zod.string().url().optional();
-
+const imageSchema = zod.string().url();
 export const AddNewProductFormSchema = zod
   .object({
     productName: zod.string().min(1, errorMessages.require).min(3, errorMessages.productNameMinLength),
@@ -19,16 +19,18 @@ export const AddNewProductFormSchema = zod
     productThumbImg: imageSchema.refine((value) => value && value.length > 0, {
       message: 'Thumbnail image is required'
     }),
-    //productDescImg: zod.array(imageSchema).length(4, 'You must upload exactly 4 description images'),
+    productDescImg: zodAlwaysRefine(zod.array(imageSchema)),
+
     category: zod.string().trim().min(1, { message: errorMessages.require }),
+    categoryLabel: zod.string().optional(),
     //Book product
     author: zod.string().optional(),
     page_number: zod.number().optional(),
     publisher: zod.string().optional()
   })
   .superRefine((data, ctx) => {
-    if (data.category === '6715f3fbd23d0f401f16f020') {
-      // Kiểm tra trường `author`
+    console.log('Form data:', data);
+    if (data.categoryLabel === 'Book') {
       if (!data.author || data.author.trim() === '') {
         ctx.addIssue({
           code: 'custom',
@@ -37,11 +39,9 @@ export const AddNewProductFormSchema = zod
         });
       }
 
-      // Kiểm tra trường `page_number`
       if (data.page_number === undefined) {
         ctx.addIssue({ code: 'custom', path: ['page_number'], message: errorMessages.require });
       } else {
-        // Kiểm tra nếu `page_number` phải lớn hơn 5 và là số dương
         if (data.page_number <= 0) {
           ctx.addIssue({ code: 'custom', path: ['page_number'], message: 'Price must be greater than 0' });
         } else if (data.page_number <= 5) {
@@ -49,7 +49,6 @@ export const AddNewProductFormSchema = zod
         }
       }
 
-      // Kiểm tra trường `publisher`
       if (!data.publisher || data.publisher.trim() === '') {
         ctx.addIssue({ code: 'custom', path: ['publisher'], message: errorMessages.require });
       }
