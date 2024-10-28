@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { Box, Stack } from '@mui/material';
 
+import Loader from '@app/components/molecules/loader';
 import Breadcrumb from '@app/components/organisms/admin/breadcrumb';
 import AdminHeader from '@app/components/organisms/admin/header';
 import AdminSidebar from '@app/components/organisms/admin/sidebar';
@@ -16,6 +17,7 @@ type MainLayoutPropsType = {
 
 const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
   const showAdminSidebar = useSelector((state: RootState) => state.ui.showAdminSidebar);
+  const isPending = useSelector((state: RootState) => state.ui.isPending);
   const location = useLocation();
   const { isMobile } = useDevice();
 
@@ -28,21 +30,24 @@ const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
     }
   }, [location]);
   return (
-    <Stack direction={'row'}>
-      {/* Sidebar */}
-      {showAdminSidebar && <AdminSidebar />}
-      {/* Main content */}
-      <Stack
-        direction={'column'}
-        className={`transition-all duration-200 ease-in-out block w-full px-6 ${showAdminSidebar ? (isMobile ? 'ml-0' : 'ml-64') : 'ml-0'}`}>
-        <AdminHeader />
-        {/* Nội dung trang bên dưới header */}
-        <Box className='px-2 pt-16 pb-8'>
-          <Breadcrumb />
-          {children}
-        </Box>
+    <>
+      {isPending && <Loader />}
+      <Stack direction={'row'}>
+        {/* Sidebar */}
+        {showAdminSidebar && <AdminSidebar />}
+        {/* Main content */}
+        <Stack
+          direction={'column'}
+          className={`transition-all duration-200 ease-in-out block w-full px-6 ${showAdminSidebar ? (isMobile ? 'ml-0' : 'ml-64') : 'ml-0'}`}>
+          <AdminHeader />
+          {/* Nội dung trang bên dưới header */}
+          <Box className='px-2 pt-16 pb-8'>
+            <Breadcrumb />
+            {children}
+          </Box>
+        </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 };
 

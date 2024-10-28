@@ -29,7 +29,6 @@ export const AddNewProductFormSchema = zod
     publisher: zod.string().optional()
   })
   .superRefine((data, ctx) => {
-    console.log('Form data:', data);
     if (data.categoryLabel === 'Book') {
       if (!data.author || data.author.trim() === '') {
         ctx.addIssue({
@@ -56,3 +55,8 @@ export const AddNewProductFormSchema = zod
   });
 
 export type AddNewProductFormType = zod.infer<typeof AddNewProductFormSchema>;
+export type AddNewProductFormCustom = Omit<AddNewProductFormType, 'productThumbImg' | 'productDescImg'> & {
+  productThumbImg: File;
+  productDescImg: File[];
+  createdBy?: string;
+};

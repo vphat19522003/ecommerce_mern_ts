@@ -17,14 +17,19 @@ import { mapCategoryData } from '@app/utils/mapLocationData';
 
 import AddBookForm from './addBookForm';
 import AddNewProductAction from './addNewProductAction';
-import { AddNewProductFormSchema, AddNewProductFormType } from './schemas';
+import { AddNewProductFormCustom, AddNewProductFormSchema, AddNewProductFormType } from './schemas';
 
 type AddNewProductFormProps = {
   mainCategory: CategoryResponseType[];
-  handleAddNewProduct: (value: AddNewProductFormType) => void;
+  handleAddNewProduct: (value: AddNewProductFormCustom) => void;
+  isAddNewProductPending: boolean;
 };
 
-const AddNewProductForm = ({ mainCategory, handleAddNewProduct }: AddNewProductFormProps): JSX.Element => {
+const AddNewProductForm = ({
+  mainCategory,
+  handleAddNewProduct,
+  isAddNewProductPending
+}: AddNewProductFormProps): JSX.Element => {
   const [productType, setProductType] = useState('');
   const [thumbnailImage, setThumbnailImage] = useState<File>();
   const [descriptionImages, setDescriptionImages] = useState<File[]>([]);
@@ -53,26 +58,31 @@ const AddNewProductForm = ({ mainCategory, handleAddNewProduct }: AddNewProductF
   });
 
   const handleChangeDescriptionImage = (e: React.ChangeEvent<HTMLInputElement>, index) => {
-    // const descriptionImages = e.target.files?.[0];
-    // if (descriptionImages) {
-    //   const newImageURL = URL.createObjectURL(descriptionImages);
-    //   setDescriptionImages((prev) => {
-    //     const updateImages = [...prev];
-    //     updateImages[index] = newImageURL;
-    //     return updateImages;
-    //   });
-    // }
+    const descriptionImages = e.target.files?.[0];
+    if (descriptionImages) {
+      const newImageURL = URL.createObjectURL(descriptionImages);
+      setDescriptionImages((prev) => {
+        const updateImages = [...prev];
+        //updateImages[index] = newImageURL;
+        return updateImages;
+      });
+    }
   };
 
   const handleSubmitForm = (value: AddNewProductFormType) => {
-    handleAddNewProduct(value);
+    const tempProduct = { ...value, productThumbImg: thumbnailImage as File, productDescImg: descriptionImages };
+    handleAddNewProduct(tempProduct);
   };
 
   return (
     <form onSubmit={handleSubmit(handleSubmitForm)}>
       <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} className='mb-4'>
         <PageTitle />
-        <AddNewProductAction reset={reset} />
+        <AddNewProductAction
+          reset={reset}
+          isAddNewProductPending={isAddNewProductPending}
+          setProductType={setProductType}
+        />
       </Stack>
       <Stack direction={`${isMobile ? 'column' : 'row'}`} spacing={4}>
         <Stack direction={'column'} spacing={4} className={`${!isMobile && 'w-8/12'}`}>
@@ -321,7 +331,7 @@ const AddNewProductForm = ({ mainCategory, handleAddNewProduct }: AddNewProductF
                 <CustomComboBox
                   label='Category'
                   value={value}
-                  data={[...mapCategoryData(mainCategory), { label: 'Other', value: 'other' }]}
+                  data={mapCategoryData(mainCategory)}
                   onChange={(e, newValue) => {
                     if (React.isValidElement(newValue)) {
                       const label = newValue.props.children;

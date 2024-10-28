@@ -9,18 +9,32 @@ import { AddNewProductFormType } from './schemas';
 
 type AddNewProductActionProps = {
   reset: UseFormReset<AddNewProductFormType>;
+  setProductType: React.Dispatch<React.SetStateAction<string>>;
+  isAddNewProductPending: boolean;
 };
 
-const AddNewProductAction = ({ reset }: AddNewProductActionProps): JSX.Element => {
+const AddNewProductAction = ({
+  reset,
+  isAddNewProductPending,
+  setProductType
+}: AddNewProductActionProps): JSX.Element => {
   return (
     <Stack direction={'row'} spacing={2}>
-      <Button color='primary' onClick={() => reset()}>
+      <Button
+        color='primary'
+        onClick={() => {
+          reset();
+          setProductType('');
+        }}
+        disabled={isAddNewProductPending}>
         Reset
       </Button>
 
-      <ButtonForm variant='contained' type='submit'>
-        <Check />
-        Publish
+      <ButtonForm variant='contained' type='submit' disabled={isAddNewProductPending}>
+        <Stack direction={'row'} gap={2} alignItems={'center'} justifyContent={'center'}>
+          <Check />
+          <p className='my-0 '>Publish</p>
+        </Stack>
       </ButtonForm>
     </Stack>
   );

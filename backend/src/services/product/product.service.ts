@@ -24,7 +24,7 @@ class ProductService {
     const thumbImg = files['thumbImg'] ? files['thumbImg'][0] : null;
     const descImgs = files['descImg'] || [];
 
-    const folder = `product/${data.productName}`;
+    const folder = `product/${data.productName + '-' + data.category}`;
 
     if (!thumbImg) {
       throw new CustomError('No thumbnail image provided', STATUS_CODE.BAD_REQUEST);
@@ -71,6 +71,7 @@ class ProductService {
       if (uploadedImages.length > 0) {
         await Promise.all(uploadedImages.map((public_id) => deleteFromCloudinary(public_id)));
       }
+
       throw new CustomError('Failed to upload images', STATUS_CODE.INTERNAL_SERVER_ERROR);
     }
   }

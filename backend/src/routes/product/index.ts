@@ -27,7 +27,7 @@ productRouter.post(
   '/create-product',
   verifyAccessToken,
   upload.fields([
-    { name: 'thumbImg', maxCount: 8 },
+    { name: 'thumbImg', maxCount: 1 },
     { name: 'descImg', maxCount: 8 }
   ]),
   verifyCategory,
