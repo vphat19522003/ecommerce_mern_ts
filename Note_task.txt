@@ -73,3 +73,10 @@
                         - UI - add product book - DONE
                         - Schemas validate product - DONE
                         - Implement API create product - DONE
+46. Tạo common table 
+            - xử lý data có các data con. row có các row con để bấm collapse xổ các row con xuống - PENDING    
+            - Pagination - PENDING
+            - Select row - PENDING
+47. Tạo giao diện quản lý category và thêm category cho sản phẩm - PENDING
+
+                        
