@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { Checkbox, Stack, TableCell, TableRow, Typography } from '@mui/material';
 
 import ViteImg from '@app/assets/vite.svg';
@@ -19,8 +17,6 @@ const TableBodyContent = <TData,>({
   tableField,
   renderActions
 }: TableBodyContentProps<TData>): JSX.Element => {
-  const [hoveredRowIndex, setHoveredRowIndex] = useState<number | null>(null);
-
   return (
     <>
       {data.length > 0 ? (
@@ -34,12 +30,6 @@ const TableBodyContent = <TData,>({
                   background: '#f8f9fa'
                 }
               }}
-              onMouseEnter={() => {
-                setHoveredRowIndex(index);
-              }}
-              onMouseLeave={() => {
-                setHoveredRowIndex(null);
-              }}
               className='relative'>
               {selection && (
                 <TableCell padding='checkbox'>
@@ -50,22 +40,10 @@ const TableBodyContent = <TData,>({
                 if (item?.customRender) {
                   return <TableCell key={idx}>{item?.customRender?.(row)}</TableCell>;
                 }
-                if (item.field === 'action') {
-                  return (
-                    hoveredRowIndex === index && (
-                      <Stack
-                        direction={'row'}
-                        key={idx}
-                        className='absolute top-1 right-3 bg-white shadow-md rounded-lg px-2 '>
-                        {renderActions(row)}
-                      </Stack>
-                    )
-                  );
-                }
+
                 return (
                   <TableCell key={idx} align={item?.textAlign}>
-                    {/* {item.field !== 'action' ? row[item.field] : renderActions(row)} */}
-                    {row[item.field]}
+                    {item.field !== 'action' ? row[item.field] : renderActions(row)}
                   </TableCell>
                 );
               })}

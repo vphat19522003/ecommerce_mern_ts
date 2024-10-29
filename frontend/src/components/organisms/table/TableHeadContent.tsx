@@ -59,26 +59,20 @@ const TableHeadContent = ({
       )}
       <TableRow>
         {selection && (
-          <HeadCell padding='checkbox' className='flex flex-row w-full' key={'tbh-selection'}>
+          <HeadCell padding='checkbox' key={'tbh-selection'}>
             <Checkbox checked={isSelectedAll && dataLength > 0} onChange={handleSelectAllClick} />
           </HeadCell>
         )}
-        {tableField?.map(
-          (item) =>
-            // item.field === 'action' ? (
-            //   <HeadCell padding='none' key={item.field} align={item.headerTextAlign || 'center'} width={120}>
-            //     {item.label}
-            //   </HeadCell>
-            // ) : (
-            //   <HeadCell padding='none' key={item.field} align={item.headerTextAlign || 'center'} width={item.width}>
-            //     {item.label}
-            //   </HeadCell>
-            // )
-            item.field !== 'action' && (
-              <HeadCell padding='none' key={item.field} align={item.headerTextAlign || 'center'} width={item.width}>
-                {item.label}
-              </HeadCell>
-            )
+        {tableField?.map((item) =>
+          item.field === 'action' ? (
+            <HeadCell padding='none' key={item.field} align={item.headerTextAlign || 'center'} width={120}>
+              {item.label}
+            </HeadCell>
+          ) : (
+            <HeadCell padding='none' key={item.field} align={item.headerTextAlign || 'center'} width={item.width}>
+              {item.label}
+            </HeadCell>
+          )
         )}
       </TableRow>
     </>

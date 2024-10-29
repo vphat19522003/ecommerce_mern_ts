@@ -85,7 +85,12 @@ const CustomTable = <TData,>({
             />
           </TableHead>
           <TableBody>
-            <TableBodyContent data={data} selection tableField={tableField} renderActions={renderAction} />
+            <TableBodyContent
+              data={data}
+              selection={!!selection}
+              tableField={tableField}
+              renderActions={renderAction}
+            />
           </TableBody>
         </Table>
       </TableContainer>

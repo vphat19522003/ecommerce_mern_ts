@@ -189,7 +189,7 @@ const AddNewProductForm = ({
                   />
                 </Stack>
               </Stack>
-              <Stack className='w-full'>
+              <Stack className='w-full' spacing={4}>
                 <Stack direction='column' className='gap-2'>
                   <Label title='Discount' />
                   <InputField
@@ -250,7 +250,7 @@ const AddNewProductForm = ({
                       <p className='text-blue-700'>Upload product thumbnail</p>
                     </label>
                   )}
-                  {!!errors.productThumbImg && <p className='text-red-500 text-sm'>Require thumbnail images</p>}
+                  {!!errors.productThumbImg && <p className='text-sm text-red-500'>Require thumbnail images</p>}
                   {value && (
                     <label
                       htmlFor='upload-thumbnail'
@@ -314,7 +314,7 @@ const AddNewProductForm = ({
                 />
               ))}
             </Stack>
-            {!!errors?.productDescImg && <p className='text-red-500 text-sm'>{errors.productDescImg.message}</p>}
+            {!!errors?.productDescImg && <p className='text-sm text-red-500'>{errors.productDescImg.message}</p>}
           </Stack>
           {/* Category */}
           <Stack className='bg-[#f9f9f9] rounded-lg p-4'>
