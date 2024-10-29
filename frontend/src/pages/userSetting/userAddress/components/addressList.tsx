@@ -1,5 +1,5 @@
 import { Anchor, Delete, EmojiTransportation, Home, Map, VpnLock } from '@mui/icons-material';
-import { Divider, IconButton, Stack, Typography } from '@mui/material';
+import { Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 
 import ButtonForm from '@app/components/atoms/button';
 import { UserAddressResponseType } from '@app/types/user';
@@ -30,20 +30,24 @@ const AddressList = ({
               <Typography className='px-2 text-white bg-blue-700 rounded-full'>{idx + 1}</Typography>
 
               <Stack direction={'row'}>
-                <IconButton
-                  disabled={address.isSetDefault}
-                  className='disabled:text-green-500'
-                  color='primary'
-                  onClick={() => handleSetDefaultAddress(address._id)}>
-                  <Anchor />
-                </IconButton>
-                <IconButton
-                  color='secondary'
-                  onClick={() => {
-                    handleDeleteAddress(address._id);
-                  }}>
-                  <Delete />
-                </IconButton>
+                <Tooltip title='Set default'>
+                  <IconButton
+                    disabled={address.isSetDefault}
+                    className='disabled:text-green-500'
+                    color='primary'
+                    onClick={() => handleSetDefaultAddress(address._id)}>
+                    <Anchor />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title='Delete address'>
+                  <IconButton
+                    color='secondary'
+                    onClick={() => {
+                      handleDeleteAddress(address._id);
+                    }}>
+                    <Delete />
+                  </IconButton>
+                </Tooltip>
               </Stack>
             </Stack>
             <Stack spacing={4}>

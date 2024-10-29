@@ -41,7 +41,7 @@ const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
           className={`transition-all duration-200 ease-in-out block w-full px-6 ${showAdminSidebar ? (isMobile ? 'ml-0' : 'ml-64') : 'ml-0'}`}>
           <AdminHeader />
           {/* Nội dung trang bên dưới header */}
-          <Box className='px-2 pt-16 pb-8'>
+          <Box className='px-2 pt-16 pb-8 '>
             <Breadcrumb />
             {children}
           </Box>
