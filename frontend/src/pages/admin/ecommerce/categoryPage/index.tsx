@@ -12,75 +12,39 @@ const CategoryPage = (): JSX.Element => {
   ];
 
   const data = [
-    {
-      fullname: 'Vo Phat',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    },
-    {
-      fullname: 'Phat Vo',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    },
-    {
-      fullname: 'Vo',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    },
-    {
-      fullname: 'Phat',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    },
-    {
-      fullname: 'V',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    },
-    {
-      fullname: 'P',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    },
-    {
-      fullname: 't',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    },
-    {
-      fullname: 'o',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    },
-    {
-      fullname: 'h',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    },
-    {
-      fullname: 'at',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    },
-    {
-      fullname: 'hat',
-      from_date: '2024-02-01',
-      to_date: '2024-10-01'
-    }
+    { fullname: 'Vo Phat', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Phat Vo', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Vo', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Phat', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'V', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Nguyen Phat', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Phat Nguyen', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Phat Tran', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Tran Vo', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Minh Phat', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Phat Minh', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Quang Vo', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Vo Quang', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Long Phat', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Phat Long', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'An Vo', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Vo An', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Binh Vo', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Vo Binh', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Thao Vo', from_date: '2024-02-01', to_date: '2024-10-01' }
   ];
-
   const tableData = useTableData({});
   return (
     <>
       <PageTitle />
       <div className='grid grid-cols-1'>
         <CustomTable
-          tableField={tableField}
           data={data}
+          tableData={tableData}
+          tableField={tableField}
           selection
           pagination
           uniqueField='fullname'
-          tableData={tableData}
         />
       </div>
     </>

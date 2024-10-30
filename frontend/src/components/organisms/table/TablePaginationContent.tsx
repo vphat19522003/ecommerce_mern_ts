@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
+
 import { TablePagination } from '@mui/material';
 
+import { DEFAULT_DATA_LENGTH, DEFAULT_MAX_PAGE } from '@app/constants/table';
 import { ResultOfUseTableData } from '@app/hooks/useTableData';
 
 type TablePaginationProps<TData, TFilterFormData, TFilterData> = {
@@ -10,6 +13,20 @@ const TablePaginationContent = <TData, TFilterFormData, TFilterData>({
   dataLength,
   tableData
 }: TablePaginationProps<TData, TFilterFormData, TFilterData>): JSX.Element => {
+  //Set total data length
+  useEffect(() => {
+    if (tableData.totalDataLength !== dataLength) {
+      tableData.handlePagination?.({
+        totalDataLength: dataLength || DEFAULT_DATA_LENGTH
+      });
+    }
+  }, [dataLength, tableData.totalDataLength, tableData.pageSize]);
+
+  //Set max page number when change page size
+  useEffect(() => {
+    tableData.handleChangeMaxPage?.(dataLength ? Math.ceil(dataLength / (tableData.pageSize || 0)) : DEFAULT_MAX_PAGE);
+  }, [tableData.pageSize, dataLength]);
+
   return (
     <TablePagination
       component='div'

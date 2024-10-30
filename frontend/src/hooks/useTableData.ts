@@ -1,6 +1,12 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import { DEFAULT_DATA_LENGTH, DEFAULT_ITEM_PER_PAGE, DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@app/constants/table';
+import {
+  DEFAULT_DATA_LENGTH,
+  DEFAULT_ITEM_PER_PAGE,
+  DEFAULT_MAX_PAGE,
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE
+} from '@app/constants/table';
 
 interface PaginationType {
   currentPage: number;
@@ -19,15 +25,16 @@ export interface ResultOfUseTableData<TData, TFilterFormData, TFilterData> {
   pageSize?: number;
   totalDataLength?: number;
   itemPerPage?: number[];
-  maxPageNumber?: number;
+  maxPageNumber: number;
   filterData?: TFilterData;
   selectedList: TData[];
-  //   handleSearchClick: (value: TFilterFormData) => void;
+
   handlePagination: (pagination: PaginationOptionType) => void;
   handleChangePage: (e, page: number) => void;
   handleChangePageSize: (e) => void;
-  //handleChangeMaxPage: (maxPage: number) => void;
   handleSelectRow: (data: TData[]) => void;
+  handleChangeMaxPage: (maxPage: number) => void;
+  //   handleSearchClick: (value: TFilterFormData) => void;
 }
 
 type useTableDataProps = {
@@ -35,25 +42,26 @@ type useTableDataProps = {
   pageSize?: number;
   totalDataLength?: number;
   itemPerPage?: number[];
-  maxPageNumber?: number;
 };
 
 const useTableData = <TData, TFilterFormData, TFilterData>({
   currentPage = DEFAULT_PAGE,
   pageSize = DEFAULT_PAGE_SIZE,
   totalDataLength = DEFAULT_DATA_LENGTH,
-  itemPerPage = DEFAULT_ITEM_PER_PAGE,
-  maxPageNumber
+  itemPerPage = DEFAULT_ITEM_PER_PAGE
 }: useTableDataProps): ResultOfUseTableData<TData, TFilterFormData, TFilterData> => {
-  const [selectedList, setSelectedList] = useState<TData[]>([]);
-
   const [pagination, setPagination] = useState<PaginationType>({
     currentPage,
     pageSize,
     totalDataLength
   });
+  const [selectedList, setSelectedList] = useState<TData[]>([]);
 
-  const handleSelectRow = (data) => {
+  const [maxPage, setMaxPage] = useState(
+    !!pagination.totalDataLength ? Math.ceil(pagination.totalDataLength / pagination.pageSize) - 1 : DEFAULT_MAX_PAGE
+  );
+
+  const handleSelectRow = (data: TData[]) => {
     setSelectedList(data);
   };
 
@@ -64,19 +72,22 @@ const useTableData = <TData, TFilterFormData, TFilterData>({
     }));
   };
 
-  const handleChangePage = (e, page) => {
+  const handleChangePage = (e: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
     setPagination((prev) => ({
       ...prev,
       currentPage: page
     }));
   };
 
-  const handleChangePageSize = (e) => {
+  const handleChangePageSize = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setPagination((prev) => {
-      if (prev.pageSize !== e.target.value) {
+      if (prev.pageSize !== Number(e.target.value)) {
         return {
           ...prev,
-          ...{ pageSize: e.target.value, page: DEFAULT_PAGE }
+          ...{
+            pageSize: Number(e.target.value),
+            currentPage: DEFAULT_PAGE
+          }
         };
       } else {
         return prev;
@@ -84,17 +95,22 @@ const useTableData = <TData, TFilterFormData, TFilterData>({
     });
   };
 
+  const handleChangeMaxPage = useCallback((maxPage: number) => {
+    setMaxPage(maxPage);
+  }, []);
   return {
     currentPage: pagination.currentPage,
     pageSize: pagination.pageSize,
     totalDataLength: pagination.totalDataLength,
     itemPerPage,
     selectedList,
+    maxPageNumber: maxPage,
 
     handleSelectRow,
     handlePagination,
     handleChangePage,
-    handleChangePageSize
+    handleChangePageSize,
+    handleChangeMaxPage
   };
 };
 

@@ -33,8 +33,7 @@ const CustomTable = <TData, TFilterFormData, TFilterData>({
   handleEdit,
   pagination = false,
   tableData,
-  uniqueField,
-  maxPage
+  uniqueField
 }: CustomTableProps<TData, TFilterFormData, TFilterData>): JSX.Element => {
   const currentPage = tableData?.currentPage || DEFAULT_PAGE;
   const pageSize = tableData?.pageSize || DEFAULT_PAGE_SIZE;
@@ -152,7 +151,7 @@ const CustomTable = <TData, TFilterFormData, TFilterData>({
           </TableHead>
           <TableBody>
             <TableBodyContent
-              data={data}
+              data={renderData}
               selection={!!selection}
               tableField={tableField}
               renderActions={renderAction}
