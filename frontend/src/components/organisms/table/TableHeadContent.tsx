@@ -8,7 +8,7 @@ type TableHeadContentProps = {
   totalSelected?: number;
   dataLength: number;
   isSelectedAll?: boolean;
-  handleSelectAllClick?: () => void;
+  handleSelectAllRow?: () => void;
   handleSelected?: (type: 'add' | 'clear') => void;
 };
 
@@ -22,7 +22,7 @@ const TableHeadContent = ({
   totalSelected,
   dataLength,
   isSelectedAll,
-  handleSelectAllClick,
+  handleSelectAllRow,
   handleSelected
 }: TableHeadContentProps): JSX.Element => {
   return (
@@ -60,7 +60,7 @@ const TableHeadContent = ({
       <TableRow>
         {selection && (
           <HeadCell padding='checkbox' key={'tbh-selection'}>
-            <Checkbox checked={isSelectedAll && dataLength > 0} onChange={handleSelectAllClick} />
+            <Checkbox checked={isSelectedAll && dataLength > 0} onChange={handleSelectAllRow} />
           </HeadCell>
         )}
         {tableField?.map((item) =>

@@ -78,7 +78,7 @@
             - useTable - PENDING
             - xử lý data có các data con. row có các row con để bấm collapse xổ các row con xuống - PENDING    
             - Pagination - PENDING
-            - Select row - PENDING
+            - Select row - DONE
 47. Tạo giao diện quản lý category và thêm category cho sản phẩm - PENDING
 
                         

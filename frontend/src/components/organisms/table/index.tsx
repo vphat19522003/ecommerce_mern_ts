@@ -1,16 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 import { Delete, Edit } from '@mui/icons-material';
 import { IconButton, Stack, Table, TableBody, TableContainer, TableHead, Tooltip } from '@mui/material';
 
 import { DEFAULT_DATA_LENGTH, DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@app/constants/table';
+import { ResultOfUseTableData } from '@app/hooks/useTableData';
 
 import TableBodyContent from './TableBodyContent';
 import TableHeadContent from './TableHeadContent';
 import TablePaginationContent from './TablePaginationContent';
 import { TableFieldType } from './type';
 
-type CustomTableProps<TItemType> = {
+type CustomTableProps<TItemType, TFilterFormData, TFilterData> = {
   data: TItemType[];
   tableField: TableFieldType[];
   selection?: boolean;
@@ -18,28 +19,90 @@ type CustomTableProps<TItemType> = {
   handleDelete?: (item: TItemType) => void;
   handleEdit?: (item: TItemType) => void;
   pagination?: boolean;
+  maxPage?: number;
+  uniqueField: string;
+  tableData?: ResultOfUseTableData<TItemType, TFilterFormData, TFilterData>;
 };
 
-const CustomTable = <TData,>({
+const CustomTable = <TData, TFilterFormData, TFilterData>({
   data = [],
   tableField,
   selection,
   CustomAction,
   handleDelete,
   handleEdit,
-  pagination = false
-}: CustomTableProps<TData>): JSX.Element => {
-  const currentPage = DEFAULT_PAGE;
-  const pageSize = DEFAULT_PAGE_SIZE;
-  const totalDataLength = DEFAULT_DATA_LENGTH;
+  pagination = false,
+  tableData,
+  uniqueField,
+  maxPage
+}: CustomTableProps<TData, TFilterFormData, TFilterData>): JSX.Element => {
+  const currentPage = tableData?.currentPage || DEFAULT_PAGE;
+  const pageSize = tableData?.pageSize || DEFAULT_PAGE_SIZE;
+  const totalDataLength = tableData?.totalDataLength || DEFAULT_DATA_LENGTH;
+
+  const renderData = useMemo((): TData[] => {
+    if (!!selection) {
+      return data.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
+    } else {
+      return data;
+    }
+  }, [data, currentPage, pageSize, pagination]);
+
+  const handleSelectItem = useCallback(
+    (row: TData) => {
+      if (tableData?.selectedList.some((item) => item[uniqueField] === row[uniqueField])) {
+        const newList = tableData.selectedList.filter((item) => item[uniqueField] !== row[uniqueField]);
+        tableData.handleSelectRow?.(newList || []);
+      } else {
+        tableData?.handleSelectRow([...tableData.selectedList, row]);
+      }
+    },
+    [tableData?.selectedList]
+  );
+
+  const notSelectedData = useMemo(() => {
+    const listNotSelectedRow = [] as TData[];
+
+    renderData.forEach((row) => {
+      if (!tableData?.selectedList.some((selectedRow) => selectedRow[uniqueField] === row[uniqueField])) {
+        listNotSelectedRow.push(row);
+      }
+    });
+
+    return listNotSelectedRow;
+  }, [renderData, tableData?.selectedList]);
+
+  const handleSelectAllRow = useCallback(() => {
+    if (notSelectedData.length > 0) {
+      tableData?.handleSelectRow([...tableData.selectedList, ...notSelectedData]);
+    } else {
+      tableData?.handleSelectRow(
+        tableData?.selectedList?.filter(
+          (item) => renderData.findIndex((subItem) => subItem?.[uniqueField] === item[uniqueField]) === -1
+        )
+      );
+    }
+  }, [tableData?.selectedList, data, notSelectedData]);
+
+  const handleSelected = (type: 'add' | 'clear') => {
+    if (type === 'add') {
+      tableData?.handleSelectRow(data);
+    } else if (type === 'clear') {
+      tableData?.handleSelectRow([]);
+    }
+  };
 
   const handleEditDefault = (item: TData) => {
-    console.log('You is editing: ', item);
+    console.log('You are editing: ', item);
   };
 
   const handleDeleteDefault = (item: TData) => {
-    console.log('You is delete: ', item);
+    console.log('You are deleting: ', item);
   };
+
+  useEffect(() => {
+    console.log('SelectedList', tableData?.selectedList);
+  }, [tableData?.selectedList]);
 
   const renderAction = useCallback(
     (item: TData): JSX.Element =>
@@ -80,8 +143,11 @@ const CustomTable = <TData,>({
             <TableHeadContent
               tableField={tableField}
               selection={!!selection}
-              totalSelected={10}
+              totalSelected={tableData?.selectedList.length}
               dataLength={totalDataLength}
+              isSelectedAll={notSelectedData.length === 0}
+              handleSelectAllRow={handleSelectAllRow}
+              handleSelected={handleSelected}
             />
           </TableHead>
           <TableBody>
@@ -90,11 +156,14 @@ const CustomTable = <TData,>({
               selection={!!selection}
               tableField={tableField}
               renderActions={renderAction}
+              handleSelectItem={handleSelectItem}
+              selectedList={tableData?.selectedList || []}
+              uniqueField={uniqueField}
             />
           </TableBody>
         </Table>
       </TableContainer>
-      {!!pagination && <TablePaginationContent />}
+      {!!pagination && !!tableData && <TablePaginationContent dataLength={data.length} tableData={tableData} />}
     </React.Fragment>
   );
 };

@@ -9,13 +9,19 @@ type TableBodyContentProps<TItemType> = {
   selection?: boolean;
   tableField: TableFieldType[];
   renderActions: (item: TItemType) => JSX.Element;
+  handleSelectItem: (row: TItemType) => void;
+  selectedList: TItemType[];
+  uniqueField: string;
 };
 
 const TableBodyContent = <TData,>({
   data = [],
   selection = false,
   tableField,
-  renderActions
+  renderActions,
+  handleSelectItem,
+  selectedList,
+  uniqueField
 }: TableBodyContentProps<TData>): JSX.Element => {
   return (
     <>
@@ -33,7 +39,12 @@ const TableBodyContent = <TData,>({
               className='relative'>
               {selection && (
                 <TableCell padding='checkbox'>
-                  <Checkbox />
+                  <Checkbox
+                    onChange={() => {
+                      handleSelectItem(row);
+                    }}
+                    checked={selectedList.some((item) => item[uniqueField] === row[uniqueField])}
+                  />
                 </TableCell>
               )}
               {tableField.map((item, idx) => {
