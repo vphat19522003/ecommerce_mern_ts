@@ -1,8 +1,7 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { Search } from '@mui/icons-material';
 import { Divider, Stack } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers';
 
 import ButtonForm from '@app/components/atoms/button';
 import CustomComboBox from '@app/components/atoms/comboBox';
@@ -25,20 +24,52 @@ const TableFilter = <TData,>({
   } = useForm();
   return (
     <>
-      <div className='grid grid-cols-2 gap-4 my-4 xl:grid-cols-3 max-w-5xl'>
+      <div className='grid grid-cols-2 gap-4 my-4 xl:grid-cols-3 max-w-4xl'>
         {filterField?.map((field) => {
           if (field.type === 'input') {
-            return <InputField key={field.id} variant='outlined' backgroundColor='transparent' hideHelperText />;
+            return (
+              <Controller
+                control={control}
+                name={field.id}
+                key={field.id}
+                render={({ field: { value, onChange } }) => (
+                  <InputField
+                    variant='outlined'
+                    backgroundColor='transparent'
+                    size='medium'
+                    hideHelperText
+                    label={field.label}
+                    value={value ? value : ''}
+                    onChange={onChange}
+                  />
+                )}
+              />
+            );
           }
           if (field.type === 'combobox') {
-            return <CustomComboBox key={field.id} data={[]} />;
+            return (
+              <Controller
+                control={control}
+                name={field.id}
+                key={field.id}
+                render={({ field: { value, onChange } }) => (
+                  <CustomComboBox
+                    data={field.data}
+                    size='medium'
+                    label={field.label}
+                    onChange={onChange}
+                    value={value ? value : ''}
+                  />
+                )}
+              />
+            );
           }
-          if (field.type === 'date-picker') {
-            return <DatePicker key={field.id} />;
-          }
-          if (field.type === 'date-range-picker') {
-            return <></>;
-          }
+          //   if (field.type === 'date-picker') {
+          //     return <DatePicker key={field.id} />;
+          //   }
+          //   if (field.type === 'date-range-picker') {
+          //     return <></>;
+          //   }
         })}
 
         <Stack direction={'row'} spacing={2} alignItems={'center'}>
@@ -57,7 +88,7 @@ const TableFilter = <TData,>({
               Reset
             </ButtonForm>
           )}
-          <ButtonForm variant='contained' className='max-h-10 px-3'>
+          <ButtonForm variant='contained' className='max-h-10 px-3' onClick={handleSubmit(onSubmit)}>
             <Stack direction={'row'} alignItems={'center'}>
               <Search />
               <p>Search</p>

@@ -2,14 +2,22 @@ import PageTitle from '@app/components/molecules/admin/pageTitle';
 import CustomTable from '@app/components/organisms/table';
 import { TableFieldType } from '@app/components/organisms/table/type';
 import TableFilter from '@app/components/organisms/tableFilter';
-import { FilterFieldType } from '@app/components/organisms/tableFilter/type';
+import { FilterFieldTypeCustom } from '@app/components/organisms/tableFilter/type';
 import useTableData from '@app/hooks/useTableData';
 
 const CategoryPage = (): JSX.Element => {
-  const filterField: FilterFieldType[] = [
+  const filterField: FilterFieldTypeCustom[] = [
     { id: 'fullname', label: 'Name', type: 'input' },
-    { id: 'gender', label: 'Gender', type: 'combobox' },
-    { id: 'from_date', label: 'From Date', type: 'date-picker' }
+    {
+      id: 'gender',
+      label: 'Gender',
+      type: 'combobox',
+      data: [
+        { label: 'Male', value: 'male', name: 'male' },
+        { label: 'Female', value: 'female', name: 'female' }
+      ]
+    }
+    // { id: 'from_date', label: 'From Date', type: 'date-picker' }
   ];
 
   const tableField: TableFieldType[] = [
@@ -45,10 +53,15 @@ const CategoryPage = (): JSX.Element => {
   return (
     <>
       <PageTitle />
-      <TableFilter filterField={filterField} />
+      <TableFilter
+        filterField={filterField}
+        onSubmit={(data) => {
+          console.log('Filter data', data);
+        }}
+      />
       <div className='grid grid-cols-1'>
         <CustomTable
-          data={data}
+          data={[]}
           tableData={tableData}
           tableField={tableField}
           selection

@@ -63,8 +63,8 @@ const TableBodyContent = <TData,>({
         </>
       ) : (
         <TableRow>
-          <TableCell colSpan={selection ? data.length + 1 : data.length} className='!border-none'>
-            <Stack justifyContent={'center'} alignItems={'center'} className='py-3'>
+          <TableCell colSpan={selection ? tableField.length + 1 : tableField.length}>
+            <Stack justifyContent={'center'} alignItems={'center'} className='py-12'>
               <img src={ViteImg} width={60} alt='logo' />
               <Typography sx={{ color: '#6C737F' }}>No Data</Typography>
             </Stack>
