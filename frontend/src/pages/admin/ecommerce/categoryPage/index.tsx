@@ -1,9 +1,17 @@
 import PageTitle from '@app/components/molecules/admin/pageTitle';
 import CustomTable from '@app/components/organisms/table';
 import { TableFieldType } from '@app/components/organisms/table/type';
+import TableFilter from '@app/components/organisms/tableFilter';
+import { FilterFieldType } from '@app/components/organisms/tableFilter/type';
 import useTableData from '@app/hooks/useTableData';
 
 const CategoryPage = (): JSX.Element => {
+  const filterField: FilterFieldType[] = [
+    { id: 'fullname', label: 'Name', type: 'input' },
+    { id: 'gender', label: 'Gender', type: 'combobox' },
+    { id: 'from_date', label: 'From Date', type: 'date-picker' }
+  ];
+
   const tableField: TableFieldType[] = [
     { field: 'fullname', label: 'Name', textAlign: 'center' },
     { field: 'from_date', label: 'From Date', textAlign: 'center' },
@@ -37,6 +45,7 @@ const CategoryPage = (): JSX.Element => {
   return (
     <>
       <PageTitle />
+      <TableFilter filterField={filterField} />
       <div className='grid grid-cols-1'>
         <CustomTable
           data={data}

@@ -26,6 +26,7 @@ type InputFieldProps = Omit<TextFieldProps, 'helperText' | 'error'> & {
   size?: OverridableStringUnion<'small' | 'medium', TextFieldPropsSizeOverrides>;
   min?: number;
   max?: number;
+  hideHelperText?: boolean;
 };
 
 const InputField = forwardRef(
@@ -43,6 +44,7 @@ const InputField = forwardRef(
       backgroundColor,
       borderColor,
       borderColorFocus,
+      hideHelperText = false,
       ...otherProps
     }: InputFieldProps,
     ref: Ref<HTMLInputElement>
@@ -99,15 +101,17 @@ const InputField = forwardRef(
                 : {}
           }}
         />
-        <Box className='h-2'>
-          <FormHelperText
-            error={!!error}
-            sx={{
-              marginTop: 1
-            }}>
-            {description ? description : error?.message}
-          </FormHelperText>
-        </Box>
+        {!hideHelperText && (
+          <Box className='h-2'>
+            <FormHelperText
+              error={!!error}
+              sx={{
+                marginTop: 1
+              }}>
+              {description ? description : error?.message}
+            </FormHelperText>
+          </Box>
+        )}
       </Box>
     );
   }

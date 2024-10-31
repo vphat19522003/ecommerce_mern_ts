@@ -65,11 +65,11 @@ const TableHeadContent = ({
         )}
         {tableField?.map((item) =>
           item.field === 'action' ? (
-            <HeadCell padding='none' key={item.field} align={item.headerTextAlign || 'center'} width={120}>
+            <HeadCell padding='normal' key={item.field} align={item.headerTextAlign || 'center'} width={120}>
               {item.label}
             </HeadCell>
           ) : (
-            <HeadCell padding='none' key={item.field} align={item.headerTextAlign || 'center'} width={item.width}>
+            <HeadCell padding='normal' key={item.field} align={item.headerTextAlign || 'center'} width={item.width}>
               {item.label}
             </HeadCell>
           )

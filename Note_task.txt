@@ -75,10 +75,11 @@
                         - Implement API create product - DONE
 46. Tạo common table 
             - UI table - DONE
-            - useTable - PENDING
-            - xử lý data có các data con. row có các row con để bấm collapse xổ các row con xuống - PENDING    
-            - Pagination - PENDING
+            - Pagination - DONE
             - Select row - DONE
+            - useTable - PENDING
+            - Filter - PENDING
+            - xử lý data có các data con. row có các row con để bấm collapse xổ các row con xuống - PENDING     
 47. Tạo giao diện quản lý category và thêm category cho sản phẩm - PENDING
 
                         
