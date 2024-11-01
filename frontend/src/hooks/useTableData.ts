@@ -20,7 +20,14 @@ interface PaginationOptionType {
   totalDataLength?: number;
 }
 
-export interface ResultOfUseTableData<TData, TFilterFormData, TFilterData> {
+export type TData = {
+  // Các thuộc tính khác của TData
+  child?: TData[]; // Thuộc tính child là tùy chọn và có kiểu TData
+  parent?: string;
+  [key: string]: any;
+};
+
+export interface ResultOfUseTableData<TFilterFormData, TFilterData> {
   currentPage?: number;
   pageSize?: number;
   totalDataLength?: number;
@@ -46,14 +53,14 @@ type useTableDataProps<TFilterOutput> = {
   formatDataFilterHandle?: (data) => TFilterOutput;
 };
 
-const useTableData = <TData, TFilterFormData, TFilterData>({
+const useTableData = <TFilterFormData, TFilterData>({
   currentPage = DEFAULT_PAGE,
   pageSize = DEFAULT_PAGE_SIZE,
   totalDataLength = DEFAULT_DATA_LENGTH,
   itemPerPage = DEFAULT_ITEM_PER_PAGE,
   defaultSearchData,
   formatDataFilterHandle
-}: useTableDataProps<TFilterData>): ResultOfUseTableData<TData, TFilterFormData, TFilterData> => {
+}: useTableDataProps<TFilterData>): ResultOfUseTableData<TFilterFormData, TFilterData> => {
   const [pagination, setPagination] = useState<PaginationType>({
     currentPage,
     pageSize,

@@ -4,27 +4,28 @@ import { Delete, Edit } from '@mui/icons-material';
 import { IconButton, Stack, Table, TableBody, TableContainer, TableHead, Tooltip } from '@mui/material';
 
 import { DEFAULT_DATA_LENGTH, DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@app/constants/table';
-import { ResultOfUseTableData } from '@app/hooks/useTableData';
+import { ResultOfUseTableData, TData } from '@app/hooks/useTableData';
 
 import TableBodyContent from './TableBodyContent';
 import TableHeadContent from './TableHeadContent';
 import TablePaginationContent from './TablePaginationContent';
 import { TableFieldType } from './type';
 
-type CustomTableProps<TItemType, TFilterFormData, TFilterData> = {
-  data: TItemType[];
+type CustomTableProps<TFilterFormData, TFilterData> = {
+  data: TData[];
   tableField: TableFieldType[];
   selection?: boolean;
   CustomAction?: React.ElementType;
-  handleDelete?: (item: TItemType) => void;
-  handleEdit?: (item: TItemType) => void;
+  handleDelete?: (item: TData) => void;
+  handleEdit?: (item: TData) => void;
   pagination?: boolean;
   maxPage?: number;
   uniqueField: string;
-  tableData?: ResultOfUseTableData<TItemType, TFilterFormData, TFilterData>;
+  tableData?: ResultOfUseTableData<TFilterFormData, TFilterData>;
+  collapsed?: boolean;
 };
 
-const CustomTable = <TData, TFilterFormData, TFilterData>({
+const CustomTable = <TFilterFormData, TFilterData>({
   data = [],
   tableField,
   selection,
@@ -32,9 +33,10 @@ const CustomTable = <TData, TFilterFormData, TFilterData>({
   handleDelete,
   handleEdit,
   pagination = false,
+  collapsed = false,
   tableData,
   uniqueField
-}: CustomTableProps<TData, TFilterFormData, TFilterData>): JSX.Element => {
+}: CustomTableProps<TFilterFormData, TFilterData>): JSX.Element => {
   const currentPage = tableData?.currentPage || DEFAULT_PAGE;
   const pageSize = tableData?.pageSize || DEFAULT_PAGE_SIZE;
   const totalDataLength = tableData?.totalDataLength || DEFAULT_DATA_LENGTH;
@@ -147,6 +149,7 @@ const CustomTable = <TData, TFilterFormData, TFilterData>({
               isSelectedAll={notSelectedData.length === 0}
               handleSelectAllRow={handleSelectAllRow}
               handleSelected={handleSelected}
+              collapsed
             />
           </TableHead>
           <TableBody>
@@ -158,6 +161,7 @@ const CustomTable = <TData, TFilterFormData, TFilterData>({
               handleSelectItem={handleSelectItem}
               selectedList={tableData?.selectedList || []}
               uniqueField={uniqueField}
+              collapsed
             />
           </TableBody>
         </Table>

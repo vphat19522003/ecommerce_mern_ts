@@ -28,13 +28,37 @@ const CategoryPage = (): JSX.Element => {
   ];
 
   const data = [
-    { fullname: 'Vo Phat', from_date: '2024-02-01', to_date: '2024-10-01' },
+    {
+      fullname: 'Vo Phat',
+      from_date: '2024-02-01',
+      to_date: '2024-10-01',
+      child: [
+        {
+          fullname: 'Vo Phat Child',
+          from_date: '2024-02-01',
+          to_date: '2024-10-01',
+          parent: 'Vo Phat CHILF'
+        },
+        {
+          fullname: 'Vo Phat Child',
+          from_date: '2024-02-01',
+          to_date: '2024-10-01',
+          parent: 'Vo Phat CHILF'
+        },
+        {
+          fullname: 'Vo Phat Child',
+          from_date: '2024-02-01',
+          to_date: '2024-10-01',
+          parent: 'Vo Phat CHILF'
+        }
+      ]
+    },
     { fullname: 'Phat Vo', from_date: '2024-02-01', to_date: '2024-10-01' },
     { fullname: 'Vo', from_date: '2024-02-01', to_date: '2024-10-01' },
     { fullname: 'Phat', from_date: '2024-02-01', to_date: '2024-10-01' },
     { fullname: 'V', from_date: '2024-02-01', to_date: '2024-10-01' },
-    { fullname: 'Nguyen Phat', from_date: '2024-02-01', to_date: '2024-10-01' },
-    { fullname: 'Phat Nguyen', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Nuyen Phat', from_date: '2024-02-01', to_date: '2024-10-01' },
+    { fullname: 'Phat Nuyen', from_date: '2024-02-01', to_date: '2024-10-01' },
     { fullname: 'Phat Tran', from_date: '2024-02-01', to_date: '2024-10-01' },
     { fullname: 'Tran Vo', from_date: '2024-02-01', to_date: '2024-10-01' },
     { fullname: 'Minh Phat', from_date: '2024-02-01', to_date: '2024-10-01' },
@@ -61,12 +85,13 @@ const CategoryPage = (): JSX.Element => {
       />
       <div className='grid grid-cols-1'>
         <CustomTable
-          data={[]}
+          data={data}
           tableData={tableData}
           tableField={tableField}
           selection
           pagination
           uniqueField='fullname'
+          collapsed
         />
       </div>
     </>

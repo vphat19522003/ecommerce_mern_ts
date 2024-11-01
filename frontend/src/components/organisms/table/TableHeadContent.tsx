@@ -10,6 +10,7 @@ type TableHeadContentProps = {
   isSelectedAll?: boolean;
   handleSelectAllRow?: () => void;
   handleSelected?: (type: 'add' | 'clear') => void;
+  collapsed?: boolean;
 };
 
 export const HeadCell = styled(TableCell)(() => ({
@@ -23,7 +24,8 @@ const TableHeadContent = ({
   dataLength,
   isSelectedAll,
   handleSelectAllRow,
-  handleSelected
+  handleSelected,
+  collapsed
 }: TableHeadContentProps): JSX.Element => {
   return (
     <>
@@ -34,7 +36,7 @@ const TableHeadContent = ({
             align='justify'
             key={'tbh-selection'}
             colSpan={tableField?.length + 1}
-            className='!bg-[#f8f9fa] !px-4 !py-5 w-full'>
+            className='!bg-[#f8f9fa] !px-4 !py-5'>
             <Stack direction={'row'} alignItems={'flex-end'} justifyContent={'space-between'}>
               <Stack direction={'row'} alignItems={'flex-end'} className='font-medium'>
                 <span className='mr-1'>Selected:</span> <span className='text-lg font-semibold '>{totalSelected}</span>{' '}
@@ -58,6 +60,7 @@ const TableHeadContent = ({
         </TableRow>
       )}
       <TableRow>
+        {collapsed && <HeadCell padding='checkbox'></HeadCell>}
         {selection && (
           <HeadCell padding='checkbox' key={'tbh-selection'}>
             <Checkbox checked={isSelectedAll && dataLength > 0} onChange={handleSelectAllRow} />

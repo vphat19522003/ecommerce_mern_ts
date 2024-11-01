@@ -1,65 +1,98 @@
-import { Checkbox, Stack, TableCell, TableRow, Typography } from '@mui/material';
+import { Stack, TableCell, TableRow, Typography } from '@mui/material';
 
 import ViteImg from '@app/assets/vite.svg';
+import { TData } from '@app/hooks/useTableData';
 
+import TableRowItem from './TableRowItem';
+import TableRowItemCollapse from './TableRowItemCollapse';
 import { TableFieldType } from './type';
 
-type TableBodyContentProps<TItemType> = {
-  data: TItemType[];
+type TableBodyContentProps = {
+  data: TData[];
   selection?: boolean;
   tableField: TableFieldType[];
-  renderActions: (item: TItemType) => JSX.Element;
-  handleSelectItem: (row: TItemType) => void;
-  selectedList: TItemType[];
+  renderActions: (item: TData) => JSX.Element;
+  handleSelectItem: (row: TData) => void;
+  selectedList: TData[];
   uniqueField: string;
+  collapsed?: boolean;
 };
 
-const TableBodyContent = <TData,>({
+const TableBodyContent = ({
   data = [],
   selection = false,
   tableField,
   renderActions,
   handleSelectItem,
   selectedList,
-  uniqueField
-}: TableBodyContentProps<TData>): JSX.Element => {
+  uniqueField,
+  collapsed
+}: TableBodyContentProps): JSX.Element => {
   return (
     <>
       {data.length > 0 ? (
         <>
-          {data.map((row, index) => (
-            <TableRow
-              key={index}
-              sx={{
-                '&:nth-of-type(even)': {
-                  // Sử dụng :nth-of-type thay vì :nth-child
-                  background: '#f8f9fa'
-                }
-              }}
-              className='relative'>
-              {selection && (
-                <TableCell padding='checkbox'>
-                  <Checkbox
-                    onChange={() => {
-                      handleSelectItem(row);
-                    }}
-                    checked={selectedList.some((item) => item[uniqueField] === row[uniqueField])}
-                  />
-                </TableCell>
-              )}
-              {tableField.map((item, idx) => {
-                if (item?.customRender) {
-                  return <TableCell key={idx}>{item?.customRender?.(row)}</TableCell>;
-                }
+          {data.map((row, index) =>
+            // <TableRow
+            //   key={index}
+            //   sx={{
+            //     '&:nth-of-type(even)': {
+            //       // Sử dụng :nth-of-type thay vì :nth-child
+            //       background: '#f8f9fa'
+            //     }
+            //   }}
+            //   className='relative'>
+            //   {selection && (
+            //     <TableCell padding='checkbox'>
+            //       <Checkbox
+            //         onChange={() => {
+            //           handleSelectItem(row);
+            //         }}
+            //         checked={selectedList.some((item) => item[uniqueField] === row[uniqueField])}
+            //       />
+            //     </TableCell>
+            //   )}
+            //   {tableField.map((item, idx) => {
+            //     if (item?.customRender) {
+            //       return <TableCell key={idx}>{item?.customRender?.(row)}</TableCell>;
+            //     }
 
-                return (
-                  <TableCell key={idx} align={item?.textAlign}>
-                    {item.field !== 'action' ? row[item.field] : renderActions(row)}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          ))}
+            //     return (
+            //       <TableCell key={idx} align={item?.textAlign}>
+            //         {item.field !== 'action' ? row[item.field] : renderActions(row)}
+            //       </TableCell>
+            //     );
+            //   })}
+            // </TableRow>
+
+            !row.child ? (
+              <TableRowItem
+                key={row[uniqueField]}
+                tableField={tableField}
+                renderActions={renderActions}
+                row={row}
+                handleSelectItem={handleSelectItem}
+                selectedList={selectedList}
+                uniqueField={uniqueField}
+                selection={selection}
+                collapsed={collapsed}
+                index={index}
+              />
+            ) : (
+              <TableRowItemCollapse
+                key={row[uniqueField]}
+                tableField={tableField}
+                renderActions={renderActions}
+                row={row}
+                handleSelectItem={handleSelectItem}
+                selectedList={selectedList}
+                uniqueField={uniqueField}
+                selection={selection}
+                collapsed={collapsed}
+                index={index}
+              />
+            )
+          )}
         </>
       ) : (
         <TableRow>
