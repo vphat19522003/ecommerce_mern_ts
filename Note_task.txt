@@ -77,9 +77,10 @@
             - UI table - DONE
             - Pagination - DONE
             - Select row - DONE
-            - useTable - PENDING
-            - Filter - PENDING
-            - xử lý data có các data con. row có các row con để bấm collapse xổ các row con xuống - PENDING     
+            - useTable - DONE
+            - Filter - DONE
+            - xử lý data có các data con. row có các row con để bấm collapse xổ các row con xuống - DONE     
 47. Tạo giao diện quản lý category và thêm category cho sản phẩm - PENDING
+                    -fix api category - add filter khi query
 
                         

@@ -26,8 +26,13 @@ class CategoryRepository {
     return newCategory.toObject<CategoryInfo>();
   }
 
-  static async getMainCategory(): Promise<CategoryInfo[]> {
-    const listMainCategory = await CategoryModel.find({ parentCategory: null }).lean();
+  static async getMainCategory(name?: string): Promise<CategoryInfo[]> {
+    const filter: { parentCategory: null; name?: { $regex: string; $options: string } } = { parentCategory: null };
+    if (name) {
+      filter.name = { $regex: name, $options: 'i' };
+    }
+
+    const listMainCategory = await CategoryModel.find(filter).lean();
     return listMainCategory as unknown as CategoryInfo[];
   }
 

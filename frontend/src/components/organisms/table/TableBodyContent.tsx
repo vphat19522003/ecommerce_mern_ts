@@ -13,7 +13,7 @@ type TableBodyContentProps = {
   tableField: TableFieldType[];
   renderActions: (item: TData) => JSX.Element;
   handleSelectItem: (row: TData) => void;
-  selectedList: TData[];
+  selectedList?: TData[];
   uniqueField: string;
   collapsed?: boolean;
 };
@@ -72,7 +72,7 @@ const TableBodyContent = ({
                 renderActions={renderActions}
                 row={row}
                 handleSelectItem={handleSelectItem}
-                selectedList={selectedList}
+                selectedList={selectedList || []}
                 uniqueField={uniqueField}
                 selection={selection}
                 collapsed={collapsed}
@@ -85,7 +85,7 @@ const TableBodyContent = ({
                 renderActions={renderActions}
                 row={row}
                 handleSelectItem={handleSelectItem}
-                selectedList={selectedList}
+                selectedList={selectedList || []}
                 uniqueField={uniqueField}
                 selection={selection}
                 collapsed={collapsed}

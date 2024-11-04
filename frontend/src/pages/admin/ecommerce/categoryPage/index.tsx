@@ -37,19 +37,39 @@ const CategoryPage = (): JSX.Element => {
           fullname: 'Vo Phat Child',
           from_date: '2024-02-01',
           to_date: '2024-10-01',
-          parent: 'Vo Phat CHILF'
+          parent: 'Vo Phat',
+          child: [
+            {
+              fullname: 'Vo Phat Child42142',
+              from_date: '2024-02-01',
+              to_date: '2024-10-01',
+              parent: 'Vo Phat Child'
+            },
+            {
+              fullname: 'Vo Phat Child3432',
+              from_date: '2024-02-01',
+              to_date: '2024-10-01',
+              parent: 'Vo Phat Child'
+            },
+            {
+              fullname: 'Vo Phat Child5334',
+              from_date: '2024-02-01',
+              to_date: '2024-10-01',
+              parent: 'Vo Phat Child'
+            }
+          ]
         },
         {
-          fullname: 'Vo Phat Child',
+          fullname: 'Vo Phat Child333',
           from_date: '2024-02-01',
           to_date: '2024-10-01',
-          parent: 'Vo Phat CHILF'
+          parent: 'Vo Phat'
         },
         {
-          fullname: 'Vo Phat Child',
+          fullname: 'Vo Phat Child444',
           from_date: '2024-02-01',
           to_date: '2024-10-01',
-          parent: 'Vo Phat CHILF'
+          parent: 'Vo Phat'
         }
       ]
     },
@@ -88,7 +108,6 @@ const CategoryPage = (): JSX.Element => {
           data={data}
           tableData={tableData}
           tableField={tableField}
-          selection
           pagination
           uniqueField='fullname'
           collapsed

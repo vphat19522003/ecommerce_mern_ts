@@ -23,7 +23,11 @@ type CustomTableProps<TFilterFormData, TFilterData> = {
   uniqueField: string;
   tableData?: ResultOfUseTableData<TFilterFormData, TFilterData>;
   collapsed?: boolean;
-};
+} & (
+  | { selection: true; collapsed?: false }
+  | { collapsed: true; selection?: false }
+  | { selection?: false; collapsed?: false }
+);
 
 const CustomTable = <TFilterFormData, TFilterData>({
   data = [],
@@ -42,7 +46,7 @@ const CustomTable = <TFilterFormData, TFilterData>({
   const totalDataLength = tableData?.totalDataLength || DEFAULT_DATA_LENGTH;
 
   const renderData = useMemo((): TData[] => {
-    if (!!selection) {
+    if (!!pagination) {
       return data.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
     } else {
       return data;
@@ -161,7 +165,7 @@ const CustomTable = <TFilterFormData, TFilterData>({
               handleSelectItem={handleSelectItem}
               selectedList={tableData?.selectedList || []}
               uniqueField={uniqueField}
-              collapsed
+              collapsed={collapsed}
             />
           </TableBody>
         </Table>

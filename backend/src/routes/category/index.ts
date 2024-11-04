@@ -16,6 +16,6 @@ categoryRouter.post('/create-category', upload.single('file'), reqHandler(create
 categoryRouter.get('/get-main-category', reqHandler(getMainCategoryController));
 categoryRouter.get('/get-sub-category', reqHandler(getSubCategoryController));
 categoryRouter.post('/delete-category', reqHandler(deleteCategoryController));
-categoryRouter.get('/get-tree-category', reqHandler(getTreeCategoryController));
+categoryRouter.post('/get-tree-category', reqHandler(getTreeCategoryController));
 
 export default categoryRouter;

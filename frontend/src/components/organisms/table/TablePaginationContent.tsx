@@ -5,14 +5,14 @@ import { TablePagination } from '@mui/material';
 import { DEFAULT_DATA_LENGTH, DEFAULT_MAX_PAGE } from '@app/constants/table';
 import { ResultOfUseTableData } from '@app/hooks/useTableData';
 
-type TablePaginationProps<TData, TFilterFormData, TFilterData> = {
-  tableData: ResultOfUseTableData<TData, TFilterFormData, TFilterData>;
+type TablePaginationProps<TFilterFormData, TFilterData> = {
+  tableData: ResultOfUseTableData<TFilterFormData, TFilterData>;
   dataLength: number;
 };
-const TablePaginationContent = <TData, TFilterFormData, TFilterData>({
+const TablePaginationContent = <TFilterFormData, TFilterData>({
   dataLength,
   tableData
-}: TablePaginationProps<TData, TFilterFormData, TFilterData>): JSX.Element => {
+}: TablePaginationProps<TFilterFormData, TFilterData>): JSX.Element => {
   //Set total data length
   useEffect(() => {
     if (tableData.totalDataLength !== dataLength) {

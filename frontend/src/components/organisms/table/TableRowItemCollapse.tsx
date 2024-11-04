@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { Checkbox, Collapse, IconButton, TableCell, TableRow } from '@mui/material';
+import { Checkbox, IconButton, TableCell, TableRow } from '@mui/material';
 
 import { TData } from '@app/hooks/useTableData';
 
+import SubTable from './SubTable';
 import { TableFieldType } from './type';
 
 type TableRowItemCollapseProps = {
@@ -37,7 +38,6 @@ const TableRowItemCollapse = ({
       <TableRow
         sx={{
           background: row.parent ? '#e6f7ff' : index % 2 === 0 ? '#f8f9fa' : 'inherit',
-          // Chỉ định màu nền khác nếu có parent, hoặc áp dụng màu nền cho các hàng chẵn
           visibility: open || !row.parent ? 'visible' : 'collapse'
         }}
         className='relative'>
@@ -71,41 +71,19 @@ const TableRowItemCollapse = ({
         })}
       </TableRow>
 
-      {open && (
-        <>
-          {row.child?.map((subRow, index) =>
-            !subRow.child ? (
-              <TableRow key={index}>
-                <TableCell colSpan={tableField?.length + 2}>
-                  <Collapse in={open} timeout='auto' unmountOnExit>
-                    testttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
-                  </Collapse>
-                </TableCell>
-              </TableRow>
-            ) : (
-              // <TableRowItemCollapse
-              //   key={index}
-              //   tableField={tableField}
-              //   renderActions={renderActions}
-              //   row={subRow}
-              //   handleSelectItem={handleSelectItem}
-              //   selectedList={selectedList}
-              //   uniqueField={uniqueField}
-              //   selection={selection}
-              //   collapsed={collapsed}
-              //   index={index}
-              //   open={open}
-              // />
-              <TableRow key={index}>
-                <TableCell colSpan={tableField?.length + 1}>
-                  <Collapse in={open} timeout='auto' unmountOnExit>
-                    testttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
-                  </Collapse>
-                </TableCell>
-              </TableRow>
-            )
-          )}
-        </>
+      {row.child && (
+        <TableRow className={`${open ? 'visible' : 'hidden'}`}>
+          <TableCell colSpan={selection || collapsed ? tableField.length + 1 : tableField.length}>
+            <SubTable
+              data={[...row.child]}
+              open={open}
+              renderActions={renderActions}
+              uniqueField={uniqueField}
+              tableField={tableField}
+              collapsed={collapsed}
+            />
+          </TableCell>
+        </TableRow>
       )}
     </>
   );

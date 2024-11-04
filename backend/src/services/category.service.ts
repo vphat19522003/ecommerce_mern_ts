@@ -66,8 +66,8 @@ class CategoryService {
     }
   }
 
-  static async getMainCategory(): Promise<CategoryInfo[]> {
-    const listCategory = await CategoryRepository.getMainCategory();
+  static async getMainCategory(name?: string): Promise<CategoryInfo[]> {
+    const listCategory = await CategoryRepository.getMainCategory(name);
     return listCategory.map((category) => omit(category, '__v', 'updatedAt'));
   }
 
@@ -114,15 +114,33 @@ class CategoryService {
   }
 
   static async getTreeCategory(req: Request): Promise<unknown> {
-    const { category_id } = req.query;
-    let listCategory = [];
+    const { category_id, name } = req.body;
+    let listCategoryId: string[] = [];
     const categoryTree = [];
 
-    if (!category_id) listCategory = await this.getMainCategory();
-    else listCategory.push(category_id);
+    if (!category_id && !name) {
+      let tempArr = [];
 
-    for (let idx = 0; idx < listCategory.length; idx++) {
-      const categoryTreeItem = await CategoryRepository.getTreeCategory(listCategory[idx] as string);
+      tempArr = await this.getMainCategory(name);
+
+      if (tempArr.length > 0) listCategoryId = tempArr.map((category) => category._id) as string[];
+    } else if (!category_id && name) {
+      const filter: { name?: { $regex: string; $options: string } } = {};
+      if (name) {
+        filter.name = { $regex: name, $options: 'i' };
+      }
+
+      let tempArr = [];
+
+      tempArr = await CategoryModel.find(filter).lean();
+
+      if (tempArr.length > 0) listCategoryId = tempArr.map((category) => category._id) as string[];
+    } else {
+      listCategoryId.push(category_id as string);
+    }
+
+    for (let idx = 0; idx < listCategoryId.length; idx++) {
+      const categoryTreeItem = await CategoryRepository.getTreeCategory(listCategoryId[idx] as string);
       categoryTree.push(categoryTreeItem);
     }
 
