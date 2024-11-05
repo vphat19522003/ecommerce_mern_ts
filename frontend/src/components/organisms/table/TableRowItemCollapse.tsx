@@ -33,6 +33,7 @@ const TableRowItemCollapse = ({
   index
 }: TableRowItemCollapseProps): JSX.Element => {
   const [open, setOpen] = useState(false);
+
   return (
     <>
       <TableRow
@@ -41,11 +42,13 @@ const TableRowItemCollapse = ({
           visibility: open || !row.parent ? 'visible' : 'collapse'
         }}
         className='relative'>
-        {row.child && (
+        {collapsed && (
           <TableCell padding='checkbox' className={`${row.parent ? '!pl-10' : ''}`}>
-            <IconButton onClick={() => setOpen((prev) => !prev)}>
-              {open ? <ExpandLess className='text-pink-500' /> : <ExpandMore className='text-pink-500' />}
-            </IconButton>
+            {row.child && row.child.length > 0 && (
+              <IconButton onClick={() => setOpen((prev) => !prev)}>
+                {open ? <ExpandLess className='text-pink-500' /> : <ExpandMore className='text-pink-500' />}
+              </IconButton>
+            )}
           </TableCell>
         )}
         {selection && (
@@ -71,7 +74,7 @@ const TableRowItemCollapse = ({
         })}
       </TableRow>
 
-      {row.child && (
+      {row.child && row.child.length > 0 && (
         <TableRow className={`${open ? 'visible' : 'hidden'}`}>
           <TableCell colSpan={selection || collapsed ? tableField.length + 1 : tableField.length}>
             <SubTable

@@ -11,7 +11,7 @@ import { isValidImage } from '@app/utils/validateFileType.util';
 
 class CategoryService {
   static async createCategory(req: Request): Promise<CategoryInfo> {
-    const { name, description, parentCategory } = req.body;
+    const { name, description, parent } = req.body;
     const file = req.file;
     const folder = 'category';
 
@@ -24,9 +24,9 @@ class CategoryService {
     const isExistName = await CategoryModel.findOne({ name });
     if (isExistName) throw new CustomError('Category Name is already existed', STATUS_CODE.BAD_REQUEST);
 
-    if (parentCategory) {
-      const parent = await CategoryModel.findById(parentCategory);
-      if (!parent) throw new CustomError('Parent category not found', STATUS_CODE.BAD_REQUEST);
+    if (parent) {
+      const parentCategory = await CategoryModel.findById(parent);
+      if (!parentCategory) throw new CustomError('Parent category not found', STATUS_CODE.BAD_REQUEST);
     }
 
     let newCategory;
@@ -39,7 +39,7 @@ class CategoryService {
       newCategory = await CategoryRepository.createCategory({
         name,
         description,
-        parentCategory: parentCategory || null,
+        parent: parent || null,
         categoryImg: {
           category_img_url: uploadResult.url,
           category_img_public_id: uploadResult.public_id
@@ -48,12 +48,8 @@ class CategoryService {
 
       if (!newCategory) throw new CustomError('Failed to create category', STATUS_CODE.INTERNAL_SERVER_ERROR);
 
-      if (parentCategory) {
-        await CategoryModel.findByIdAndUpdate(
-          parentCategory,
-          { $push: { subCategories: newCategory._id } },
-          { new: true }
-        );
+      if (parent) {
+        await CategoryModel.findByIdAndUpdate(parent, { $push: { subCategories: newCategory._id } }, { new: true });
       }
 
       return omit(newCategory, '__v', 'updatedAt');
@@ -90,7 +86,7 @@ class CategoryService {
 
       if (!category) throw new CustomError('No category found', STATUS_CODE.BAD_REQUEST);
 
-      parentCategory = category.parentCategory;
+      parentCategory = category.parent;
 
       const result = (await CategoryRepository.deleteCategory(category_id as string)) as mongoose.mongo.DeleteResult;
 
@@ -101,7 +97,7 @@ class CategoryService {
           await CategoryModel.findByIdAndUpdate(
             parentCategory,
             {
-              $pull: { subCategories: category_id }
+              $pull: { child: category_id }
             },
             {
               new: true
@@ -114,25 +110,14 @@ class CategoryService {
   }
 
   static async getTreeCategory(req: Request): Promise<unknown> {
-    const { category_id, name } = req.body;
+    const { category_id } = req.query;
     let listCategoryId: string[] = [];
     const categoryTree = [];
 
-    if (!category_id && !name) {
+    if (!category_id) {
       let tempArr = [];
 
-      tempArr = await this.getMainCategory(name);
-
-      if (tempArr.length > 0) listCategoryId = tempArr.map((category) => category._id) as string[];
-    } else if (!category_id && name) {
-      const filter: { name?: { $regex: string; $options: string } } = {};
-      if (name) {
-        filter.name = { $regex: name, $options: 'i' };
-      }
-
-      let tempArr = [];
-
-      tempArr = await CategoryModel.find(filter).lean();
+      tempArr = await this.getMainCategory();
 
       if (tempArr.length > 0) listCategoryId = tempArr.map((category) => category._id) as string[];
     } else {

@@ -9,8 +9,8 @@ export interface ICategory extends Document {
   name: string;
   description: string;
   categoryImg: CategoryImageType;
-  parentCategory: Types.ObjectId;
-  subCategories: [Types.ObjectId];
+  parent: Types.ObjectId;
+  child: [Types.ObjectId];
 }
 
 const categoryImageSchema = new Schema<CategoryImageType>(
@@ -31,12 +31,12 @@ const categorySchema = new Schema<ICategory>(
       type: String
     },
     categoryImg: categoryImageSchema,
-    parentCategory: {
+    parent: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
       default: null
     },
-    subCategories: [{ type: Schema.Types.ObjectId, ref: 'Category' }]
+    child: [{ type: Schema.Types.ObjectId, ref: 'Category' }]
   },
   {
     timestamps: true

@@ -15,5 +15,7 @@ export const errorMessages = {
   noSpacesAllowed: 'No spaces allowed',
   fullNameMinLength: 'Full name must be at least 5 characters long',
   productNameMinLength: 'Product name must be at least 3 characters long',
-  descriptionMinLength: 'Description must be at least 5 characters long'
+  descriptionMinLength: 'Description must be at least 5 characters long',
+  categoryNameMinLength: 'Category name must be at least 3 characters long',
+  categoryDescriptionMinLength: 'Category description must be at least 5 characters long'
 };

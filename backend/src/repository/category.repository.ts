@@ -10,24 +10,24 @@ export type CategoryInfo = {
   name: string;
   description?: string;
   categoryImg: CategoryImageType;
-  parentCategory?: string;
-  subCategories?: [string];
+  parent?: string;
+  child?: [string];
 };
 
 class CategoryRepository {
-  static async createCategory({ name, description, categoryImg, parentCategory }: CategoryInfo): Promise<CategoryInfo> {
+  static async createCategory({ name, description, categoryImg, parent }: CategoryInfo): Promise<CategoryInfo> {
     const newCategory = await CategoryModel.create({
       name,
       description,
       categoryImg,
-      parentCategory
+      parent
     });
 
     return newCategory.toObject<CategoryInfo>();
   }
 
   static async getMainCategory(name?: string): Promise<CategoryInfo[]> {
-    const filter: { parentCategory: null; name?: { $regex: string; $options: string } } = { parentCategory: null };
+    const filter: { parent: null; name?: { $regex: string; $options: string } } = { parent: null };
     if (name) {
       filter.name = { $regex: name, $options: 'i' };
     }
@@ -37,12 +37,12 @@ class CategoryRepository {
   }
 
   static async getSubCategory(parent_id: string): Promise<CategoryInfo[]> {
-    const listMainCategory = await CategoryModel.find({ parentCategory: parent_id }).lean();
+    const listMainCategory = await CategoryModel.find({ parent: parent_id }).lean();
     return listMainCategory as unknown as CategoryInfo[];
   }
 
   static async deleteCategory(category_id: string): Promise<mongoose.mongo.DeleteResult> {
-    const subCategories = await CategoryModel.find({ parentCategory: category_id });
+    const subCategories = await CategoryModel.find({ parent: category_id });
 
     for (const subCategory of subCategories) {
       await this.deleteCategory(subCategory._id as string);
@@ -60,12 +60,12 @@ class CategoryRepository {
       throw new CustomError('Category not found', STATUS_CODE.BAD_REQUEST);
     }
 
-    const subCategories = await CategoryModel.find({ parentCategory: new Types.ObjectId(category_id) }).lean();
+    const child = await CategoryModel.find({ parent: new Types.ObjectId(category_id) }).lean();
 
-    if (subCategories.length > 0) {
-      category.subCategories = await Promise.all(
-        subCategories.map(async (subCategory) => {
-          return await this.getTreeCategory(subCategory._id as string);
+    if (child.length > 0) {
+      category.child = await Promise.all(
+        child.map(async (childItem) => {
+          return await this.getTreeCategory(childItem._id as string);
         })
       );
     }
@@ -76,11 +76,11 @@ class CategoryRepository {
   static async findTopParentCategory(categoryId: string | mongoose.Types.ObjectId): Promise<ICategory> {
     const category = await CategoryModel.findById(new Types.ObjectId(categoryId)).populate('parentCategory').lean();
 
-    if (!category!.parentCategory) {
+    if (!category!.parent) {
       return category as ICategory;
     }
 
-    return this.findTopParentCategory(category!.parentCategory._id);
+    return this.findTopParentCategory(category!.parent._id);
   }
 }
 

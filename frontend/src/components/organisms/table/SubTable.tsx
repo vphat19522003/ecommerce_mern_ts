@@ -26,7 +26,7 @@ const SubTable = ({ data, tableField, renderActions, uniqueField, collapsed, ope
               return (
                 <React.Fragment key={row[uniqueField]}>
                   <TableRow className='bg-slate-50 '>
-                    {row.child ? (
+                    {row.child && row.child.length > 0 ? (
                       <TableCell padding='checkbox' className={`${row.parent ? '!pl-10' : ''}`}>
                         <IconButton onClick={() => setOpenSubRow((prev) => !prev)}>
                           {openSubRow ? (
@@ -50,7 +50,7 @@ const SubTable = ({ data, tableField, renderActions, uniqueField, collapsed, ope
                       );
                     })}
                   </TableRow>
-                  {row.child && (
+                  {row.child && row.child.length > 0 && (
                     <TableRow className={`${openSubRow ? 'visible' : 'hidden'}`}>
                       <TableCell colSpan={collapsed ? tableField.length + 1 : tableField.length}>
                         <SubTable

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { Delete, Edit } from '@mui/icons-material';
 import { IconButton, Stack, Table, TableBody, TableContainer, TableHead, Tooltip } from '@mui/material';
@@ -104,10 +104,6 @@ const CustomTable = <TFilterFormData, TFilterData>({
   const handleDeleteDefault = (item: TData) => {
     console.log('You are deleting: ', item);
   };
-
-  useEffect(() => {
-    console.log('SelectedList', tableData?.selectedList);
-  }, [tableData?.selectedList]);
 
   const renderAction = useCallback(
     (item: TData): JSX.Element =>

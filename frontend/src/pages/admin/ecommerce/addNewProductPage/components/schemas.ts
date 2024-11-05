@@ -3,7 +3,7 @@ import * as zod from 'zod';
 import { errorMessages } from '@app/constants/errorMessages';
 import { zodAlwaysRefine } from '@app/utils/zodAlwaysRefine';
 
-const imageSchema = zod.string().url();
+export const imageSchema = zod.string().url();
 export const AddNewProductFormSchema = zod
   .object({
     productName: zod.string().min(1, errorMessages.require).min(3, errorMessages.productNameMinLength),

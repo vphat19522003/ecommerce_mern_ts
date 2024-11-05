@@ -6,7 +6,11 @@ export type CategoryResponseType = {
     category_img_url: string;
     category_img_public_id: string;
   };
-  parentCategory: string;
-  subCategories: string[];
+  parent: string;
+  child: string[];
   createdAt: string;
+};
+
+export type CustomCategoryResponseType = Omit<CategoryResponseType, 'child'> & {
+  child: CustomCategoryResponseType[];
 };
