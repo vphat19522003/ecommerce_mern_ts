@@ -14,5 +14,6 @@ export const AddNewCategoryFormSchema = zod.object({
 
 export type AddNewCategoryFormType = zod.infer<typeof AddNewCategoryFormSchema>;
 export type AddNewCategoryFormCustom = Omit<AddNewCategoryFormType, 'categoryImg'> & {
-  productThumbImg: File;
+  categoryImg: File;
+  parent?: string;
 };

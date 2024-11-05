@@ -13,7 +13,7 @@ class CategoryService {
   static async createCategory(req: Request): Promise<CategoryInfo> {
     const { name, description, parent } = req.body;
     const file = req.file;
-    const folder = 'category';
+    const folder = `category/${name}`;
 
     if (!name) throw new CustomError('No name provided', STATUS_CODE.BAD_REQUEST);
 
