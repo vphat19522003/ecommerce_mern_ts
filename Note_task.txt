@@ -85,5 +85,6 @@
                     -Delete category: DONE
                     -Add sub category: DONE
                     -Edit category: DONE
-
+48. Tạo component banner, video banner: DONE
+49. Hiển thị danh sách sản phẩm trên homepage: PENDING
                         

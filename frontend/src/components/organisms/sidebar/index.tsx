@@ -33,7 +33,7 @@ const Sidebar = (): JSX.Element => {
         alignItems={'center'}
         spacing={2}
         className={`border-b-[1px] border-solid border-t-0 border-x-0 border-gray-100 py-2 pl-2 ${isActivePath && 'cursor-pointer'}`}>
-        <List />
+        <List className='text-[#394E6A]' />
         <Typography variant='h5' className={`py-1 text-xl font-bold ${isActivePath ? 'text-white' : 'text-blue-700'}`}>
           Menu
         </Typography>
@@ -46,7 +46,7 @@ const Sidebar = (): JSX.Element => {
             <Stack direction={'row'} spacing={2} key={category._id} className='py-2 pl-2' alignItems={'center'}>
               <img src={category.categoryImg.category_img_url} alt={category.name} className='object-contain size-10' />
 
-              <Typography variant='h6' className='text-black text-md'>
+              <Typography variant='h6' className='text-[#394E6A] text-md'>
                 {category.name}
               </Typography>
             </Stack>
