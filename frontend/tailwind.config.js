@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Roboto', 'sans-serif']
+        sans: ['Nunito', 'sans-serif']
       },
       animation: {
         'spin-slow': 'spin 2s linear infinite',

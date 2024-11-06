@@ -32,7 +32,6 @@ const HomePageLayout = (): JSX.Element => {
       <Box className='px-2 lg:px-28 xl:px-80 bg-[#fffff] '>
         <Outlet />
       </Box>
-      <Box sx={{ height: '100vh' }} className='bg-[#fffff]'></Box>
       {isMobile && <MobileNavigator />}
       {showSidebar && <MobileSidebar />}
       <Footer />

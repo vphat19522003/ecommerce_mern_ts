@@ -33,7 +33,6 @@ const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
       <Header />
       {!isMobile && <SubBanner />}
       <Box className={`px-2 lg:px-28  xl:px-80 bg-[#fffff] ${isMobile && 'mt-[80px]'}`}>{children}</Box>
-      {/* <Box sx={{ height: '100vh' }} className='bg-[#f6f5fa]'></Box> */}
       {isMobile && <MobileNavigator />}
       {showSidebar && <MobileSideBar />}
       <Footer />

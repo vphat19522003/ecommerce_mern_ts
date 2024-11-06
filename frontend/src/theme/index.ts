@@ -6,7 +6,7 @@ const theme = createTheme({
   palette: paletteConfig,
   spacing: 4,
   typography: {
-    fontFamily: 'Roboto',
+    fontFamily: 'Nunito',
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,

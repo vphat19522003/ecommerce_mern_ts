@@ -25,7 +25,7 @@ const Sidebar = (): JSX.Element => {
   return (
     <Stack
       direction={'column'}
-      className={`relative ${!isActivePath ? 'shadow-md' : 'bg-blue-700 text-white'}`}
+      className={`relative ${!isActivePath ? 'shadow-md bg-blue-700 text-white' : 'bg-blue-700 text-white'}`}
       onMouseLeave={handleMouseLeave}
       onMouseEnter={handleMouseEnter}>
       <Stack
@@ -33,8 +33,8 @@ const Sidebar = (): JSX.Element => {
         alignItems={'center'}
         spacing={2}
         className={`border-b-[1px] border-solid border-t-0 border-x-0 border-gray-100 py-2 pl-2 ${isActivePath && 'cursor-pointer'}`}>
-        <List className='text-[#394E6A]' />
-        <Typography variant='h5' className={`py-1 text-xl font-bold ${isActivePath ? 'text-white' : 'text-blue-700'}`}>
+        <List className='text-white' />
+        <Typography variant='h5' className={'py-1 text-xl font-bold text-white'}>
           Menu
         </Typography>
       </Stack>
