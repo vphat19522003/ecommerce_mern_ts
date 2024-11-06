@@ -9,6 +9,7 @@ import ButtonForm from '@app/components/atoms/button';
 import InputField from '@app/components/atoms/inputField';
 import Label from '@app/components/atoms/label';
 import TextArea from '@app/components/atoms/textArea';
+import { CustomCategoryResponseType } from '@app/types/category';
 
 import { AddNewCategoryFormCustom, AddNewCategoryFormSchema, AddNewCategoryFormType } from './schemas';
 
@@ -16,9 +17,18 @@ type CategoryFormPropsType = {
   handleAddMainCategory: (categoryValue: AddNewCategoryFormCustom) => void;
   handleCloseDialog: () => void;
   isPending: boolean;
+  mode: 'Add' | 'Edit';
 };
 
-const CategoryForm = ({ handleAddMainCategory, handleCloseDialog, isPending }: CategoryFormPropsType): JSX.Element => {
+const CategoryForm = ({
+  handleAddMainCategory,
+  handleCloseDialog,
+  isPending,
+  name,
+  description,
+  categoryImg,
+  mode
+}: CategoryFormPropsType & CustomCategoryResponseType): JSX.Element => {
   const {
     control,
     handleSubmit,
@@ -26,16 +36,16 @@ const CategoryForm = ({ handleAddMainCategory, handleCloseDialog, isPending }: C
   } = useForm<AddNewCategoryFormType>({
     resolver: zodResolver(AddNewCategoryFormSchema),
     defaultValues: {
-      name: '',
-      description: '',
-      categoryImg: ''
+      name,
+      description,
+      categoryImg: categoryImg.category_img_url
     }
   });
 
-  const [categoryImg, setCategoryImage] = useState<File>();
+  const [categoryImgFile, setCategoryImage] = useState<File>();
 
   const handleSubmitCategory = (category: AddNewCategoryFormType) => {
-    handleAddMainCategory({ ...category, categoryImg: categoryImg as File });
+    handleAddMainCategory({ ...category, categoryImg: categoryImgFile as File });
   };
   return (
     <form onSubmit={handleSubmit(handleSubmitCategory)}>
@@ -182,7 +192,7 @@ const CategoryForm = ({ handleAddMainCategory, handleCloseDialog, isPending }: C
           </Button>
 
           <ButtonForm variant='contained' type='submit' disabled={isPending}>
-            Add
+            {mode}
           </ButtonForm>
         </Stack>
       </Stack>

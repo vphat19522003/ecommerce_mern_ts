@@ -5,15 +5,30 @@ import { CustomCategoryResponseType } from '@app/types/category';
 
 type CategoryActionsProps = {
   handleOpenAddSubDialog: (category: CustomCategoryResponseType) => void;
+  handleOpenEditDialog: (category: CustomCategoryResponseType) => void;
   handleDeleteCategory: (category: CustomCategoryResponseType) => void;
 };
 
-const CategoryActions = ({ handleOpenAddSubDialog, handleDeleteCategory }: CategoryActionsProps) => {
+const CategoryActions = ({
+  handleOpenAddSubDialog,
+  handleOpenEditDialog,
+  handleDeleteCategory
+}: CategoryActionsProps) => {
   return (props: CustomCategoryResponseType): JSX.Element => {
     const handleAddSub = () => {
       handleOpenAddSubDialog(props);
     };
 
+    const handleEdit = () => {
+      handleOpenEditDialog(props);
+    };
+
+    /*************  ✨ Codeium Command ⭐  *************/
+    /**
+     * Delete a category.
+     * @param {CustomCategoryResponseType} props Category object to be deleted.
+     */
+    /******  00ce8f04-0ba5-4d6e-97fa-0ae114c88daf  *******/
     const handleDelete = () => {
       console.log('CATEGORY', props);
       handleDeleteCategory(props);
@@ -26,7 +41,7 @@ const CategoryActions = ({ handleOpenAddSubDialog, handleDeleteCategory }: Categ
           </IconButton>
         </Tooltip>
         <Tooltip title='Edit category'>
-          <IconButton aria-label='edit' className='text-blue-700' onClick={() => {}}>
+          <IconButton aria-label='edit' className='text-blue-700' onClick={handleEdit}>
             <Edit />
           </IconButton>
         </Tooltip>

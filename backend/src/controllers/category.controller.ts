@@ -51,3 +51,13 @@ export const getTreeCategoryController = async (req: Request, res: Response): Pr
     result
   });
 };
+
+export const editCategoryController = async (req: Request, res: Response): Promise<Response> => {
+  const result = await CategoryService.editCategory(req);
+
+  return res.json({
+    message: 'Edit category successfully',
+    status: STATUS_CODE.OK,
+    result
+  });
+};

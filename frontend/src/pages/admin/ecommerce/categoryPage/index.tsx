@@ -5,7 +5,12 @@ import { toast } from 'react-toastify';
 import { AddCircleOutline } from '@mui/icons-material';
 import { CircularProgress, Stack } from '@mui/material';
 
-import { useCreateCategory, useDeleteCategory, useGetListCategory } from '@app/api/hooks/category.hook';
+import {
+  useCreateCategory,
+  useDeleteCategory,
+  useEditCategory,
+  useGetListCategory
+} from '@app/api/hooks/category.hook';
 import ButtonForm from '@app/components/atoms/button';
 import PageTitle from '@app/components/molecules/admin/pageTitle';
 import ConfirmPopup, { IDialogRef } from '@app/components/organisms/confirmPopup';
@@ -21,16 +26,32 @@ import CategoryActions from './components/CategoryActions';
 import CategoryForm from './components/CategoryForm';
 import { AddNewCategoryFormCustom } from './components/schemas';
 
+const initialData: CustomCategoryResponseType = {
+  name: '',
+  description: '',
+  categoryImg: {
+    category_img_public_id: '',
+    category_img_url: ''
+  },
+  _id: '',
+  parent: '',
+  createdAt: '',
+  child: []
+};
+
 const CategoryPage = (): JSX.Element => {
   const [parentCategory, setParentCategory] = useState<CustomCategoryResponseType | null>();
+  const [editData, setEditData] = useState<CustomCategoryResponseType>(initialData);
 
   const addDialogRef = useRef<IDialogRef>(null);
   const deleteDialogRef = useRef<IDialogRef>(null);
   const addSubDialogRef = useRef<IDialogRef>(null);
+  const editDialogRef = useRef<IDialogRef>(null);
 
   const { data: listCategory = [], isLoading, refetch } = useGetListCategory();
   const { mutate: addCategory, isPending } = useCreateCategory();
   const { mutate: deleteCategory } = useDeleteCategory();
+  const { mutate: editCategory } = useEditCategory();
 
   const dispatch = useDispatch();
 
@@ -52,6 +73,11 @@ const CategoryPage = (): JSX.Element => {
     addSubDialogRef.current?.show();
   };
 
+  const handleOpenEditDialog = (category: CustomCategoryResponseType) => {
+    setEditData(category);
+    editDialogRef.current?.show();
+  };
+
   const handleCloseDialog = () => {
     addDialogRef.current?.hide();
     setParentCategory(null);
@@ -59,6 +85,11 @@ const CategoryPage = (): JSX.Element => {
 
   const handleCloseSubCategoryDialog = () => {
     addSubDialogRef.current?.hide();
+  };
+
+  const handleCloseEditCategoryDialog = () => {
+    setEditData(initialData);
+    editDialogRef.current?.hide();
   };
 
   const handleAddMainCategory = (categoryData: AddNewCategoryFormCustom) => {
@@ -100,7 +131,24 @@ const CategoryPage = (): JSX.Element => {
     });
   };
 
-  const handleEditCategory = () => {};
+  const handleEditCategory = (category: AddNewCategoryFormCustom) => {
+    dispatch(setIsPending());
+    const editCategoryData = { ...category, category_id: editData._id };
+
+    editCategory(editCategoryData, {
+      onSuccess: (data) => {
+        dispatch(disableIsPending());
+        toast.success(data.message);
+        editDialogRef.current?.hide();
+        refetch();
+      },
+      onError: (err: IErrorResponse) => {
+        console.log(err);
+        dispatch(disableIsPending());
+        toast.error(err.response.data.message as string);
+      }
+    });
+  };
 
   const handleDeleteCategory = (category: CustomCategoryResponseType) => {
     deleteDialogRef.current?.show(() => {
@@ -147,7 +195,7 @@ const CategoryPage = (): JSX.Element => {
             pagination
             uniqueField='_id'
             collapsed
-            CustomAction={CategoryActions({ handleOpenAddSubDialog, handleDeleteCategory })}
+            CustomAction={CategoryActions({ handleOpenAddSubDialog, handleOpenEditDialog, handleDeleteCategory })}
           />
         )}
       </div>
@@ -156,6 +204,8 @@ const CategoryPage = (): JSX.Element => {
           handleAddMainCategory={handleAddMainCategory}
           handleCloseDialog={handleCloseDialog}
           isPending={isPending}
+          {...editData}
+          mode='Add'
         />
       </PopUp>
 
@@ -164,6 +214,18 @@ const CategoryPage = (): JSX.Element => {
           handleAddMainCategory={handleAddSubCategory}
           handleCloseDialog={handleCloseSubCategoryDialog}
           isPending={isPending}
+          {...editData}
+          mode='Add'
+        />
+      </PopUp>
+
+      <PopUp title='Edit Category' ref={editDialogRef} size='xl'>
+        <CategoryForm
+          handleAddMainCategory={handleEditCategory}
+          handleCloseDialog={handleCloseEditCategoryDialog}
+          isPending={isPending}
+          {...editData}
+          mode='Edit'
         />
       </PopUp>
 

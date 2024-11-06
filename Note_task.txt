@@ -80,10 +80,10 @@
             - useTable - DONE
             - Filter - DONE
             - xử lý data có các data con. row có các row con để bấm collapse xổ các row con xuống - DONE     
-47. Tạo giao diện quản lý category và thêm category cho sản phẩm - PENDING
+47. Tạo giao diện quản lý category và thêm category cho sản phẩm - DONE
                     -Add main category : DONE
                     -Delete category: DONE
                     -Add sub category: DONE
-                    -Edit category: PENDING
+                    -Edit category: DONE
 
                         

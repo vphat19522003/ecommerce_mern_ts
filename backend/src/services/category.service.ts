@@ -6,7 +6,7 @@ import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
 import CategoryModel from '@app/models/category.model';
 import CategoryRepository, { CategoryInfo } from '@app/repository/category.repository';
-import { uploadToCloudinary } from '@app/utils/cloudinaryConfig';
+import cloudinary, { uploadToCloudinary } from '@app/utils/cloudinaryConfig';
 import { isValidImage } from '@app/utils/validateFileType.util';
 
 class CategoryService {
@@ -142,6 +142,56 @@ class CategoryService {
     const category = await CategoryRepository.findTopParentCategory(categoryId);
 
     return category;
+  }
+
+  static async editCategory(req: Request): Promise<CategoryInfo> {
+    const { category_id, name, description } = req.body;
+    const file = req.file;
+    const folder = `category/${name}`;
+    let updatedCategory;
+
+    if (!category_id) throw new CustomError('No category ID provided', STATUS_CODE.BAD_REQUEST);
+
+    const category = await CategoryModel.findById(new Types.ObjectId(category_id)).lean();
+    if (!category) throw new CustomError('Not found category', STATUS_CODE.BAD_REQUEST);
+
+    try {
+      if (file) {
+        const uploadResult = await uploadToCloudinary(file, folder);
+
+        if (category.categoryImg?.category_img_public_id) {
+          await cloudinary.uploader.destroy(category.categoryImg.category_img_public_id);
+        }
+
+        updatedCategory = await CategoryModel.findByIdAndUpdate(
+          category._id,
+          {
+            $set: {
+              name,
+              description,
+              categoryImg: {
+                category_img_url: uploadResult.url,
+                category_img_public_id: uploadResult.public_id
+              }
+            }
+          },
+          { new: true }
+        );
+      } else {
+        updatedCategory = await CategoryModel.findByIdAndUpdate(
+          category._id,
+          { $set: { name, description } },
+          { new: true }
+        );
+      }
+
+      if (!updatedCategory) throw new CustomError("Category can't be updated", STATUS_CODE.INTERNAL_SERVER_ERROR);
+
+      return updatedCategory.toObject<CategoryInfo>();
+    } catch (error) {
+      console.log({ error });
+      throw new CustomError('Failed to update category', STATUS_CODE.INTERNAL_SERVER_ERROR);
+    }
   }
 }
 

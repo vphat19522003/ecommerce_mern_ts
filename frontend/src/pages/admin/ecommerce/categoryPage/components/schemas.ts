@@ -17,3 +17,8 @@ export type AddNewCategoryFormCustom = Omit<AddNewCategoryFormType, 'categoryImg
   categoryImg: File;
   parent?: string;
 };
+
+export type EditCategoryFormType = Omit<AddNewCategoryFormType, 'categoryImg'> & {
+  categoryImg?: File;
+  category_id: string;
+};
