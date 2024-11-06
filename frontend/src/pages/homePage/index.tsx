@@ -1,5 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 
+import ParallaxBanner from './components/ParallaxBanner';
 import VideoBanner from './components/VideoBanner';
 import WhyChooseUsBanner from './components/WhyChooseUsBanner';
 
@@ -15,6 +16,7 @@ const HomePage = (): JSX.Element => {
       <Typography>GAME</Typography>
       <Typography>ELECTRONICS</Typography>
       <Typography>FOOD</Typography>
+      <ParallaxBanner />
       <WhyChooseUsBanner />
       <VideoBanner />
     </Stack>

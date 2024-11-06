@@ -102,3 +102,17 @@ body {
   animation: pulse 2s infinite;
   transform-origin: left;
 }
+
+.bg-parallax {
+  /* The image used */
+  background-image: url('https://64.media.tumblr.com/723637ba4eccc78bb16892a4857c01f4/tumblr_ozp1sjZM0c1tapwfpo2_1280.pnj');
+
+  /* Full height */
+  height: 320px;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
