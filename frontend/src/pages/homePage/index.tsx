@@ -1,23 +1,26 @@
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
-import ParallaxBanner from './components/ParallaxBanner';
+import LazySection from '@app/components/organisms/lazySection';
+
 import VideoBanner from './components/VideoBanner';
-import WhyChooseUsBanner from './components/WhyChooseUsBanner';
 
 const HomePage = (): JSX.Element => {
   return (
     <Stack className='py-6'>
-      <Typography>BOOKS</Typography>
-      <Typography>KHUYỂN MÃI SHOCK NHẤT</Typography>
+      <LazySection>
+        <Typography>BOOKS</Typography>
+      </LazySection>
+      {/* <Typography>KHUYỂN MÃI SHOCK NHẤT</Typography>
       <Typography>TOP SẢN PHẨM BÁN CHẠY</Typography>
       <Typography>SẢN PHẨM MỚI</Typography>
       <Typography>BẠN CÓ THỂ THÍCH</Typography>
       <Typography>TOYS</Typography>
       <Typography>GAME</Typography>
       <Typography>ELECTRONICS</Typography>
-      <Typography>FOOD</Typography>
-      <ParallaxBanner />
-      <WhyChooseUsBanner />
+      <Typography>FOOD</Typography> */}
+      <Box className='h-200'></Box>
+      {/* <WhyChooseUsBanner /> */}
+      {/* <ParallaxBanner /> */}
       <VideoBanner />
     </Stack>
   );
