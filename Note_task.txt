@@ -88,7 +88,9 @@
 48. Tạo component banner, video banner: DONE
 49. Hiển thị danh sách sản phẩm trên homepage: PENDING
             -Chia khung hiển thị các phần sản phẩm : DONE
+            -Product Card: DONE
+            -Product Card Detail SideBar: DONE
             -Hiển thị banner sản phẩm về sách ở homepage: PENDING
             -Hiển thị trang sản phẩm sách - category about book : PENDING
-            -Trang chi tiết sản phẩm
+            -Trang chi tiết sản phẩm : PENDING
                         

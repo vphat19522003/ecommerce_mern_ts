@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import Loader from '@app/components/molecules/loader';
 import Breadcrumb from '@app/components/organisms/admin/breadcrumb';
 import AdminHeader from '@app/components/organisms/admin/header';
 import AdminSidebar from '@app/components/organisms/admin/sidebar';
+import ScrollToTopButton from '@app/components/organisms/scrollToTopButton';
 import { useDevice } from '@app/hooks/useDevice';
 import { RootState } from '@app/store';
 
@@ -16,6 +17,7 @@ type MainLayoutPropsType = {
 };
 
 const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
+  const [isVisible, setIsVisible] = useState(false);
   const showAdminSidebar = useSelector((state: RootState) => state.ui.showAdminSidebar);
   const isPending = useSelector((state: RootState) => state.ui.isPending);
   const location = useLocation();
@@ -29,6 +31,21 @@ const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
       });
     }
   }, [location]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <>
       {isPending && <Loader />}
@@ -47,6 +64,7 @@ const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
           </Box>
         </Stack>
       </Stack>
+      {isVisible && <ScrollToTopButton />}
     </>
   );
 };

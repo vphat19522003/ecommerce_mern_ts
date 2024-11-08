@@ -9,7 +9,7 @@ import HeaderAction from '@app/components/molecules/headerAction';
 import HeaderLogo from '@app/components/molecules/headerLogo';
 import HeaderSearch from '@app/components/molecules/headerSearch';
 import { useDevice } from '@app/hooks/useDevice';
-import { closeSidebar, toggleSidebar } from '@app/redux/uiSlice';
+import { closeProductSidebar, closeSidebar, toggleSidebar } from '@app/redux/uiSlice';
 import { RootState } from '@app/store';
 
 import MobileHeader from '../mobileHeader';
@@ -30,7 +30,10 @@ const Header = (): JSX.Element => {
       } else {
         setShowStickyHeader(false);
 
-        if (!isMobile) dispatch(closeSidebar());
+        if (!isMobile) {
+          dispatch(closeSidebar());
+          dispatch(closeProductSidebar());
+        }
       }
     };
 

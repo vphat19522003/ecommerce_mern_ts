@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -8,6 +8,8 @@ import Footer from '@app/components/organisms/footer';
 import Header from '@app/components/organisms/header';
 import MobileNavigator from '@app/components/organisms/mobileNavigator';
 import MobileSideBar from '@app/components/organisms/mobileSidebar';
+import ProductDetailSideBar from '@app/components/organisms/productDetailSidebar';
+import ScrollToTopButton from '@app/components/organisms/scrollToTopButton';
 import SubBanner from '@app/components/organisms/subBanner';
 import { useDevice } from '@app/hooks/useDevice';
 import { RootState } from '@app/store';
@@ -17,9 +19,10 @@ type MainLayoutPropsType = {
 };
 
 const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
+  const [isVisible, setIsVisible] = useState(false);
   const { isMobile } = useDevice();
   const showSidebar = useSelector((state: RootState) => state.ui.showSidebar);
-
+  const showProductSidebar = useSelector((state: RootState) => state.ui.showProductDetailSidebar);
   const location = useLocation();
 
   useEffect(() => {
@@ -28,6 +31,21 @@ const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
       left: 0
     });
   }, [location]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <Box>
       <Header />
@@ -35,7 +53,9 @@ const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
       <Box className={`px-2 lg:px-28  xl:px-80 bg-[#fffff] ${isMobile && 'mt-[80px]'}`}>{children}</Box>
       {isMobile && <MobileNavigator />}
       {showSidebar && <MobileSideBar />}
+      {showProductSidebar && <ProductDetailSideBar />}
       <Footer />
+      {isVisible && <ScrollToTopButton />}
     </Box>
   );
 };

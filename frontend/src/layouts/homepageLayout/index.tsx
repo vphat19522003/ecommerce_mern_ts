@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet, useLocation } from 'react-router-dom';
 
@@ -9,13 +9,17 @@ import Header from '@app/components/organisms/header';
 import MainBanner from '@app/components/organisms/mainBanner';
 import MobileNavigator from '@app/components/organisms/mobileNavigator';
 import MobileSidebar from '@app/components/organisms/mobileSidebar';
+import ProductDetailSideBar from '@app/components/organisms/productDetailSidebar';
+import ScrollToTopButton from '@app/components/organisms/scrollToTopButton';
 import SubBanner from '@app/components/organisms/subBanner';
 import { useDevice } from '@app/hooks/useDevice';
 import { RootState } from '@app/store';
 
 const HomePageLayout = (): JSX.Element => {
+  const [isVisible, setIsVisible] = useState(false);
   const { isMobile } = useDevice();
   const showSidebar = useSelector((state: RootState) => state.ui.showSidebar);
+  const showProductSidebar = useSelector((state: RootState) => state.ui.showProductDetailSidebar);
   const location = useLocation();
 
   useEffect(() => {
@@ -24,6 +28,21 @@ const HomePageLayout = (): JSX.Element => {
       left: 0
     });
   }, [location]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <Box>
       <Header />
@@ -34,7 +53,9 @@ const HomePageLayout = (): JSX.Element => {
       </Box>
       {isMobile && <MobileNavigator />}
       {showSidebar && <MobileSidebar />}
+      {showProductSidebar && <ProductDetailSideBar />}
       <Footer />
+      {isVisible && <ScrollToTopButton />}
     </Box>
   );
 };
