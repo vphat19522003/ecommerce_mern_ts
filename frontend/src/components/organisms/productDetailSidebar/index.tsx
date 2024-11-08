@@ -62,7 +62,7 @@ const ProductDetailSideBar = (): JSX.Element => {
             </IconButton>
           </div>
           <Typography className='font-bold'>Nike Jordan</Typography>
-          <Typography className='text-md'>
+          <Typography className='text-md text-justify'>
             Image Enlargement: After shooting, you can enlarge photographs of the objects for clear zoomed view. Change
             In Aspect Ratio: Boldly crop the subject and save it with a composition that has impact.
           </Typography>
