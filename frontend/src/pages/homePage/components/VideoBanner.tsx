@@ -7,7 +7,7 @@ const VideoParallax = {
 
 const VideoBanner = (): JSX.Element => {
   return (
-    <div className='relative block w-full h-full py-2'>
+    <div className='relative block w-full h-full py-8 mt-4'>
       <div className='relative w-full h-[480px] overflow-hidden'>
         <video autoPlay muted loop className='absolute object-cover' style={VideoParallax}>
           <source

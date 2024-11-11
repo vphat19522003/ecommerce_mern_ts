@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Close, Favorite } from '@mui/icons-material';
@@ -15,17 +14,17 @@ const ProductDetailSideBar = (): JSX.Element => {
   const dispatch = useDispatch();
   const { isMobile } = useDevice();
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     document.body.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = 'auto';
+  //   }
 
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isOpen]);
+  //   return () => {
+  //     document.body.style.overflow = 'auto';
+  //   };
+  // }, [isOpen]);
 
   return (
     <>
@@ -44,9 +43,9 @@ const ProductDetailSideBar = (): JSX.Element => {
         initial={{ x: '100%' }} // Bắt đầu ở ngoài màn hình bên trái
         animate={{ x: isOpen ? '0%' : '100%' }} // Nếu mở, chuyển vào màn hình, nếu đóng, di chuyển ra ngoài
         transition={{ type: 'tween', duration: 0.5 }} // Thiết lập hiệu ứng chuyển động
-        className={`fixed right-0 z-20 bg-white top-20 ${isMobile ? 'bottom-11' : 'bottom-0'} w-[280px] max-h-screen overflow-y-scroll shadow-md py-2 rounded-tl-xl rounded-bl-xl px-4`}>
+        className={`fixed right-0 z-20 bg-white ${window.scrollY > 400 && !isMobile ? 'top-[89px]' : 'top-0'} ${isMobile ? 'top-20 bottom-11' : 'bottom-0'} w-[280px] max-h-screen overflow-y-scroll shadow-md py-2 rounded-tl-xl rounded-bl-xl px-4`}>
         <Stack direction={'row'} justifyContent={'space-between'} className='py-2'>
-          <Typography variant='h5' className=' py-2 text-xl font-bold text-blue-700'>
+          <Typography variant='h5' className='py-2 text-xl font-bold text-blue-700 '>
             Product Details
           </Typography>
           <IconButton onClick={() => dispatch(closeProductSidebar())}>
@@ -55,14 +54,14 @@ const ProductDetailSideBar = (): JSX.Element => {
         </Stack>
 
         <Stack direction={'column'} spacing={2}>
-          <div className='w-full max-h-fit rounded-lg overflow-hidden relative'>
-            <img src={ShoesImage} alt='shoes' className='w-full h-full object-cover ' />
+          <div className='relative w-full overflow-hidden rounded-lg max-h-fit'>
+            <img src={ShoesImage} alt='shoes' className='object-cover w-full h-full ' />
             <IconButton className='absolute top-1 right-1'>
               <Favorite className='text-red-500' />
             </IconButton>
           </div>
           <Typography className='font-bold'>Nike Jordan</Typography>
-          <Typography className='text-md text-justify'>
+          <Typography className='text-justify text-md'>
             Image Enlargement: After shooting, you can enlarge photographs of the objects for clear zoomed view. Change
             In Aspect Ratio: Boldly crop the subject and save it with a composition that has impact.
           </Typography>
@@ -82,7 +81,7 @@ const ProductDetailSideBar = (): JSX.Element => {
             <Divider />
             <Stack direction={'row'} justifyContent={'space-between'} className='py-3'>
               <Typography className='text-md'>Status</Typography>
-              <Typography className='text-md bg-green-500 text-white rounded-lg p-1'>Available</Typography>
+              <Typography className='p-1 text-white bg-green-500 rounded-lg text-md'>Available</Typography>
             </Stack>
             <Divider />
             <Stack direction={'row'} justifyContent={'space-between'} className='py-3'>

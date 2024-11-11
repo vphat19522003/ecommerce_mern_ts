@@ -7,7 +7,7 @@ const ScrollToTopButton = (): JSX.Element => {
   };
 
   return (
-    <IconButton className='fixed bottom-14 right-6 bg-white shadow-md text-blue-700' onClick={handleScrollToTop}>
+    <IconButton className='fixed text-blue-700 bg-white shadow-md bottom-14 right-6' onClick={handleScrollToTop}>
       <ArrowUpward />
     </IconButton>
   );

@@ -10,15 +10,15 @@ import { toggleProductSidebar } from '@app/redux/uiSlice';
 const ProductCard = (): JSX.Element => {
   const dispatch = useDispatch();
   return (
-    <Card className=' h-full shadow-md !p-2'>
+    <Card className=' h-full !p-2 border-[0.2px] border-solid border-slate-100'>
       <CardContent className='!p-0'>
-        <div className=' bg-white rounded-lg overflow-hidden w-full h-full relative'>
+        <div className='relative w-full h-full overflow-hidden bg-white rounded-lg '>
           <img title='shoes' src={ShoesImage} className='object-cover w-full h-full' />
           <IconButton className='absolute top-2 right-2'>
             <Favorite className='text-red-500' />
           </IconButton>
         </div>
-        <Stack direction={'column'} spacing={2} className='p-4'>
+        <Stack direction={'column'} spacing={2} className='p-2'>
           <Typography>Nike Jordan</Typography>
           <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
             <Stack direction='row' alignItems={'center'} spacing={1}>
@@ -35,7 +35,7 @@ const ProductCard = (): JSX.Element => {
           </Stack>
           <Stack direction={'row'} className='w-full' spacing={4}>
             <ButtonForm
-              className='flex-2 rounded-lg bg-transparent'
+              className='bg-transparent rounded-lg flex-2'
               variant='contained'
               onClick={() => dispatch(toggleProductSidebar())}>
               <Visibility className='text-blue-700' />
