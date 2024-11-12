@@ -92,7 +92,7 @@
             -Product Card Detail SideBar: DONE
             -Hiển thị banner sản phẩm về sách ở homepage: PENDING 
                 - làm list product book tab + slider product : DONE
-                - Làm api lấy list book, list theo sub category book hiển thị 8 sản phẩm mới nhất - show ra homepage : PENDING
+                - Làm api lấy list book - DONE, list theo sub category book hiển thị 8 sản phẩm mới nhất - show ra homepage : PENDING
             -Hiển thị trang sản phẩm sách - category about book : PENDING
             -Trang chi tiết sản phẩm : PENDING
                         

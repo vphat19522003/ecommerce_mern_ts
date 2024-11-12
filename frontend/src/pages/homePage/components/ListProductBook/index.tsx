@@ -32,10 +32,11 @@ const ListProductBook = (): JSX.Element => {
         sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs aria-label='basic tabs example' value={value} onChange={handleChange}>
           <Tab label='All' />
-          <Tab label='Item Two' />
-          <Tab label='Item Three' />
+          <Tab label='Novel' />
+          <Tab label='Comic' />
+          <Tab label='Life skill' />
         </Tabs>
-        <Link to={'/'} className='no-underline text-blue-700 hover:text-blue-500'>
+        <Link to={'/'} className='px-4 py-1 text-white no-underline bg-blue-700 rounded-xl text-md hover:bg-blue-600'>
           More
         </Link>
       </Stack>

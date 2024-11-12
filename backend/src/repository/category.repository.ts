@@ -74,7 +74,7 @@ class CategoryRepository {
   }
 
   static async findTopParentCategory(categoryId: string | mongoose.Types.ObjectId): Promise<ICategory> {
-    const category = await CategoryModel.findById(new Types.ObjectId(categoryId)).populate('parentCategory').lean();
+    const category = await CategoryModel.findById(new Types.ObjectId(categoryId)).populate('parent').lean();
 
     if (!category!.parent) {
       return category as ICategory;

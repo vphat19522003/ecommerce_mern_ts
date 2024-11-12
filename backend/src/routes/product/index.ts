@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { createProductController } from '@app/controllers/product.controller';
+import { createProductController, getAllLatestProductController } from '@app/controllers/product.controller';
 import verifyAccessToken from '@app/middleware/accessToken.middleware';
 import validateRequest from '@app/middleware/validateRequest.middleware';
 import verifyCategory from '@app/middleware/verifyCategory.middleware';
@@ -34,5 +34,7 @@ productRouter.post(
   validateRequest(productValidators.createProduct),
   reqHandler(createProductController)
 );
+
+productRouter.post('/get-all-latest-products', reqHandler(getAllLatestProductController));
 
 export default productRouter;

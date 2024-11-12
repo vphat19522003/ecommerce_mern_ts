@@ -9,6 +9,7 @@ import { IProduct } from '@app/services/product/type';
 
 const verifyCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { category } = req.body as IProduct;
+
   try {
     if (!Types.ObjectId.isValid(category)) throw new CustomError('Category is not valid type', STATUS_CODE.BAD_REQUEST);
 

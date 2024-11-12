@@ -10,7 +10,7 @@ import { toggleProductSidebar } from '@app/redux/uiSlice';
 const ProductCard = (): JSX.Element => {
   const dispatch = useDispatch();
   return (
-    <Card className='!max-h-[380px] max-w-[260px] !p-2 border-[0.2px] border-solid border-slate-100 hover:shadow-2xl cursor-pointer'>
+    <Card className='!max-h-[380px] max-w-[260px] !p-2 border-[0.2px] border-solid border-slate-100 hover:shadow-lg cursor-pointer'>
       <CardContent className='!p-0'>
         <div className='relative w-full h-[260px] overflow-hidden bg-white rounded-lg '>
           <img title='shoes' src={ShoesImage} className='object-cover w-full h-full' />

@@ -135,7 +135,7 @@ class CategoryService {
   static async findTopParentCategory(categoryId: string): Promise<unknown> {
     if (!categoryId) throw new CustomError('No provided categoryID', STATUS_CODE.BAD_REQUEST);
 
-    const findCategory = await CategoryRepository.getTreeCategory(categoryId as string);
+    const findCategory = await CategoryModel.findById(new Types.ObjectId(categoryId));
 
     if (!findCategory) throw new CustomError('Not found category', STATUS_CODE.BAD_REQUEST);
 
@@ -189,7 +189,6 @@ class CategoryService {
 
       return updatedCategory.toObject<CategoryInfo>();
     } catch (error) {
-      console.log({ error });
       throw new CustomError('Failed to update category', STATUS_CODE.INTERNAL_SERVER_ERROR);
     }
   }

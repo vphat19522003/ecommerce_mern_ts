@@ -27,6 +27,7 @@ interface IBookProduct extends Document {
   author: string;
   page_number: number;
   publisher: string;
+  subCategory: mongoose.Types.ObjectId;
 }
 
 const productImgSchema = new Schema<ProductImgType>(
@@ -115,6 +116,10 @@ const bookSchemas = new Schema<IBookProduct>({
   publisher: {
     type: String,
     required: true
+  },
+  subCategory: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category'
   }
 });
 

@@ -1,8 +1,11 @@
+import { Request } from 'express';
 import { Types } from 'mongoose';
 
 import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
 import { IRequestCustom } from '@app/middleware/accessToken.middleware';
+import CategoryModel from '@app/models/category.model';
+import ProductRepository from '@app/repository/product.repository';
 import { UserInfo } from '@app/repository/user.repository';
 import { deleteFromCloudinary, uploadToCloudinary } from '@app/utils/cloudinaryConfig';
 import { isValidImage } from '@app/utils/validateFileType.util';
@@ -68,12 +71,34 @@ class ProductService {
 
       return productEntity;
     } catch (error) {
+      console.log('ERRROR', error);
       if (uploadedImages.length > 0) {
         await Promise.all(uploadedImages.map((public_id) => deleteFromCloudinary(public_id)));
       }
 
       throw new CustomError('Failed to upload images', STATUS_CODE.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  static async getBookCategoryId(): Promise<string> {
+    const bookCategory = await CategoryModel.findOne({ name: 'Book' }).lean();
+    return String(bookCategory?._id);
+  }
+
+  static async getAllLatestProduct(req: Request): Promise<IProduct[]> {
+    const { quantity } = req.body;
+
+    const bookCategoryId = await this.getBookCategoryId();
+
+    if (!bookCategoryId) {
+      throw new CustomError('Not found book category', STATUS_CODE.INTERNAL_SERVER_ERROR);
+    }
+
+    const latestProduct = await ProductRepository.GetLatestBookWithQuantity({
+      bookCategoryId,
+      quantity
+    });
+    return latestProduct as IProduct[];
   }
 }
 

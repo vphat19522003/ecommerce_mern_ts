@@ -96,7 +96,7 @@ const TableBodyContent = ({
         </>
       ) : (
         <TableRow>
-          <TableCell colSpan={selection ? tableField.length + 1 : tableField.length}>
+          <TableCell colSpan={selection ? tableField.length + 2 : tableField.length + 1}>
             <Stack justifyContent={'center'} alignItems={'center'} className='py-12'>
               <img src={ViteImg} width={60} alt='logo' />
               <Typography sx={{ color: '#6C737F' }}>No Data</Typography>
