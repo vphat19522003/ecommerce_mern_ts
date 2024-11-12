@@ -33,6 +33,7 @@ export const categoryList = [
 const MobileSideBar = (): JSX.Element => {
   const isOpen = useSelector((state: RootState) => state.ui.showSidebar);
   const dispatch = useDispatch();
+
   const { data: mainCategory = [] } = useGetMainCategory();
 
   return (

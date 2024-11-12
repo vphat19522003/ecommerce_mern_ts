@@ -22,25 +22,15 @@ categoryRouter.post(
   upload.single('file'),
   reqHandler(createCategoryController)
 );
-categoryRouter.get(
-  '/get-main-category',
-  verifyAccessToken,
-  verifyAccountHandler,
-  reqHandler(getMainCategoryController)
-);
-categoryRouter.get('/get-sub-category', verifyAccessToken, verifyAccountHandler, reqHandler(getSubCategoryController));
+categoryRouter.get('/get-main-category', reqHandler(getMainCategoryController));
+categoryRouter.post('/get-sub-category', reqHandler(getSubCategoryController));
 categoryRouter.post('/delete-category', verifyAccessToken, verifyAccountHandler, reqHandler(deleteCategoryController));
-categoryRouter.get(
-  '/get-tree-category',
-  verifyAccessToken,
-  verifyAccountHandler,
-  reqHandler(getTreeCategoryController)
-);
+categoryRouter.get('/get-tree-category', reqHandler(getTreeCategoryController));
 
 categoryRouter.post(
   '/edit-category',
-  // verifyAccessToken,
-  // verifyAccountHandler,
+  verifyAccessToken,
+  verifyAccountHandler,
   upload.single('file'),
   reqHandler(editCategoryController)
 );

@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { AutoStories } from '@mui/icons-material';
-import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Stack, Tab, Tabs, Typography } from '@mui/material';
 import { SwiperSlide } from 'swiper/react';
 
 import CustomTabPanel from '@app/components/organisms/customTabPanel';
@@ -24,13 +25,20 @@ const ListProductBook = (): JSX.Element => {
         <AutoStories className='text-pink-500' />
       </Stack>
 
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Stack
+        direction={'row'}
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs aria-label='basic tabs example' value={value} onChange={handleChange}>
-          <Tab label='Item One' />
+          <Tab label='All' />
           <Tab label='Item Two' />
           <Tab label='Item Three' />
         </Tabs>
-      </Box>
+        <Link to={'/'} className='no-underline text-blue-700 hover:text-blue-500'>
+          More
+        </Link>
+      </Stack>
       <CustomTabPanel value={value} index={0}>
         <ProductSlider>
           {[...Array(8)].map((item, index) => (

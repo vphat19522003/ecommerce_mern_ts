@@ -204,7 +204,7 @@ const CategoryPage = (): JSX.Element => {
           handleAddMainCategory={handleAddMainCategory}
           handleCloseDialog={handleCloseDialog}
           isPending={isPending}
-          {...editData}
+          {...initialData}
           mode='Add'
         />
       </PopUp>
@@ -214,7 +214,7 @@ const CategoryPage = (): JSX.Element => {
           handleAddMainCategory={handleAddSubCategory}
           handleCloseDialog={handleCloseSubCategoryDialog}
           isPending={isPending}
-          {...editData}
+          {...initialData}
           mode='Add'
         />
       </PopUp>

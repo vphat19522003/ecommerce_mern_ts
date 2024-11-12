@@ -19,6 +19,12 @@ export const getListCategory = async (): Promise<CustomCategoryResponseType[]> =
   return res.data.result;
 };
 
+export const getSubCategory = async (parent_id: string): Promise<CustomCategoryResponseType[]> => {
+  const res = await axiosCustom.post(`/category/get-sub-category?parent_id=${parent_id}`);
+
+  return res.data.result;
+};
+
 export const createCategory = async ({
   name,
   description,

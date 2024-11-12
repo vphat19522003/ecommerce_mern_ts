@@ -27,7 +27,7 @@ export const getSubCategoryController = async (req: Request, res: Response): Pro
   const result = await CategoryService.getSubCategory(req);
 
   return res.json({
-    message: 'Get list main category successfully',
+    message: 'Get list sub category successfully',
     status: STATUS_CODE.OK,
     result
   });

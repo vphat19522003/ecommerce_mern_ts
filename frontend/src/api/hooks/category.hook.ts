@@ -8,7 +8,14 @@ import { ResultResponseType } from '@app/types/auth';
 import { CategoryResponseType, CustomCategoryResponseType } from '@app/types/category';
 import { IErrorResponse, ResponseType } from '@app/types/common';
 
-import { createCategory, deleteCategory, editCategory, getListCategory, getMainCategory } from '../category';
+import {
+  createCategory,
+  deleteCategory,
+  editCategory,
+  getListCategory,
+  getMainCategory,
+  getSubCategory
+} from '../category';
 
 export const useGetMainCategory = (): UseQueryResult<CategoryResponseType[]> => {
   return useQuery({
@@ -21,6 +28,12 @@ export const useGetListCategory = (): UseQueryResult<CustomCategoryResponseType[
   return useQuery({
     queryKey: ['listCategory'],
     queryFn: getListCategory
+  });
+};
+
+export const useGetSubCategory = (): UseMutationResult<CustomCategoryResponseType[], IErrorResponse, string> => {
+  return useMutation({
+    mutationFn: getSubCategory
   });
 };
 
