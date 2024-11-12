@@ -2,14 +2,14 @@ import { useState } from 'react';
 
 import { AutoStories } from '@mui/icons-material';
 import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { SwiperSlide } from 'swiper/react';
 
 import CustomTabPanel from '@app/components/organisms/customTabPanel';
 import ProductCard from '@app/components/organisms/productCard';
-import { useDevice } from '@app/hooks/useDevice';
+import ProductSlider from '@app/components/organisms/productSlider';
 
 const ListProductBook = (): JSX.Element => {
   const [value, setValue] = useState(0);
-  const { isMobile } = useDevice();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -32,17 +32,15 @@ const ListProductBook = (): JSX.Element => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Stack direction={isMobile ? 'column' : 'row'} spacing={2}>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </Stack>
+        <ProductSlider>
+          {[...Array(8)].map((item, index) => (
+            <SwiperSlide key={index}>
+              <ProductCard />
+            </SwiperSlide>
+          ))}
+        </ProductSlider>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        Item Two
-      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}></CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         Item Three
       </CustomTabPanel>
