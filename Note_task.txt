@@ -94,6 +94,8 @@
                 - làm list product book tab + slider product : DONE
                 - Làm api lấy list book - DONE, list theo sub category book hiển thị 8 sản phẩm mới nhất - show ra homepage : DONE
             -Trang chi tiết sản phẩm : PENDING
+                - Làm breadcrumb cho product page
+                - Chia 3 khung trang chi tiết: Hình ảnh sản phẩm, thông tin sản phẩm, action mua bán, phần bình luận, sản phẩm liên quan, sản phẩm vừa xem
             -Hiển thị trang sản phẩm sách - category about book : PENDING
             
                         

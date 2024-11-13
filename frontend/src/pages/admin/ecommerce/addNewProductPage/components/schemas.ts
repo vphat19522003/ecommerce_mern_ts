@@ -62,6 +62,7 @@ export type AddNewProductFormCustom = Omit<AddNewProductFormType, 'productThumbI
 };
 
 export type getProductTypeCustom = Omit<AddNewProductFormType, 'productThumbImg' | 'productDescImg'> & {
+  _id: string;
   productThumbImg: {
     url: string;
     public_id: string;

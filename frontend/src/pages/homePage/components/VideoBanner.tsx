@@ -11,7 +11,7 @@ const VideoBanner = (): JSX.Element => {
       <div className='relative w-full h-[480px] overflow-hidden'>
         <video autoPlay muted loop className='absolute object-cover' style={VideoParallax}>
           <source
-            src='https://videos.pexels.com/video-files/5889074/5889074-uhd_2560_1440_25fps.mp4'
+            src='https://res.cloudinary.com/dqgifmakd/video/upload/v1731508040/video/x65p3c4vsdm5d57vgeus.mp4'
             type='video/mp4'
           />
         </video>

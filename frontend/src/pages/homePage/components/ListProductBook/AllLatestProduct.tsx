@@ -18,6 +18,7 @@ const AllLatestProduct = (): JSX.Element => {
         {AllLatestProducts.map((item, index) => (
           <SwiperSlide key={index}>
             <ProductCard
+              productId={item._id}
               productName={item.productName}
               productPrice={item.productPrice}
               productThumbImg={item.productThumbImg}
