@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { List } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
@@ -7,8 +8,9 @@ import { useGetMainCategory } from '@app/api/hooks/category.hook';
 import { useDevice } from '@app/hooks/useDevice';
 
 const Sidebar = (): JSX.Element => {
-  const checkPath = ['user'];
-  const isActivePath = checkPath.includes(window.location.pathname.split('/')[1]);
+  const location = useLocation();
+  const checkPath = ['user', 'product'];
+  const isActivePath = checkPath.includes(location.pathname.split('/')[1]);
 
   const [isHovering, setIsHovering] = useState<boolean>(!isActivePath);
   const { data: mainCategory = [] } = useGetMainCategory();
@@ -22,6 +24,12 @@ const Sidebar = (): JSX.Element => {
     if (isActivePath) setIsHovering(true);
   };
 
+  useEffect(() => {
+    if (isActivePath) setIsHovering(false);
+    else {
+      setIsHovering(true);
+    }
+  }, [isActivePath]);
   return (
     <Stack
       direction={'column'}

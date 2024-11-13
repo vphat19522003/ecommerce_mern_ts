@@ -4,7 +4,6 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import AuthLayout from '@app/layouts/authLayout';
 import HomePageLayout from '@app/layouts/homepageLayout';
 import AccountVerify from '@app/pages/accountVerify';
-import HomePage from '@app/pages/homePage';
 import NotFoundPage from '@app/pages/notFound';
 import { RootState } from '@app/store';
 import { USER_ROLE } from '@app/types/user';
@@ -13,7 +12,7 @@ import generateRoute from './generate-route';
 import AdminProtectedLayout from './guards/adminProtectedLayout';
 import AuthenticateLayout from './guards/authenticateLayout';
 import ProtectedLayout from './guards/protectedLayout';
-import { adminRoute, authenticationRoute, paths, shopRoute } from './paths';
+import { adminRoute, authenticationRoute, paths, shopRoute, visitorRoute } from './paths';
 
 const AppRoutes = (): JSX.Element => {
   const userAuthenticated = useSelector((state: RootState) => state.auth.user);
@@ -37,9 +36,7 @@ const AppRoutes = (): JSX.Element => {
         />
 
         {/* HOMEPAGE */}
-        <Route element={<HomePageLayout />}>
-          <Route path={paths.index} element={<HomePage />} />
-        </Route>
+        <Route element={<HomePageLayout />}>{generateRoute(visitorRoute)}</Route>
 
         {/* SHOP PAGE */}
         <Route element={<ProtectedLayout allowRoles={[USER_ROLE.ADMIN, USER_ROLE.USER]} />}>

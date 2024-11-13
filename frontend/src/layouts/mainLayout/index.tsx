@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import { Box } from '@mui/material';
 
@@ -50,7 +50,9 @@ const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
     <Box>
       <Header />
       {!isMobile && <SubBanner />}
-      <Box className={`px-2 lg:px-28  xl:px-80 bg-white ${isMobile && 'mt-[80px]'}`}>{children}</Box>
+      <Box className={`px-2 lg:px-28 xl:px-80 bg-white ${isMobile && 'mt-[80px]'}`}>
+        <Outlet />
+      </Box>
       {isMobile && <MobileNavigator />}
       {showSidebar && <MobileSideBar />}
       {showProductSidebar && <ProductDetailSideBar />}

@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 
+import MainBanner from '@app/components/organisms/mainBanner';
 import { useDevice } from '@app/hooks/useDevice';
 
 import ListProductBook from './components/ListProductBook';
@@ -9,11 +10,13 @@ const HomePage = (): JSX.Element => {
   const { isMobile } = useDevice();
 
   return (
-    <Stack className={`${isMobile && 'pl-2'} py-6 `}>
-      <ListProductBook />
-      <ListProductBook />
+    <>
+      <MainBanner />{' '}
+      <Stack className={`${isMobile && 'pl-2'} py-6 `}>
+        <ListProductBook />
+        <ListProductBook />
 
-      {/* <Typography>KHUYỂN MÃI SHOCK NHẤT</Typography>
+        {/* <Typography>KHUYỂN MÃI SHOCK NHẤT</Typography>
     <Typography>TOP SẢN PHẨM BÁN CHẠY</Typography>
     <Typography>SẢN PHẨM MỚI</Typography>
     <Typography>BẠN CÓ THỂ THÍCH</Typography>
@@ -22,10 +25,11 @@ const HomePage = (): JSX.Element => {
     <Typography>ELECTRONICS</Typography>
     <Typography>FOOD</Typography> */}
 
-      {/* <WhyChooseUsBanner /> */}
-      {/* <ParallaxBanner /> */}
-      <VideoBanner />
-    </Stack>
+        {/* <WhyChooseUsBanner /> */}
+        {/* <ParallaxBanner /> */}
+        <VideoBanner />
+      </Stack>
+    </>
   );
 };
 

@@ -5,6 +5,8 @@ import { AutoAwesome, Dashboard, FiberManualRecord, ShoppingCart } from '@mui/ic
 import EcommercePage from '@app/pages/admin/ecommerce';
 import AddNewProductPage from '@app/pages/admin/ecommerce/addNewProductPage';
 import CategoryPage from '@app/pages/admin/ecommerce/categoryPage';
+import HomePage from '@app/pages/homePage';
+import ProductDetailPage from '@app/pages/productDetail';
 import { RouteItemConfig } from '@app/types/route';
 import {
   ForgotPasswordPage,
@@ -44,6 +46,9 @@ export const paths = {
       products: 'products',
       createProduct: 'create-product'
     }
+  },
+  product: {
+    detail: '/product/:productId'
   }
 };
 
@@ -62,6 +67,17 @@ export const authenticationRoute: RouteItemConfig[] = [
   }
 ];
 
+export const visitorRoute: RouteItemConfig[] = [
+  {
+    element: <HomePage />,
+    path: paths.index
+  },
+  {
+    element: <ProductDetailPage />,
+    path: paths.product.detail
+  }
+];
+
 export const shopRoute: RouteItemConfig[] = [
   {
     element: <UserSettingPage />,
@@ -74,6 +90,10 @@ export const shopRoute: RouteItemConfig[] = [
       { element: <UserAddress />, path: paths.user.address },
       { element: <UserShare />, path: paths.user.share }
     ]
+  },
+  {
+    element: <ProductDetailPage />,
+    path: paths.product.detail
   }
 ];
 
