@@ -86,7 +86,7 @@ class ProductService {
   }
 
   static async getAllLatestProduct(req: Request): Promise<IProduct[]> {
-    const { quantity } = req.body;
+    const quantity = Number(req.query.quantity) || 0;
 
     const bookCategoryId = await this.getBookCategoryId();
 

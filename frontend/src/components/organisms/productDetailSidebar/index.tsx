@@ -4,14 +4,14 @@ import { Close, Favorite } from '@mui/icons-material';
 import { Divider, IconButton, Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 
-import ShoesImage from '@app/assets/danhMuc/shoes_nike.webp';
 import { useDevice } from '@app/hooks/useDevice';
-import { closeProductSidebar, toggleProductSidebar } from '@app/redux/uiSlice';
+import { closeProductSidebar } from '@app/redux/uiSlice';
 import { RootState } from '@app/store';
 
 const ProductDetailSideBar = (): JSX.Element => {
   const isOpen = useSelector((state: RootState) => state.ui.showProductDetailSidebar);
   const dispatch = useDispatch();
+  const productDetailData = useSelector((state: RootState) => state.ui.productDetailData);
   const { isMobile } = useDevice();
 
   // useEffect(() => {
@@ -35,7 +35,7 @@ const ProductDetailSideBar = (): JSX.Element => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           className='fixed inset-0 z-10 bg-black'
-          onClick={() => dispatch(toggleProductSidebar())}
+          onClick={() => dispatch(closeProductSidebar())}
         />
       )}
 
@@ -55,21 +55,18 @@ const ProductDetailSideBar = (): JSX.Element => {
 
         <Stack direction={'column'} spacing={2}>
           <div className='relative w-full overflow-hidden rounded-lg max-h-fit'>
-            <img src={ShoesImage} alt='shoes' className='object-cover w-full h-full ' />
+            <img src={productDetailData?.productThumbImg.url} alt='shoes' className='object-cover w-full h-full ' />
             <IconButton className='absolute top-1 right-1'>
               <Favorite className='text-red-500' />
             </IconButton>
           </div>
-          <Typography className='font-bold'>Nike Jordan</Typography>
-          <Typography className='text-justify text-md'>
-            Image Enlargement: After shooting, you can enlarge photographs of the objects for clear zoomed view. Change
-            In Aspect Ratio: Boldly crop the subject and save it with a composition that has impact.
-          </Typography>
+          <Typography className='font-bold'>{productDetailData?.productName}</Typography>
+          <Typography className='text-justify text-md'>{productDetailData?.description}</Typography>
           <Stack direction={'column'} className='mt-2'>
             <Stack direction={'row'} justifyContent={'space-between'} className='py-3'>
               <Typography className='text-md'>Price</Typography>
               <Stack direction='row' alignItems={'center'} spacing={1}>
-                <Typography className='text-2xl font-semibold'>$299.00</Typography>
+                <Typography className='text-2xl font-semibold'>${productDetailData?.productPrice}</Typography>
                 <Typography className='text-sm line-through'>$399.00</Typography>
               </Stack>
             </Stack>

@@ -1,5 +1,8 @@
 import axiosCustom from '@app/config/axios';
-import { AddNewProductFormCustom } from '@app/pages/admin/ecommerce/addNewProductPage/components/schemas';
+import {
+  AddNewProductFormCustom,
+  getProductTypeCustom
+} from '@app/pages/admin/ecommerce/addNewProductPage/components/schemas';
 import { ResultResponseType } from '@app/types/auth';
 
 export const createProduct = async ({
@@ -43,4 +46,10 @@ export const createProduct = async ({
   });
 
   return res.data;
+};
+
+export const getAllLatestProduct = async (quantity: number): Promise<getProductTypeCustom[]> => {
+  const res = await axiosCustom.get(`/product/get-all-latest-products?quantity=${quantity}`);
+
+  return res.data.result;
 };

@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 
 import { AutoStories } from '@mui/icons-material';
 import { Stack, Tab, Tabs, Typography } from '@mui/material';
-import { SwiperSlide } from 'swiper/react';
 
 import CustomTabPanel from '@app/components/organisms/customTabPanel';
-import ProductCard from '@app/components/organisms/productCard';
-import ProductSlider from '@app/components/organisms/productSlider';
+
+import AllLatestProduct from './AllLatestProduct';
 
 const ListProductBook = (): JSX.Element => {
   const [value, setValue] = useState(0);
@@ -41,13 +40,7 @@ const ListProductBook = (): JSX.Element => {
         </Link>
       </Stack>
       <CustomTabPanel value={value} index={0}>
-        <ProductSlider>
-          {[...Array(8)].map((item, index) => (
-            <SwiperSlide key={index}>
-              <ProductCard />
-            </SwiperSlide>
-          ))}
-        </ProductSlider>
+        <AllLatestProduct />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}></CustomTabPanel>
       <CustomTabPanel value={value} index={2}>

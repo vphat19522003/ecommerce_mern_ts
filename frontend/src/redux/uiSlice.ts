@@ -1,16 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { ProductCardType } from '@app/components/organisms/productCard';
+
 type initialStateType = {
   showSidebar: boolean;
   showAdminSidebar: boolean;
   showProductDetailSidebar: boolean;
   isPending: boolean;
+  productDetailData: ProductCardType | undefined;
 };
 const initialState: initialStateType = {
   showSidebar: false,
   showAdminSidebar: true,
   showProductDetailSidebar: false,
-  isPending: false
+  isPending: false,
+  productDetailData: undefined
 };
 
 const uiSlice = createSlice({
@@ -33,12 +37,14 @@ const uiSlice = createSlice({
     disableIsPending: (state) => {
       state.isPending = false;
     },
-    toggleProductSidebar: (state) => {
+    toggleProductSidebar: (state, action) => {
       state.showProductDetailSidebar = !state.showProductDetailSidebar;
       state.showSidebar = false;
+      state.productDetailData = action.payload;
     },
     closeProductSidebar: (state) => {
       state.showProductDetailSidebar = false;
+      state.productDetailData = undefined;
     }
   }
 });

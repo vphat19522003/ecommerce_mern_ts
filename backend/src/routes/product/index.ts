@@ -35,6 +35,6 @@ productRouter.post(
   reqHandler(createProductController)
 );
 
-productRouter.post('/get-all-latest-products', reqHandler(getAllLatestProductController));
+productRouter.get('/get-all-latest-products', reqHandler(getAllLatestProductController));
 
 export default productRouter;
