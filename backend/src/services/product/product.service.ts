@@ -1,17 +1,19 @@
 import { Request } from 'express';
+import { omit } from 'lodash';
 import { Types } from 'mongoose';
 
 import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
 import { IRequestCustom } from '@app/middleware/accessToken.middleware';
 import CategoryModel from '@app/models/category.model';
+import ProductModel, { BookProductModel } from '@app/models/product.model';
 import ProductRepository from '@app/repository/product.repository';
 import { UserInfo } from '@app/repository/user.repository';
 import { deleteFromCloudinary, uploadToCloudinary } from '@app/utils/cloudinaryConfig';
 import { isValidImage } from '@app/utils/validateFileType.util';
 
 import ProductFactory from './product.factory';
-import { IProduct } from './type';
+import { CustomIProduct, IProduct } from './type';
 
 class ProductService {
   static async createProduct(req: IRequestCustom): Promise<IProduct> {
@@ -99,6 +101,30 @@ class ProductService {
       quantity
     });
     return latestProduct as IProduct[];
+  }
+
+  static async getProductDetail(req: Request): Promise<CustomIProduct> {
+    const productId = req.query.productId as string;
+    let detailInfo: any[] = [];
+
+    if (!productId) throw new CustomError('No product ID provided', STATUS_CODE.BAD_REQUEST);
+
+    const product = await ProductModel.findById(new Types.ObjectId(productId)).populate('category', 'name');
+
+    if (!product) throw new CustomError('Product not found', STATUS_CODE.BAD_REQUEST);
+
+    if (product?.toObject<CustomIProduct>().category.name === 'Book') {
+      detailInfo = await BookProductModel.find({ productId: product.id });
+    }
+
+    const customProductDetail = omit(detailInfo[0].toObject(), 'productId', '__v', '_id');
+
+    const detailProduct = {
+      ...product.toObject<CustomIProduct>(),
+      ...customProductDetail
+    };
+
+    return omit(detailProduct, '__v', 'updatedAt') as CustomIProduct;
   }
 }
 

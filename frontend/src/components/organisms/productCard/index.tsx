@@ -29,7 +29,7 @@ const ProductCard = ({
   return (
     <Card className='!max-h-[380px] max-w-[260px] !p-2 border-[0.2px] border-solid border-slate-100 hover:shadow-lg'>
       <CardContent className='!p-0'>
-        <Link to={`/product/${productId}`}>
+        <Link to={`/product?productId=${productId}`}>
           <div className='relative w-full h-[260px] overflow-hidden bg-white rounded-lg '>
             <img title='shoes' src={productThumbImg.url} className='object-cover w-full h-full' />
             <IconButton className='absolute top-2 right-2'>

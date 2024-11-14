@@ -22,3 +22,13 @@ export const getAllLatestProductController = async (req: Request, res: Response)
     result
   });
 };
+
+export const getProductDetailController = async (req: Request, res: Response): Promise<Response> => {
+  const result = await ProductService.getProductDetail(req);
+
+  return res.json({
+    message: 'Get product detail successfully',
+    status: STATUS_CODE.OK,
+    result
+  });
+};

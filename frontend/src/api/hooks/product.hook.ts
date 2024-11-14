@@ -7,7 +7,7 @@ import {
 import { ResultResponseType } from '@app/types/auth';
 import { IErrorResponse } from '@app/types/common';
 
-import { createProduct, getAllLatestProduct } from '../product';
+import { createProduct, getAllLatestProduct, getProductDetail } from '../product';
 
 export const useCreateProduct = (): UseMutationResult<ResultResponseType, IErrorResponse, AddNewProductFormCustom> => {
   return useMutation({
@@ -20,6 +20,15 @@ export const useGetAllLatestProduct = (quantity: number): UseQueryResult<getProd
     queryKey: ['AllLatestProduct'],
     queryFn: async () => {
       return getAllLatestProduct(quantity);
+    }
+  });
+};
+
+export const useGetDetailProduct = (productId: string): UseQueryResult<getProductTypeCustom[]> => {
+  return useQuery({
+    queryKey: ['ProductDetails', productId],
+    queryFn: async () => {
+      return getProductDetail(productId);
     }
   });
 };

@@ -53,3 +53,9 @@ export const getAllLatestProduct = async (quantity: number): Promise<getProductT
 
   return res.data.result;
 };
+
+export const getProductDetail = async (productId: string): Promise<getProductTypeCustom> => {
+  const res = await axiosCustom.get(`/product/get-product-detail?productId=${productId}`);
+
+  return res.data.result;
+};

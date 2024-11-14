@@ -20,6 +20,13 @@ export interface IProduct {
   isDeleted: boolean;
 }
 
+export type CustomIProduct = Omit<IProduct, 'category'> & {
+  category: {
+    _id: string;
+    name: string;
+  };
+};
+
 export interface IProductStrategy extends IProduct {
   createProduct: (session?: mongoose.ClientSession) => Promise<IProduct>;
 }

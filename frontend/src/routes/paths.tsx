@@ -48,7 +48,7 @@ export const paths = {
     }
   },
   product: {
-    detail: '/product/:productId'
+    detail: '/product'
   }
 };
 
