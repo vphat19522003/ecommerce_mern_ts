@@ -2,6 +2,7 @@ import { useMutation, UseMutationResult, useQuery, UseQueryResult } from '@tanst
 
 import {
   AddNewProductFormCustom,
+  getProductDetailCustom,
   getProductTypeCustom
 } from '@app/pages/admin/ecommerce/addNewProductPage/components/schemas';
 import { ResultResponseType } from '@app/types/auth';
@@ -24,7 +25,7 @@ export const useGetAllLatestProduct = (quantity: number): UseQueryResult<getProd
   });
 };
 
-export const useGetDetailProduct = (productId: string): UseQueryResult<getProductTypeCustom[]> => {
+export const useGetDetailProduct = (productId: string): UseQueryResult<getProductDetailCustom> => {
   return useQuery({
     queryKey: ['ProductDetails', productId],
     queryFn: async () => {

@@ -1,6 +1,7 @@
 import axiosCustom from '@app/config/axios';
 import {
   AddNewProductFormCustom,
+  getProductDetailCustom,
   getProductTypeCustom
 } from '@app/pages/admin/ecommerce/addNewProductPage/components/schemas';
 import { ResultResponseType } from '@app/types/auth';
@@ -54,7 +55,7 @@ export const getAllLatestProduct = async (quantity: number): Promise<getProductT
   return res.data.result;
 };
 
-export const getProductDetail = async (productId: string): Promise<getProductTypeCustom> => {
+export const getProductDetail = async (productId: string): Promise<getProductDetailCustom> => {
   const res = await axiosCustom.get(`/product/get-product-detail?productId=${productId}`);
 
   return res.data.result;

@@ -73,3 +73,20 @@ export type getProductTypeCustom = Omit<AddNewProductFormType, 'productThumbImg'
   }[];
   createdBy?: string;
 };
+
+export type getProductDetailCustom = Omit<AddNewProductFormType, 'productThumbImg' | 'productDescImg'> & {
+  _id: string;
+  productThumbImg: {
+    url: string;
+    public_id: string;
+  };
+  productDescImg: {
+    url: string;
+    public_id: string;
+  }[];
+  createdBy?: string;
+  category: {
+    _id: string;
+    name: string;
+  };
+};
