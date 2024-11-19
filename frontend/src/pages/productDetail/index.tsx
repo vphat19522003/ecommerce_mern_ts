@@ -9,6 +9,7 @@ import { useDevice } from '@app/hooks/useDevice';
 
 import { getProductDetailCustom } from '../admin/ecommerce/addNewProductPage/components/schemas';
 import ProductAction from './components/ProductAction';
+import ProductComment from './components/ProductComment';
 import ProductDescription from './components/ProductDescription';
 import ProductImage from './components/ProductImage';
 
@@ -57,20 +58,22 @@ const ProductDetailPage = (): JSX.Element => {
             style={{
               boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
             }}>
-            Comments
+            <ProductComment />
           </Stack>
         </Stack>
         {/* Product detail action : add to cart, buy now */}
-        <Stack
-          direction={isMobile ? 'column' : 'row'}
-          className={`${isMobile ? 'w-full' : 'w-3/12'} bg-white rounded-lg max-h-[300px]`}
-          style={{
-            position: isMobile ? 'unset' : 'sticky',
-            top: isMobile ? '0px' : '16px',
-            boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
-          }}>
-          <ProductAction />
-        </Stack>
+        {!isMobile && (
+          <Stack
+            direction={isMobile ? 'column' : 'row'}
+            className={`${isMobile ? 'w-full' : 'w-3/12'} bg-white rounded-lg max-h-[300px]`}
+            style={{
+              position: isMobile ? 'unset' : 'sticky',
+              top: isMobile ? '0px' : '16px',
+              boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
+            }}>
+            <ProductAction />
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );

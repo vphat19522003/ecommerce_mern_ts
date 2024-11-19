@@ -9,7 +9,7 @@ import { useDevice } from '@app/hooks/useDevice';
 
 const Sidebar = (): JSX.Element => {
   const location = useLocation();
-  const checkPath = ['user', 'product'];
+  const checkPath = ['user', 'product', 'category'];
   const isActivePath = checkPath.includes(location.pathname.split('/')[1]);
 
   const [isHovering, setIsHovering] = useState<boolean>(!isActivePath);

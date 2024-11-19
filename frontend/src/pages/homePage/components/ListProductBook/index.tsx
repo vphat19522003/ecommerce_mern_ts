@@ -35,7 +35,9 @@ const ListProductBook = (): JSX.Element => {
           <Tab label='Comic' />
           <Tab label='Life skill' />
         </Tabs>
-        <Link to={'/'} className='px-4 py-1 text-white no-underline bg-blue-700 rounded-xl text-md hover:bg-blue-600'>
+        <Link
+          to={'/category/book'}
+          className='px-4 py-1 text-white no-underline bg-blue-700 rounded-xl text-md hover:bg-blue-600'>
           More
         </Link>
       </Stack>

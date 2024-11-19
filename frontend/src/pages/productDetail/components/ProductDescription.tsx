@@ -4,7 +4,10 @@ import { Box, Divider, Rating, Stack, Typography } from '@mui/material';
 
 import Address from '@app/assets/address.png';
 import ButtonForm from '@app/components/atoms/button';
+import { useDevice } from '@app/hooks/useDevice';
 import { getProductDetailCustom } from '@app/pages/admin/ecommerce/addNewProductPage/components/schemas';
+
+import ProductAction from './ProductAction';
 
 type ProductDescriptionProps = {
   productDetail: getProductDetailCustom;
@@ -30,6 +33,7 @@ const details: DetailInfoItem[] = [
 
 const ProductDescription = ({ productDetail }: ProductDescriptionProps): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { isMobile } = useDevice();
 
   const toggleDescription = () => {
     setIsExpanded(!isExpanded);
@@ -64,6 +68,21 @@ const ProductDescription = ({ productDetail }: ProductDescriptionProps): JSX.Ele
         {/* In Stock */}
         <Typography className='text-slate-400 text-md mt-2'>Product in stock: 300</Typography>
       </Stack>
+
+      {/* Mobile Product Action */}
+      {isMobile && (
+        <Stack
+          direction={isMobile ? 'column' : 'row'}
+          className={`${isMobile ? 'w-full' : 'w-3/12'} bg-white rounded-lg max-h-[300px]`}
+          style={{
+            position: isMobile ? 'unset' : 'sticky',
+            top: isMobile ? '0px' : '16px',
+            boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
+          }}>
+          <ProductAction />
+        </Stack>
+      )}
+
       {/* Shipping Information */}
       <Stack
         className='bg-white rounded-lg p-4'

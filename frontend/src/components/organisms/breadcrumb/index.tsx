@@ -18,15 +18,15 @@ const BreadCrumb = ({ mainCategory, subCategories, productName }: BreadCrumbProp
           <p>Home</p>
         </Stack>
       </Link>
-      <Link to={'/'} className='no-underline text-[#39465f] hover:text-blue-700'>
-        {mainCategory}
+      <Link to={`/category/${mainCategory}`} className='no-underline text-[#39465f] hover:text-blue-700'>
+        {mainCategory?.slice(0, 1).toUpperCase() + mainCategory?.slice(1)}
       </Link>
       {subCategories?.map((subCategories, index) => (
         <Link to={'/'} className='no-underline text-[#39465f] hover:text-blue-700' key={index}>
           {subCategories}
         </Link>
       ))}
-      <Typography className='text-md'>{productName}</Typography>
+      {productName && <Typography className='text-md'>{productName}</Typography>}
     </Breadcrumbs>
   );
 };

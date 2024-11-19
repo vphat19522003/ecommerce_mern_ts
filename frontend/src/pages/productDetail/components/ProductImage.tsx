@@ -36,7 +36,7 @@ const ProductImage = ({ productDetail }: ProductImageProps): JSX.Element => {
         {/* List Image */}
         <Stack direction={'row'} spacing={2} className='pt-2'>
           <Box
-            className={`size-16 border-[0.2px] border-solid border-slate-200 rounded-lg overflow-hidden ${selectedImage === productDetail?.productThumbImg.url ? 'border-blue-700 border-[1.4px]' : ' border-[0.2px]  border-slate-200'}`}
+            className={`cursor-pointer size-16 border-[0.2px] border-solid border-slate-200 rounded-lg overflow-hidden ${selectedImage === productDetail?.productThumbImg.url ? 'border-blue-700 border-[1.4px]' : ' border-[0.2px]  border-slate-200'}`}
             onClick={() => handleImageChange(productDetail?.productThumbImg.url)}>
             <img
               src={productDetail?.productThumbImg.url}
@@ -47,7 +47,7 @@ const ProductImage = ({ productDetail }: ProductImageProps): JSX.Element => {
           {productDetail?.productDescImg.length > 0 &&
             productDetail.productDescImg.map((productDescImage, index) => (
               <Box
-                className={`size-16 border-solid  rounded-lg overflow-hidden ${selectedImage === productDescImage.url ? 'border-blue-700 border-[1.4px]' : ' border-[0.2px]  border-slate-200'}`}
+                className={`cursor-pointer size-16 border-solid rounded-lg overflow-hidden ${selectedImage === productDescImage.url ? 'border-blue-700 border-[1.4px]' : ' border-[0.2px]  border-slate-200'}`}
                 key={index}
                 onClick={() => handleImageChange(productDescImage.url)}>
                 <img

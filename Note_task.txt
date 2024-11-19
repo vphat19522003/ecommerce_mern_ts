@@ -98,8 +98,8 @@
                 - Chia 3 khung trang chi tiết: Hình ảnh sản phẩm, thông tin sản phẩm, action mua bán, 
                     phần bình luận, sản phẩm liên quan, sản phẩm vừa xem: DONE
                     + Làm các component product image: DONE
-                    + product description: PENDING
-                    + product action: PENDING
+                    + product description: DONE
+                    + product action: DONE
                     + product comment: PENDING
             -Hiển thị trang sản phẩm sách - category about book : PENDING
             
