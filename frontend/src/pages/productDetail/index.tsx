@@ -8,6 +8,7 @@ import BreadCrumb from '@app/components/organisms/breadcrumb';
 import { useDevice } from '@app/hooks/useDevice';
 
 import { getProductDetailCustom } from '../admin/ecommerce/addNewProductPage/components/schemas';
+import ProductAction from './components/ProductAction';
 import ProductDescription from './components/ProductDescription';
 import ProductImage from './components/ProductImage';
 
@@ -46,11 +47,7 @@ const ProductDetailPage = (): JSX.Element => {
               <ProductImage productDetail={productDetail as getProductDetailCustom} />
             </Stack>
             {/* Product Description Section */}
-            <Stack
-              className={`${isMobile ? 'w-full' : 'w-3/5'} min-h-[1300px] max-h-max bg-white rounded-lg`}
-              style={{
-                boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
-              }}>
+            <Stack className={`${isMobile ? 'w-full' : 'w-3/5'} max-h-max`}>
               <ProductDescription productDetail={productDetail as getProductDetailCustom} />
             </Stack>
           </Stack>
@@ -66,13 +63,13 @@ const ProductDetailPage = (): JSX.Element => {
         {/* Product detail action : add to cart, buy now */}
         <Stack
           direction={isMobile ? 'column' : 'row'}
-          className={`${isMobile ? 'w-full' : 'w-3/12'} bg-white rounded-lg h-[400px]`}
+          className={`${isMobile ? 'w-full' : 'w-3/12'} bg-white rounded-lg max-h-[300px]`}
           style={{
             position: isMobile ? 'unset' : 'sticky',
             top: isMobile ? '0px' : '16px',
             boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
           }}>
-          Action
+          <ProductAction />
         </Stack>
       </Stack>
     </Stack>
