@@ -14,12 +14,12 @@ const MobileNavigator = (): JSX.Element => {
           <ArrowBack onClick={() => navigate(-1)} className='hover:cursor-pointer' />
         </Box>
         <Box>
-          <Link to={paths.index}>
+          <Link to={paths.index} className='text-black'>
             <Home />
           </Link>
         </Box>
         <Box>
-          <Link to={'user/account'}>
+          <Link to={'user/account'} className='text-black'>
             <Person />
           </Link>
         </Box>

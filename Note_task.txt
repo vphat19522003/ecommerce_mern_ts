@@ -86,14 +86,14 @@
                     -Add sub category: DONE
                     -Edit category: DONE
 48. Tạo component banner, video banner: DONE
-49. Hiển thị danh sách sản phẩm trên homepage: PENDING
+49. Hiển thị danh sách sản phẩm trên homepage - UI: PENDING
             -Chia khung hiển thị các phần sản phẩm : DONE
             -Product Card: DONE
             -Product Card Detail SideBar: DONE
             -Hiển thị banner sản phẩm về sách ở homepage: PENDING 
                 - làm list product book tab + slider product : DONE
                 - Làm api lấy list book - DONE, list theo sub category book hiển thị 8 sản phẩm mới nhất - show ra homepage : DONE
-            -Trang chi tiết sản phẩm : PENDING
+            -Trang chi tiết sản phẩm - UI : PENDING
                 - Làm breadcrumb cho product page: DONE
                 - Chia 3 khung trang chi tiết: Hình ảnh sản phẩm, thông tin sản phẩm, action mua bán, 
                     phần bình luận, sản phẩm liên quan, sản phẩm vừa xem: DONE
@@ -101,6 +101,8 @@
                     + product description: DONE
                     + product action: DONE
                     + product comment: PENDING
-            -Hiển thị trang sản phẩm sách - category about book : PENDING
+            -Hiển thị trang sản phẩm sách - category about book - UI  : DONE
+50. UI Trang giỏ hàng : DONE
+51. Create api for detail product page, category product page: PENDING
             
                         

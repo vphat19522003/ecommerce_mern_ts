@@ -6,12 +6,13 @@ import EcommercePage from '@app/pages/admin/ecommerce';
 import AddNewProductPage from '@app/pages/admin/ecommerce/addNewProductPage';
 import CategoryPage from '@app/pages/admin/ecommerce/categoryPage';
 import HomePage from '@app/pages/homePage';
-import ProductCategoryPage from '@app/pages/productCategory';
-import ProductDetailPage from '@app/pages/productDetail';
 import { RouteItemConfig } from '@app/types/route';
 import {
+  CartPage,
   ForgotPasswordPage,
   LoginPage,
+  ProductCategoryPage,
+  ProductDetailPage,
   PurchasedHistory,
   SignUpPage,
   UserAccount,
@@ -51,7 +52,8 @@ export const paths = {
   product: {
     category: '/category/:maincategory',
     detail: '/product'
-  }
+  },
+  cart: '/cart'
 };
 
 export const authenticationRoute: RouteItemConfig[] = [
@@ -85,6 +87,10 @@ export const visitorRoute: RouteItemConfig[] = [
   {
     element: <ProductCategoryPage />,
     path: paths.product.category
+  },
+  {
+    element: <CartPage />,
+    path: paths.cart
   }
 ];
 
@@ -112,6 +118,10 @@ export const shopRoute: RouteItemConfig[] = [
   {
     element: <ProductCategoryPage />,
     path: paths.product.category
+  },
+  {
+    element: <CartPage />,
+    path: paths.cart
   }
 ];
 

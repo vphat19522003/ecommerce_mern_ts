@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { AccountCircle, ShoppingCart } from '@mui/icons-material';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
+import { paths } from '@app/routes/paths';
 import { RootState } from '@app/store';
 
 import HeaderBoxHover from '../headerBoxHover';
@@ -52,13 +53,18 @@ const HeaderAction = (): JSX.Element => {
 
       <Link
         className='text-sm text-pink-500 no-underline transition-colors duration-300 hover:text-pink-600 cursor-pointer'
-        to='/'>
+        to={paths.cart}>
         <Stack
           direction={'row'}
           spacing={2}
           alignItems={'center'}
           className='transition-colors duration-300 cursor-pointer hover:text-pink-700'>
-          <ShoppingCart fontSize='large' className='mr-2 text-pink-500' />
+          <Box className='relative'>
+            <ShoppingCart fontSize='large' className='mr-2 text-pink-500' />
+            <Box className='absolute rounded-full w-5 h-5 bg-pink-500 -top-2 right-0 shadow-md'>
+              <Typography className='text-white text-center mt-[1px] text-sm'>0</Typography>
+            </Box>
+          </Box>
           Shopping Cart
         </Stack>
       </Link>

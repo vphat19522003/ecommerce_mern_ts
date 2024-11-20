@@ -39,3 +39,15 @@ export const UserAddress = withDynamicImport(() => import('@app/pages/userSettin
 export const UserShare = withDynamicImport(() => import('@app/pages/userSetting/userShare'), {
   loading: true
 });
+
+export const ProductDetailPage = withDynamicImport(() => import('@app/pages/productDetail'), {
+  loading: true
+});
+
+export const ProductCategoryPage = withDynamicImport(() => import('@app/pages/productCategory'), {
+  loading: true
+});
+
+export const CartPage = withDynamicImport(() => import('@app/pages/cart'), {
+  loading: true
+});
