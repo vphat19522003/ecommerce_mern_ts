@@ -13,7 +13,7 @@ import {
   Twitter,
   YouTube
 } from '@mui/icons-material';
-import { Box, Button, Link, Stack, Typography } from '@mui/material';
+import { Box, Link, Stack, Typography } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import bctLogo from '@app/assets/footer_logobct_img.png';
@@ -37,9 +37,14 @@ const FooterItem = ({ title, content, isActive, onToggle, isMobile }: FooterItem
         direction={'row'}
         justifyContent={'space-between'}
         alignItems={'center'}
-        className={`p-2 ${isMobile && 'border-b-[0.5px] border-solid'} border-x-0 border-t-0 border-gray-200`}>
+        className={`p-2 ${isMobile && 'border-b-[0.5px] border-solid'} border-x-0 border-t-0 border-gray-200`}
+        onClick={onToggle}>
         {<Typography>{title}</Typography>}
-        {isMobile && <Button onClick={onToggle}>{isActive ? <ArrowDropUp /> : <ArrowDropDown />}</Button>}
+        {isMobile && (
+          <Stack className='py-2'>
+            {isActive ? <ArrowDropUp className='text-blue-700' /> : <ArrowDropDown className='text-blue-700' />}
+          </Stack>
+        )}
       </Stack>
       {/* AnimatePresence ensures smooth entry and exit animations */}
       <AnimatePresence initial={false}>

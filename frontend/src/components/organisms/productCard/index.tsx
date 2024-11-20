@@ -37,8 +37,8 @@ const ProductCard = ({
             </IconButton>
           </div>
         </Link>
-        <Stack direction={'column'} spacing={2} className='p-1 h-[120px] cursor-grab'>
-          <Typography className='mt-2'>{productName}</Typography>
+        <Stack direction={'column'} spacing={2} className='p-1 h-[120px] cursor-default'>
+          <Typography className={'truncate w-full mt-2'}>{productName}</Typography>
           <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
             <Stack direction='row' alignItems={'center'} spacing={1}>
               <Typography className='text-xl font-semibold'>${productPrice}</Typography>
