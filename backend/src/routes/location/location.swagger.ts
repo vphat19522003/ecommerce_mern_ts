@@ -21,12 +21,12 @@
  *               items:
  *                 type: object
  *                 properties:
- *                   id:
- *                     type: string
- *                     example: "1"
  *                   name:
  *                     type: string
- *                     example: "Hà Nội"
+ *                     example: "Hồ Chí Minh"
+ *                   code:
+ *                     type: string
+ *                     example: "79"
  *       500:
  *         description: Internal server error
  */
