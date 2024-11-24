@@ -31,8 +31,9 @@ const ProductDetailPage = (): JSX.Element => {
         productName={productDetail?.productName}
         mainCategory={productDetail?.category.name as string}
         subCategories={[]}
+        isCategory
       />
-      <Stack direction={isMobile ? 'column' : 'row'} spacing={4} className=' max-h-max mb-4'>
+      <Stack direction={isMobile ? 'column' : 'row'} spacing={4} className='mb-4 max-h-max'>
         {/* 2 section : {Product Image, Product description} {Product comment} */}
         <Stack direction={'column'} spacing={4} className={`${isMobile ? 'w-full' : 'w-9/12'}`}>
           {/* Product Image & Description */}
@@ -54,7 +55,7 @@ const ProductDetailPage = (): JSX.Element => {
           </Stack>
           {/* Product comment */}
           <Stack
-            className='w-full h-[300px] bg-white rounded-lg'
+            className='w-full bg-white rounded-lg'
             style={{
               boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
             }}>

@@ -104,5 +104,15 @@
             -Hiển thị trang sản phẩm sách - category about book - UI  : DONE
 50. UI Trang giỏ hàng : DONE
 51. Create api for detail product page, category product page: PENDING
+                    + Tạo api get list sub category của từng sản phẩm và implement ra danh mục
+                    + Get list ra dựa vào sản phẩm muốn xem
+                    + Tạo api lọc theo giá sản phẩm, lọc cứng
+                    + Tạo api lọc theo bộ lọc và thiết kế giao diện là một popup chứa các Filter
+                    + Tạo một combobox chứa các trường bộ lọc và tạo api lọc theo bộ lọc
+                    + Tạo api comment và giao diện comment
+                    + Tạo api get chi tiết thông tin sản phẩm
+                    + Tạo api tính tiền sản phẩm
+                    + Tạo api mua hàng
+                    + Tạo api và giao diện giỏ hàng
             
                         

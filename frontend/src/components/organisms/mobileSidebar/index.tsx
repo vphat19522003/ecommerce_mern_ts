@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
@@ -60,13 +61,26 @@ const MobileSideBar = (): JSX.Element => {
         </Typography>
         <Stack direction={'column'}>
           {mainCategory.map((category) => (
-            <Stack direction={'row'} spacing={2} key={category._id} className='px-4 py-2 lg:pl-8' alignItems={'center'}>
-              <img src={category.categoryImg.category_img_url} alt={category.name} className='object-contain size-10' />
+            <Link
+              key={category._id}
+              to={`/category/${category.name.toLowerCase().replace(/\s+/g, '')}`}
+              className='no-underline'>
+              <Stack
+                direction={'row'}
+                spacing={2}
+                className='px-4 py-2 transition-all rounded-lg cursor-pointer lg:pl-8 hover:bg-blue-100'
+                alignItems={'center'}>
+                <img
+                  src={category.categoryImg.category_img_url}
+                  alt={category.name}
+                  className='object-contain size-10'
+                />
 
-              <Typography variant='h6' className='text-[#394E6A] text-md'>
-                {category.name}
-              </Typography>
-            </Stack>
+                <Typography variant='h6' className='text-[#394E6A] text-md'>
+                  {category.name}
+                </Typography>
+              </Stack>
+            </Link>
           ))}
         </Stack>
       </motion.div>

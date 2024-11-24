@@ -23,7 +23,7 @@ const ProductCategoryPage = (): JSX.Element => {
 
   return (
     <Stack>
-      <BreadCrumb mainCategory={path[0]} subCategories={path.slice(1)} />
+      <BreadCrumb mainCategory={path[0]} subCategories={path.slice(1)} isCategory />
       <Stack direction={isMobile ? 'column' : 'row'} className='mb-4' spacing={4}>
         {/* Category Navigator */}
         {!isMobile && <CategoryFilterNavigator />}
