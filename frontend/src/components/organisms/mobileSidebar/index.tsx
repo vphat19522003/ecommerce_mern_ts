@@ -64,7 +64,10 @@ const MobileSideBar = (): JSX.Element => {
             <Link
               key={category._id}
               to={`/category/${category.name.toLowerCase().replace(/\s+/g, '')}`}
-              className='no-underline'>
+              className='no-underline'
+              state={{
+                categoryId: category._id
+              }}>
               <Stack
                 direction={'row'}
                 spacing={2}

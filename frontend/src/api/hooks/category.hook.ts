@@ -5,7 +5,7 @@ import {
   EditCategoryFormType
 } from '@app/pages/admin/ecommerce/categoryPage/components/schemas';
 import { ResultResponseType } from '@app/types/auth';
-import { CategoryResponseType, CustomCategoryResponseType } from '@app/types/category';
+import { CustomCategoryResponseType } from '@app/types/category';
 import { IErrorResponse, ResponseType } from '@app/types/common';
 
 import {
@@ -17,10 +17,11 @@ import {
   getSubCategory
 } from '../category';
 
-export const useGetMainCategory = (): UseQueryResult<CategoryResponseType[]> => {
+export const useGetMainCategory = (enabled = true): UseQueryResult<CustomCategoryResponseType[]> => {
   return useQuery({
     queryKey: ['mainCategory'],
-    queryFn: getMainCategory
+    queryFn: getMainCategory,
+    enabled: enabled
   });
 };
 

@@ -1,4 +1,4 @@
-import { CategoryResponseType } from '@app/types/category';
+import { CustomCategoryResponseType } from '@app/types/category';
 import { DropdownDataType } from '@app/types/common';
 import { locationResponseType } from '@app/types/user';
 
@@ -9,7 +9,7 @@ export const mapLocationData = (arrLocation: locationResponseType[]): Omit<Dropd
   }));
 };
 
-export const mapCategoryData = (arrCategory: CategoryResponseType[]): Omit<DropdownDataType, 'name'>[] => {
+export const mapCategoryData = (arrCategory: CustomCategoryResponseType[]): Omit<DropdownDataType, 'name'>[] => {
   return arrCategory.map((item) => ({
     label: item.name,
     value: item._id

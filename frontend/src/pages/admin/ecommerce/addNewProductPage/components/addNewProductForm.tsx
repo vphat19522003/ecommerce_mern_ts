@@ -12,7 +12,7 @@ import NumberField from '@app/components/atoms/numberFormatCustom';
 import TextArea from '@app/components/atoms/textArea';
 import PageTitle from '@app/components/molecules/admin/pageTitle';
 import { useDevice } from '@app/hooks/useDevice';
-import { CategoryResponseType } from '@app/types/category';
+import { CustomCategoryResponseType } from '@app/types/category';
 import { mapCategoryData } from '@app/utils/mapLocationData';
 
 import AddBookForm from './addBookForm';
@@ -20,7 +20,7 @@ import AddNewProductAction from './addNewProductAction';
 import { AddNewProductFormCustom, AddNewProductFormSchema, AddNewProductFormType } from './schemas';
 
 type AddNewProductFormProps = {
-  mainCategory: CategoryResponseType[];
+  mainCategory: CustomCategoryResponseType[];
   handleAddNewProduct: (value: AddNewProductFormCustom) => void;
   isAddNewProductPending: boolean;
 };

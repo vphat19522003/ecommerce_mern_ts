@@ -1,10 +1,17 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { Checkbox, Divider, FormControlLabel, Stack, Typography } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useDevice } from '@app/hooks/useDevice';
+import { CustomCategoryResponseType } from '@app/types/category';
+
+type CategoryFilterNavigatorProps = {
+  subCategoryList: CustomCategoryResponseType[];
+  mainPath: string;
+};
 
 const arrayListCategory = [
   {
@@ -20,7 +27,7 @@ const arrayListCategory = [
     name: 'Life Skill'
   }
 ];
-const CategoryFilterNavigator = (): JSX.Element => {
+const CategoryFilterNavigator = ({ subCategoryList, mainPath }: CategoryFilterNavigatorProps): JSX.Element => {
   const [toggleNavigator, setToggleNavigator] = useState({
     filterNavigator1: {
       id: 1,
@@ -56,11 +63,14 @@ const CategoryFilterNavigator = (): JSX.Element => {
             }))
           }>
           <Typography className='font-bold'>Khám phá theo danh mục</Typography>
-          <KeyboardArrowDown />
+          {subCategoryList.length > 0 && <KeyboardArrowDown />}
         </Stack>
-        <Divider
-          className={`${toggleNavigator.filterNavigator1.isActive ? 'opacity-100' : 'opacity-0'} transition-all duration-300 ease-in-out`}
-        />
+        {subCategoryList.length > 0 && (
+          <Divider
+            className={`${toggleNavigator.filterNavigator1.isActive ? 'opacity-100' : 'opacity-0'} transition-all duration-300 ease-in-out`}
+          />
+        )}
+
         <AnimatePresence initial={false}>
           {toggleNavigator.filterNavigator1.isActive && (
             <motion.div
@@ -69,12 +79,17 @@ const CategoryFilterNavigator = (): JSX.Element => {
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               style={{ overflow: 'hidden' }}>
-              {arrayListCategory.map((category, index) => (
-                <Typography
+              {subCategoryList.map((category, index) => (
+                <Link
+                  to={
+                    mainPath === 'all'
+                      ? `/category/${category.name.toLowerCase().replace(/\s+/g, '')}`
+                      : `/category/${mainPath}/${category.name.toLowerCase().replace(/\s+/g, '')}`
+                  }
                   key={index}
-                  className='px-4 py-3 text-md hover:text-blue-700 hover:underline cursor-pointer'>
-                  {category.name}
-                </Typography>
+                  className=' hover:text-blue-700 hover:underline cursor-pointer no-underline text-black'>
+                  <Typography className='px-4 py-3 text-md '>{category.name}</Typography>
+                </Link>
               ))}
             </motion.div>
           )}

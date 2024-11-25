@@ -4,10 +4,10 @@ import {
   EditCategoryFormType
 } from '@app/pages/admin/ecommerce/categoryPage/components/schemas';
 import { ResultResponseType } from '@app/types/auth';
-import { CategoryResponseType, CustomCategoryResponseType } from '@app/types/category';
+import { CustomCategoryResponseType } from '@app/types/category';
 import { ResponseType } from '@app/types/common';
 
-export const getMainCategory = async (): Promise<CategoryResponseType[]> => {
+export const getMainCategory = async (): Promise<CustomCategoryResponseType[]> => {
   const res = await axiosCustom.get('/category/get-main-category');
 
   return res.data.result;

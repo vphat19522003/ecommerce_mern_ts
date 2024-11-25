@@ -49,7 +49,7 @@ class CategoryService {
       if (!newCategory) throw new CustomError('Failed to create category', STATUS_CODE.INTERNAL_SERVER_ERROR);
 
       if (parent) {
-        await CategoryModel.findByIdAndUpdate(parent, { $push: { subCategories: newCategory._id } }, { new: true });
+        await CategoryModel.findByIdAndUpdate(parent, { $push: { child: newCategory._id } }, { new: true });
       }
 
       return omit(newCategory, '__v', 'updatedAt');

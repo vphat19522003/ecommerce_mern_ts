@@ -26,7 +26,7 @@ const BreadCrumb = ({ mainCategory, subCategories, productName, isCategory }: Br
       </Link>
       {subCategories?.map((subCategories, index) => (
         <Link to={'/'} className='no-underline text-[#39465f] hover:text-blue-700' key={index}>
-          {subCategories}
+          {subCategories?.slice(0, 1).toUpperCase() + subCategories?.slice(1)}
         </Link>
       ))}
       {productName && <Typography className='text-md'>{productName}</Typography>}

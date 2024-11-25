@@ -51,6 +51,7 @@ export const paths = {
   },
   product: {
     category: '/category/:maincategory',
+    subCategory: '/category/:maincategory/:subcategory',
     detail: '/product'
   },
   cart: '/cart'
@@ -87,6 +88,10 @@ export const visitorRoute: RouteItemConfig[] = [
   {
     element: <ProductCategoryPage />,
     path: paths.product.category
+  },
+  {
+    element: <ProductCategoryPage />,
+    path: paths.product.subCategory
   },
   {
     element: <CartPage />,
