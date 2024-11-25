@@ -1,16 +1,17 @@
-import { ArrowDropDown, FilterAlt } from '@mui/icons-material';
+import { FilterAlt } from '@mui/icons-material';
 import { Checkbox, Divider, FormControlLabel, Rating, Stack, Typography } from '@mui/material';
 
 import FreeShip from '@app/assets/FreeShip.png';
 import TopDeal from '@app/assets/TopDeal.png';
 import ButtonForm from '@app/components/atoms/button';
+import FilterComboBox from '@app/components/organisms/filterCombobox';
 import { useDevice } from '@app/hooks/useDevice';
 
 const ProductFilterSection = (): JSX.Element => {
   const { isMobile } = useDevice();
   return (
     <Stack
-      className='bg-white rounded-lg px-4 py-2'
+      className='px-4 py-2 bg-white rounded-lg'
       style={{
         boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
       }}>
@@ -57,15 +58,7 @@ const ProductFilterSection = (): JSX.Element => {
         )}
 
         {/* Filter 2 */}
-        <Stack direction={'row'} spacing={2} alignItems={'center'} className={`${isMobile && 'ml-auto'}`}>
-          <Typography className='text-md text-slate-400'>Sắp xếp</Typography>
-          <ButtonForm variant='outlined' className='rounded-3xl'>
-            <Stack direction={'row'} alignItems={'center'} spacing={2}>
-              <Typography className='text-md'>Phổ biến</Typography>
-              <ArrowDropDown className='text-md' />
-            </Stack>
-          </ButtonForm>
-        </Stack>
+        <FilterComboBox />
       </Stack>
     </Stack>
   );

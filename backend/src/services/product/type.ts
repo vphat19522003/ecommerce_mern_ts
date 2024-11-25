@@ -36,6 +36,7 @@ export interface IBook extends IProduct {
   author: string;
   page_number: number;
   publisher: string;
+  subCategory: string;
 }
 
 export interface IBookStrategy extends IProduct {

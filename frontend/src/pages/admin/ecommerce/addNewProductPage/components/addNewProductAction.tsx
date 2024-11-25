@@ -10,13 +10,15 @@ import { AddNewProductFormType } from './schemas';
 type AddNewProductActionProps = {
   reset: UseFormReset<AddNewProductFormType>;
   setProductType: React.Dispatch<React.SetStateAction<string>>;
+  setSubProducType: React.Dispatch<React.SetStateAction<string>>;
   isAddNewProductPending: boolean;
 };
 
 const AddNewProductAction = ({
   reset,
   isAddNewProductPending,
-  setProductType
+  setProductType,
+  setSubProducType
 }: AddNewProductActionProps): JSX.Element => {
   return (
     <Stack direction={'row'} spacing={2}>
@@ -25,6 +27,7 @@ const AddNewProductAction = ({
         onClick={() => {
           reset();
           setProductType('');
+          setSubProducType('');
         }}
         disabled={isAddNewProductPending}>
         Reset

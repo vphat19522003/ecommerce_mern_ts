@@ -18,7 +18,8 @@ export const createProduct = async ({
   author,
   page_number,
   publisher,
-  createdBy
+  createdBy,
+  subCategory
 }: AddNewProductFormCustom): Promise<ResultResponseType> => {
   const formData = new FormData();
 
@@ -38,6 +39,7 @@ export const createProduct = async ({
     formData.append('author', author as string);
     formData.append('page_number', String(page_number || 0));
     formData.append('publisher', publisher as string);
+    formData.append('subCategory', String(subCategory));
   }
 
   formData.append('createdBy', createdBy as string);

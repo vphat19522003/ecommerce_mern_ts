@@ -23,6 +23,9 @@ export const AddNewProductFormSchema = zod
 
     category: zod.string().trim().min(1, { message: errorMessages.require }),
     categoryLabel: zod.string().optional(),
+    subCategory: zod.string().optional(),
+    subCategoryLabel: zod.string().optional(),
+    listSubCategory: zod.array(zod.any()).optional(),
     //Book product
     author: zod.string().optional(),
     page_number: zod.number().optional(),
@@ -51,6 +54,14 @@ export const AddNewProductFormSchema = zod
       if (!data.publisher || data.publisher.trim() === '') {
         ctx.addIssue({ code: 'custom', path: ['publisher'], message: errorMessages.require });
       }
+    }
+    if (data.listSubCategory && data.listSubCategory.length > 0) {
+      if (data.subCategory?.trim() === '')
+        ctx.addIssue({
+          code: 'custom',
+          path: ['subCategory'],
+          message: 'Sub category is required.'
+        });
     }
   });
 

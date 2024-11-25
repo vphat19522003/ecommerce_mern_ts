@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AddCircle, AttachMoney, Discount, Inventory, PointOfSale, UploadFile } from '@mui/icons-material';
 import { Box, Stack, Typography } from '@mui/material';
 
+import { useGetSubCategory } from '@app/api/hooks/category.hook';
 import CustomComboBox from '@app/components/atoms/comboBox';
 import InputField from '@app/components/atoms/inputField';
 import Label from '@app/components/atoms/label';
@@ -31,14 +32,20 @@ const AddNewProductForm = ({
   isAddNewProductPending
 }: AddNewProductFormProps): JSX.Element => {
   const [productType, setProductType] = useState('');
+  const [subProductType, setSubProductType] = useState('');
+
   const [thumbnailImage, setThumbnailImage] = useState<File>();
   const [descriptionImages, setDescriptionImages] = useState<File[]>([]);
+  const [listSubCategory, setListSubCategory] = useState<CustomCategoryResponseType[]>();
   const { isMobile } = useDevice();
+
+  const { mutate: getSubCategory } = useGetSubCategory();
 
   const {
     control,
     formState: { errors },
     setValue,
+    getValues,
     reset,
     handleSubmit
   } = useForm<AddNewProductFormType>({
@@ -53,7 +60,8 @@ const AddNewProductForm = ({
       stockQuantity: 0,
       author: '',
       page_number: 0,
-      publisher: ''
+      publisher: '',
+      subCategory: ''
     }
   });
 
@@ -71,9 +79,24 @@ const AddNewProductForm = ({
 
   const handleSubmitForm = (value: AddNewProductFormType) => {
     const tempProduct = { ...value, productThumbImg: thumbnailImage as File, productDescImg: descriptionImages };
+    console.log({ tempProduct });
     handleAddNewProduct(tempProduct);
   };
 
+  useEffect(() => {
+    if (getValues('category')) {
+      getSubCategory(getValues('category'), {
+        onSuccess: (data) => {
+          setSubProductType('');
+          setValue('subCategory', '');
+          setValue('listSubCategory', data);
+          setListSubCategory(data);
+        }
+      });
+    } else {
+      setListSubCategory([]);
+    }
+  }, [productType]);
   return (
     <form onSubmit={handleSubmit(handleSubmitForm)}>
       <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} className='mb-4'>
@@ -82,6 +105,7 @@ const AddNewProductForm = ({
           reset={reset}
           isAddNewProductPending={isAddNewProductPending}
           setProductType={setProductType}
+          setSubProducType={setSubProductType}
         />
       </Stack>
       <Stack direction={`${isMobile ? 'column' : 'row'}`} spacing={4}>
@@ -344,6 +368,33 @@ const AddNewProductForm = ({
                 />
               )}
             />
+            {listSubCategory && listSubCategory?.length > 0 && (
+              <>
+                <Typography variant='subtitle2' className='my-2 font-medium'>
+                  Sub Category
+                </Typography>
+                <Controller
+                  control={control}
+                  name='subCategory'
+                  render={({ field: { onChange, value } }) => (
+                    <CustomComboBox
+                      label='Sub Category'
+                      value={value}
+                      data={mapCategoryData(listSubCategory)}
+                      onChange={(e, newValue) => {
+                        if (React.isValidElement(newValue)) {
+                          const label = newValue.props.children;
+                          setSubProductType(label);
+                          onChange(e.target.value);
+                          setValue('subCategoryLabel', label);
+                        }
+                      }}
+                      error={errors.subCategory}
+                    />
+                  )}
+                />
+              </>
+            )}
           </Stack>
           {productType === 'Book' && isMobile && <AddBookForm control={control} errors={errors} />}
         </Stack>

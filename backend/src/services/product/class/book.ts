@@ -10,6 +10,7 @@ class Book extends Product implements IBookStrategy {
   author: string;
   page_number: number;
   publisher: string;
+  subCategory: string;
 
   constructor({
     productName,
@@ -29,7 +30,8 @@ class Book extends Product implements IBookStrategy {
     author,
     page_number,
     productId,
-    publisher
+    publisher,
+    subCategory
   }: IBook) {
     super({
       productName,
@@ -51,6 +53,7 @@ class Book extends Product implements IBookStrategy {
     this.page_number = page_number;
     this.productId = productId;
     this.publisher = publisher;
+    this.subCategory = subCategory;
   }
 
   async createProduct(): Promise<IBook> {
