@@ -6,7 +6,7 @@ import { Stack, Typography } from '@mui/material';
 import ButtonForm from '@app/components/atoms/button';
 import { useDevice } from '@app/hooks/useDevice';
 
-const listFilter = [
+export const listFilter = [
   {
     name: 'Phổ biến',
     value: 1,

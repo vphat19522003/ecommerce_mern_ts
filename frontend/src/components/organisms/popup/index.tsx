@@ -1,6 +1,7 @@
 import { forwardRef, Ref, useImperativeHandle, useState } from 'react';
 
-import { Dialog, DialogContent, DialogTitle, Slide, Stack, Typography } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import { Dialog, DialogContent, DialogTitle, IconButton, Slide, Stack, Typography } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 
 import viteImg from '@app/assets/vite.svg';
@@ -73,11 +74,16 @@ const PopUp = forwardRef(
         })}>
         {title && (
           <DialogTitle>
-            <Stack direction={'row'} justifyContent={'flex-start'} gap={2}>
-              {!hiddenTitleIcon && <img src={viteImg} sizes='5' />}
-              <Typography variant='h6' color={'primary'}>
-                {title}
-              </Typography>
+            <Stack direction={'row'} justifyContent={'space-between'}>
+              <Stack direction={'row'} justifyContent={'flex-start'} gap={2}>
+                {!hiddenTitleIcon && <img src={viteImg} sizes='5' />}
+                <Typography variant='h6' color={'primary'}>
+                  {title}
+                </Typography>
+              </Stack>
+              <IconButton onClick={handleClose}>
+                <Close />
+              </IconButton>
             </Stack>
           </DialogTitle>
         )}

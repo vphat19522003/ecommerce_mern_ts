@@ -75,7 +75,7 @@ const ProductCategoryPage = (): JSX.Element => {
           <ProductCategoryBanner banner_category={BannerCategory} />
 
           {/* Filter */}
-          <ProductFilterSection />
+          <ProductFilterSection listSubCategory={listSubCategory} />
 
           {/* Product List */}
           <ProductCategoryList listProduct={AllLatestProducts} />
