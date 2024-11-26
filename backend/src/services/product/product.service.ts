@@ -10,8 +10,10 @@ import ProductModel, { BookProductModel } from '@app/models/product.model';
 import ProductRepository from '@app/repository/product.repository';
 import { UserInfo } from '@app/repository/user.repository';
 import { deleteFromCloudinary, uploadToCloudinary } from '@app/utils/cloudinaryConfig';
+import getSortOption from '@app/utils/sortFilterOptions';
 import { isValidImage } from '@app/utils/validateFileType.util';
 
+import CategoryService from '../category.service';
 import ProductFactory from './product.factory';
 import { CustomIProduct, IProduct } from './type';
 
@@ -125,6 +127,53 @@ class ProductService {
     };
 
     return omit(detailProduct, '__v', 'updatedAt') as CustomIProduct;
+  }
+
+  static async getProductByFilter(req: Request): Promise<CustomIProduct[]> {
+    const {
+      mainCategory,
+      subCategory,
+      page = 1,
+      pageSize = 8,
+      rating,
+      minPrice = 0,
+      maxPrice = 0,
+      arrange
+    } = req.query;
+
+    let productIds: string[] = [];
+
+    if (mainCategory && subCategory) {
+      const { name: categoryType } = await CategoryService.getCategoryById(mainCategory as string);
+
+      if (categoryType === 'Book') {
+        const bookProducts = await BookProductModel.find({ subCategory }).select('productId');
+        if (!bookProducts) throw new CustomError('Product with subCategory not found', STATUS_CODE.NOT_FOUND);
+
+        productIds = bookProducts.map((book) => book.productId.toString());
+      }
+    }
+
+    const matchFilters: any = { isDeleted: false };
+
+    if (mainCategory) matchFilters.category = mainCategory;
+    if (subCategory && productIds.length) matchFilters._id = { $in: productIds };
+    if (rating) matchFilters.productVoteRate = { $gte: Number(rating) };
+    if (minPrice || maxPrice) {
+      matchFilters.productPrice = { $gte: minPrice, $lte: maxPrice };
+    }
+
+    const skip = (Number(page) - 1) * Number(pageSize);
+    const limit = Number(pageSize);
+
+    const products = await ProductModel.find(matchFilters, { productDescImg: 0, createdBy: 0, updatedAt: 0, __v: 0 })
+      .sort(getSortOption(Number(arrange)))
+      .skip(skip)
+      .limit(limit)
+      .populate('category', 'name')
+      .exec();
+
+    return products as unknown as CustomIProduct[];
   }
 }
 

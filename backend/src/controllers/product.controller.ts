@@ -32,3 +32,13 @@ export const getProductDetailController = async (req: Request, res: Response): P
     result
   });
 };
+
+export const getProductByFilterController = async (req: Request, res: Response): Promise<Response> => {
+  const result = await ProductService.getProductByFilter(req);
+
+  return res.json({
+    message: 'Get list product by filter successfully',
+    status: STATUS_CODE.OK,
+    result
+  });
+};

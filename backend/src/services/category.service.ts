@@ -192,6 +192,16 @@ class CategoryService {
       throw new CustomError('Failed to update category', STATUS_CODE.INTERNAL_SERVER_ERROR);
     }
   }
+
+  static async getCategoryById(id: string): Promise<CategoryInfo> {
+    if (!id) throw new CustomError('No category id provided', STATUS_CODE.BAD_REQUEST);
+
+    const category = await CategoryModel.findById(new Types.ObjectId(id));
+
+    if (!category) throw new CustomError('Category not found', STATUS_CODE.NOT_FOUND);
+
+    return category.toObject<CategoryInfo>();
+  }
 }
 
 export default CategoryService;

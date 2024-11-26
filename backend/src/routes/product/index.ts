@@ -3,6 +3,7 @@ import { Router } from 'express';
 import {
   createProductController,
   getAllLatestProductController,
+  getProductByFilterController,
   getProductDetailController
 } from '@app/controllers/product.controller';
 import verifyAccessToken from '@app/middleware/accessToken.middleware';
@@ -41,5 +42,6 @@ productRouter.post(
 
 productRouter.get('/get-all-latest-products', reqHandler(getAllLatestProductController));
 productRouter.get('/get-product-detail', reqHandler(getProductDetailController));
+productRouter.get('/get-product-by-filter', reqHandler(getProductByFilterController));
 
 export default productRouter;
