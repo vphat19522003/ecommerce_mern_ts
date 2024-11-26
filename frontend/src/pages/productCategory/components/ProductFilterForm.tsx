@@ -136,7 +136,7 @@ const ProductFilterForm = ({ listSubCategory }: ProductFilterFormProps): JSX.Ele
           label={
             <Stack direction={'row'} alignItems={'center'} spacing={2}>
               <Rating name='rating' defaultValue={3} precision={0.5} size='small' readOnly />
-              <Typography fontSize={'13px'}>từ 3 sao</Typography>
+              <Typography fontSize={'13px'}>3 sao</Typography>
             </Stack>
           }
         />
