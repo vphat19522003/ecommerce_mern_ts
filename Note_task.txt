@@ -109,6 +109,7 @@
                     + Tạo api lọc theo giá sản phẩm, lọc cứng: DONE
                     + Tạo api lọc theo bộ lọc: DONE - 3 - Thiết kế giao diện là một popup chứa các Filter: DONE -1
                     + Tạo một combobox chứa các trường bộ lọc: DONE - Tạo api lọc theo bộ lọc: DONE
+                    + Ráp api vào giao diện: PENDING
                     + Tạo api comment và giao diện comment
                     + Tạo api get chi tiết thông tin sản phẩm
                     + Tạo api tính tiền sản phẩm
