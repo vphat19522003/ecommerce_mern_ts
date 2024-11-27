@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type initialStateType = {
+export type initialFilterStateType = {
   mainCategory?: string;
   subCategory?: string;
   minPrice?: number;
@@ -9,7 +9,7 @@ type initialStateType = {
   sort?: number;
 };
 
-const initialState: initialStateType = {
+const initialState: initialFilterStateType = {
   mainCategory: '',
   subCategory: '',
   minPrice: 0,
@@ -22,7 +22,7 @@ const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    setFilter: (state, action: PayloadAction<initialStateType>) => {
+    setFilter: (state, action: PayloadAction<initialFilterStateType>) => {
       return { ...state, ...action.payload };
     },
     setFilterPrice: (state, action: PayloadAction<{ minPrice: number; maxPrice: number }>) => {

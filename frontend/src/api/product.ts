@@ -4,7 +4,8 @@ import {
   getProductDetailCustom,
   getProductTypeCustom
 } from '@app/pages/admin/ecommerce/addNewProductPage/components/schemas';
-import { ResultResponseType } from '@app/types/auth';
+import { initialFilterStateType } from '@app/redux/filterSlice';
+import { ProductResultResponseType, ResultResponseType } from '@app/types/auth';
 
 export const createProduct = async ({
   productName,
@@ -61,4 +62,28 @@ export const getProductDetail = async (productId: string): Promise<getProductDet
   const res = await axiosCustom.get(`/product/get-product-detail?productId=${productId}`);
 
   return res.data.result;
+};
+
+export const getProductByFilter = async ({
+  mainCategory,
+  subCategory,
+  minPrice,
+  maxPrice,
+  page,
+  pageSize,
+  rating,
+  sort
+}: initialFilterStateType & { page: number; pageSize: number }): Promise<ProductResultResponseType> => {
+  const res = await axiosCustom.post('/product/get-product-by-filter', {
+    mainCategory,
+    subCategory,
+    minPrice,
+    maxPrice,
+    page,
+    pageSize,
+    rating,
+    sort
+  });
+
+  return res.data;
 };

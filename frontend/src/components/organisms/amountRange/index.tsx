@@ -3,7 +3,13 @@ import { Stack, Typography } from '@mui/material';
 
 import NumberField from '@app/components/atoms/numberFormatCustom';
 
-const AmountRange = (): JSX.Element => {
+type AmountRangeProps = {
+  minValue?: number;
+  maxValue?: number;
+  handleOnChangeAmount: (min: number, max: number) => void;
+};
+
+const AmountRange = ({ minValue = 0, maxValue = 0, handleOnChangeAmount }: AmountRangeProps): JSX.Element => {
   return (
     <Stack>
       <Typography
@@ -30,8 +36,10 @@ const AmountRange = (): JSX.Element => {
           endAdornment={<AttachMoney />}
           placeholder='From'
           decimalScale={2}
+          value={minValue}
           onChange={(e) => {
             const numericValue = parseFloat(e.target.value) || 0;
+            handleOnChangeAmount(numericValue, maxValue);
           }}
         />
         <Typography>~</Typography>
@@ -43,8 +51,10 @@ const AmountRange = (): JSX.Element => {
           endAdornment={<AttachMoney />}
           placeholder='To'
           decimalScale={2}
+          value={maxValue}
           onChange={(e) => {
             const numericValue = parseFloat(e.target.value) || 0;
+            handleOnChangeAmount(minValue, numericValue);
           }}
         />
       </Stack>

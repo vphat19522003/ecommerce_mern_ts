@@ -10,20 +10,26 @@ import { IDialogRef } from '@app/components/organisms/confirmPopup';
 import FilterComboBox from '@app/components/organisms/filterCombobox';
 import PopUp from '@app/components/organisms/popup';
 import { useDevice } from '@app/hooks/useDevice';
+import { initialFilterStateType } from '@app/redux/filterSlice';
 import { CustomCategoryResponseType } from '@app/types/category';
 
 import ProductFilterForm from './ProductFilterForm';
 
 type ProductFilterSectionProps = {
   listSubCategory: CustomCategoryResponseType[];
+  handleFilterChange: (filter: initialFilterStateType) => void;
 };
 
-const ProductFilterSection = ({ listSubCategory }: ProductFilterSectionProps): JSX.Element => {
+const ProductFilterSection = ({ listSubCategory, handleFilterChange }: ProductFilterSectionProps): JSX.Element => {
   const filterDialogRef = useRef<IDialogRef>(null);
   const { isMobile } = useDevice();
 
   const handleOpenFilter = () => {
     filterDialogRef.current?.show();
+  };
+
+  const handleCloseFilter = () => {
+    filterDialogRef.current?.hide();
   };
   return (
     <>
@@ -75,11 +81,15 @@ const ProductFilterSection = ({ listSubCategory }: ProductFilterSectionProps): J
           )}
 
           {/* Filter 2 */}
-          <FilterComboBox />
+          <FilterComboBox handleFilterChange={handleFilterChange} />
         </Stack>
       </Stack>
       <PopUp title='Filter' ref={filterDialogRef} size='xl'>
-        <ProductFilterForm listSubCategory={listSubCategory} />
+        <ProductFilterForm
+          listSubCategory={listSubCategory}
+          handleFilterChange={handleFilterChange}
+          handleCloseFilter={handleCloseFilter}
+        />
       </PopUp>
     </>
   );

@@ -42,6 +42,6 @@ productRouter.post(
 
 productRouter.get('/get-all-latest-products', reqHandler(getAllLatestProductController));
 productRouter.get('/get-product-detail', reqHandler(getProductDetailController));
-productRouter.get('/get-product-by-filter', reqHandler(getProductByFilterController));
+productRouter.post('/get-product-by-filter', reqHandler(getProductByFilterController));
 
 export default productRouter;

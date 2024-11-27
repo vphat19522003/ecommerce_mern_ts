@@ -5,15 +5,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Stack } from '@mui/material';
 
 import { useGetMainCategory, useGetSubCategory } from '@app/api/hooks/category.hook';
-import { useGetAllLatestProduct } from '@app/api/hooks/product.hook';
+import { useGetProductByFilter } from '@app/api/hooks/product.hook';
 import BannerCategory from '@app/assets/banner_category.png';
 import BreadCrumb from '@app/components/organisms/breadcrumb';
 import { useDevice } from '@app/hooks/useDevice';
-import { setFilter, setFilterPrice } from '@app/redux/filterSlice';
+import { initialFilterStateType, setFilter, setFilterPrice } from '@app/redux/filterSlice';
 import { paths } from '@app/routes/paths';
 import { RootState } from '@app/store';
 import { CustomCategoryResponseType } from '@app/types/category';
 
+import { getProductTypeCustom } from '../admin/ecommerce/addNewProductPage/components/schemas';
 import CategoryFilterNavigator from './components/CategoryFilterNavigator';
 import ProductCategoryBanner from './components/ProductCategoryBanner';
 import ProductCategoryList from './components/ProductCategoryList';
@@ -21,7 +22,11 @@ import ProductCategoryTitle from './components/ProductCategoryTitle';
 import ProductFilterSection from './components/ProductFilterSection';
 
 const ProductCategoryPage = (): JSX.Element => {
+  const [listProduct, setListProduct] = useState<getProductTypeCustom[]>([]);
   const [listSubCategory, setListSubCategory] = useState<CustomCategoryResponseType[]>([]);
+  const [mainCategoryId, setMainCategoryId] = useState<string>('');
+  const [subCategoryId, setSubCategoryId] = useState<string>('');
+
   const { isMobile } = useDevice();
   const dispatch = useDispatch();
   const filter = useSelector((state: RootState) => state.filter);
@@ -30,11 +35,11 @@ const ProductCategoryPage = (): JSX.Element => {
   const navigate = useNavigate();
   const path = location.pathname.split('/').filter((x) => x && x !== 'category');
 
-  const { data: AllLatestProducts = [] } = useGetAllLatestProduct(8);
-
   const { data: mainCategoryList = [] } = useGetMainCategory();
 
   const { mutate: getSubCategory } = useGetSubCategory();
+
+  const { mutate: getProductByFilter } = useGetProductByFilter();
 
   useEffect(() => {
     if (!mainCategoryList.length) return;
@@ -42,16 +47,21 @@ const ProductCategoryPage = (): JSX.Element => {
     const categoryId =
       mainCategoryList.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[0])?._id || null;
 
+    setMainCategoryId(categoryId || '');
+
     if (path[0] !== 'all' && categoryId) {
       getSubCategory(categoryId, {
         onSuccess: (data) => {
           setListSubCategory(data.length > 0 ? data : []);
 
-          if (path[0] !== 'all' && path[1]) {
+          if (!path[1]) {
+            setSubCategoryId('');
+          } else {
             const subCategoryId =
               data.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[1])?._id || null;
 
             if (!subCategoryId) navigate('/category/all', { replace: true });
+            else setSubCategoryId(subCategoryId);
           }
         }
       });
@@ -60,28 +70,48 @@ const ProductCategoryPage = (): JSX.Element => {
     } else if (path[0] === 'all' && path[1]) {
       navigate(paths.pageNotFound, { replace: true });
     }
-  }, [path[0], mainCategoryList, getSubCategory]);
+  }, [path[0], path[1], mainCategoryList]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const minPrice = searchParams.get('minPrice');
-    const maxPrice = searchParams.get('maxPrice');
-    const sort = searchParams.get('sort');
-    const rating = searchParams.get('rating');
+
+    const parseQueryParam = (param: string | null, defaultValue: number) =>
+      param ? parseInt(param, 10) : defaultValue;
+
+    const minPrice = parseQueryParam(searchParams.get('minPrice'), 0);
+    const maxPrice = parseQueryParam(searchParams.get('maxPrice'), 0);
+    const sort = parseQueryParam(searchParams.get('sort'), 5);
+    const rating = parseQueryParam(searchParams.get('rating'), 0);
 
     dispatch(
       setFilter({
-        minPrice: minPrice ? parseInt(minPrice, 10) : 0,
-        maxPrice: maxPrice ? parseInt(maxPrice, 10) : 0,
-        sort: sort ? parseInt(sort, 10) : 5,
-        mainCategory: path[0] || '',
-        subCategory: path[1] || '',
-        rating: rating ? parseInt(rating, 10) : 0
+        minPrice,
+        maxPrice,
+        sort,
+        mainCategory: mainCategoryId || '',
+        subCategory: subCategoryId || '',
+        rating
       })
     );
 
-    console.log({ filter });
-  }, [location.search, path[0], path[1], dispatch]);
+    getProductByFilter(
+      {
+        mainCategory: mainCategoryId,
+        subCategory: subCategoryId,
+        sort,
+        minPrice,
+        maxPrice,
+        rating,
+        page: 1,
+        pageSize: 8
+      },
+      {
+        onSuccess: (data) => {
+          setListProduct(data.result);
+        }
+      }
+    );
+  }, [location.search, mainCategoryId, subCategoryId]);
 
   const handleChangeFilterPrice = (minPrice: number, maxPrice: number) => {
     const isChecked = filter.minPrice === minPrice && filter.maxPrice === maxPrice;
@@ -101,6 +131,24 @@ const ProductCategoryPage = (): JSX.Element => {
       searchParams.set('maxPrice', maxPrice.toString());
       navigate(`${location.pathname}?${searchParams.toString()}`);
     }
+  };
+
+  const handleFilterChange = (filterData: initialFilterStateType) => {
+    const { sort, maxPrice, minPrice, rating } = filterData;
+
+    dispatch(setFilter(filterData));
+
+    const searchParams = new URLSearchParams(location.search);
+
+    if (sort) searchParams.set('sort', sort.toString());
+
+    if (minPrice) searchParams.set('minPrice', minPrice.toString());
+
+    if (maxPrice) searchParams.set('maxPrice', maxPrice.toString());
+
+    if (rating) searchParams.set('rating', rating.toString());
+
+    navigate(`${location.pathname}?${searchParams.toString()}`);
   };
 
   return (
@@ -125,10 +173,10 @@ const ProductCategoryPage = (): JSX.Element => {
           <ProductCategoryBanner banner_category={BannerCategory} />
 
           {/* Filter */}
-          <ProductFilterSection listSubCategory={listSubCategory} />
+          <ProductFilterSection listSubCategory={listSubCategory} handleFilterChange={handleFilterChange} />
 
           {/* Product List */}
-          <ProductCategoryList listProduct={AllLatestProducts} />
+          <ProductCategoryList listProduct={listProduct} />
         </Stack>
       </Stack>
     </Stack>

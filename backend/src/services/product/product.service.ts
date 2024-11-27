@@ -130,7 +130,7 @@ class ProductService {
   }
 
   static async getProductByFilter(req: Request): Promise<CustomIProduct[]> {
-    const { mainCategory, subCategory, page = 1, pageSize = 8, rating, minPrice = 0, maxPrice = 0, sort } = req.query;
+    const { mainCategory, subCategory, page = 1, pageSize = 8, rating, minPrice = 0, maxPrice = 0, sort } = req.body;
 
     let productIds: string[] = [];
 

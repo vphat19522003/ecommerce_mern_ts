@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { ArrowDropDown } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
 import ButtonForm from '@app/components/atoms/button';
 import { useDevice } from '@app/hooks/useDevice';
+import { initialFilterStateType } from '@app/redux/filterSlice';
+import { RootState } from '@app/store';
+
+type FilterComboBoxProps = {
+  handleFilterChange: (filter: initialFilterStateType) => void;
+};
 
 export const listFilter = [
   {
@@ -49,9 +56,10 @@ export const listFilter = [
   }
 ];
 
-const FilterComboBox = (): JSX.Element => {
+const FilterComboBox = ({ handleFilterChange }: FilterComboBoxProps): JSX.Element => {
   const [toggleFilter, setToggleFilter] = useState(false);
   const [filters, setFilters] = useState(listFilter);
+  const { sort } = useSelector((state: RootState) => state.filter);
   const { isMobile } = useDevice();
 
   return (
@@ -64,7 +72,7 @@ const FilterComboBox = (): JSX.Element => {
           onMouseLeave={() => setToggleFilter(false)}>
           <ButtonForm variant='outlined' className='rounded-3xl'>
             <Stack direction={'row'} alignItems={'center'} spacing={2}>
-              <Typography className='text-md'>{filters.find((filter) => filter.isActive)?.name}</Typography>
+              <Typography className='text-md'>{filters.find((filter) => filter.value === sort)?.name}</Typography>
               <ArrowDropDown className='text-md' />
             </Stack>
           </ButtonForm>
@@ -78,7 +86,8 @@ const FilterComboBox = (): JSX.Element => {
                 <Stack
                   key={index}
                   className='px-4 py-2 hover:bg-slate-100'
-                  onClick={() =>
+                  onClick={() => {
+                    handleFilterChange({ sort: filter.value });
                     setFilters((prev) => {
                       const newArr = prev.map((item) => {
                         if (item.name === filter.name) {
@@ -88,8 +97,8 @@ const FilterComboBox = (): JSX.Element => {
                         }
                       });
                       return newArr;
-                    })
-                  }>
+                    });
+                  }}>
                   <Typography className='text-md'>{filter.name}</Typography>
                 </Stack>
               ))}
