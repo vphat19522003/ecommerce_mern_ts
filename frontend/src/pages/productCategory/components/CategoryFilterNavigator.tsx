@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { KeyboardArrowDown } from '@mui/icons-material';
@@ -6,11 +7,13 @@ import { Checkbox, Divider, FormControlLabel, Stack, Typography } from '@mui/mat
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useDevice } from '@app/hooks/useDevice';
+import { RootState } from '@app/store';
 import { CustomCategoryResponseType } from '@app/types/category';
 
 type CategoryFilterNavigatorProps = {
   subCategoryList: CustomCategoryResponseType[];
   mainPath: string;
+  handleChangeFilterPrice: (minPrice: number, maxPrice: number) => void;
 };
 
 const arrayListCategory = [
@@ -27,7 +30,11 @@ const arrayListCategory = [
     name: 'Life Skill'
   }
 ];
-const CategoryFilterNavigator = ({ subCategoryList, mainPath }: CategoryFilterNavigatorProps): JSX.Element => {
+const CategoryFilterNavigator = ({
+  subCategoryList,
+  mainPath,
+  handleChangeFilterPrice
+}: CategoryFilterNavigatorProps): JSX.Element => {
   const [toggleNavigator, setToggleNavigator] = useState({
     filterNavigator1: {
       id: 1,
@@ -38,6 +45,8 @@ const CategoryFilterNavigator = ({ subCategoryList, mainPath }: CategoryFilterNa
       isActive: true
     }
   });
+  const filter = useSelector((state: RootState) => state.filter);
+
   const { isMobile } = useDevice();
   return (
     <Stack
@@ -126,18 +135,79 @@ const CategoryFilterNavigator = ({ subCategoryList, mainPath }: CategoryFilterNa
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               style={{ overflow: 'hidden' }}>
               <Stack spacing={4}>
-                {arrayListCategory.map((category, index) => (
-                  <FormControlLabel
-                    key={index}
-                    className='ml-1'
-                    control={<Checkbox checked={false} />}
-                    label={
-                      <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                        <Typography className='text-sm'>Dưới 5.000.000 VND</Typography>
-                      </Stack>
-                    }
-                  />
-                ))}
+                <FormControlLabel
+                  className='ml-1'
+                  control={
+                    <Checkbox
+                      checked={filter.minPrice === 0 && filter.maxPrice === 100000 ? true : false}
+                      onChange={() => handleChangeFilterPrice(0, 100000)}
+                    />
+                  }
+                  label={
+                    <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                      <Typography className='text-sm'>Dưới 100.000 VND</Typography>
+                    </Stack>
+                  }
+                />
+                <FormControlLabel
+                  className='ml-1'
+                  control={
+                    <Checkbox
+                      checked={filter.minPrice === 0 && filter.maxPrice === 500000 ? true : false}
+                      onChange={() => handleChangeFilterPrice(0, 500000)}
+                    />
+                  }
+                  label={
+                    <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                      <Typography className='text-sm'>Dưới 500.000 VND</Typography>
+                    </Stack>
+                  }
+                />
+
+                <FormControlLabel
+                  className='ml-1'
+                  control={
+                    <Checkbox
+                      checked={filter.minPrice === 1000000 && filter.maxPrice === 2000000 ? true : false}
+                      onChange={() => handleChangeFilterPrice(1000000, 2000000)}
+                    />
+                  }
+                  label={
+                    <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                      <Typography className='text-sm'>1.000.000 VND - 2.000.000 VND</Typography>
+                    </Stack>
+                  }
+                />
+
+                <FormControlLabel
+                  className='ml-1'
+                  control={
+                    <Checkbox
+                      checked={filter.minPrice === 2000000 && filter.maxPrice === 5000000 ? true : false}
+                      onChange={() => handleChangeFilterPrice(2000000, 5000000)}
+                    />
+                  }
+                  label={
+                    <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                      <Typography className='text-sm'>2.000.000 VND - 5.000.000 VND</Typography>
+                    </Stack>
+                  }
+                />
+
+                <FormControlLabel
+                  className='ml-1'
+                  control={
+                    <Checkbox
+                      checked={filter.minPrice === 5000000 && filter.maxPrice === 9999999999 ? true : false}
+                      onChange={() => handleChangeFilterPrice(5000000, 9999999999)}
+                    />
+                  }
+                  label={
+                    <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                      <Typography className='text-sm'>Trên 5.000.000 VND</Typography>
+                    </Stack>
+                  }
+                />
               </Stack>
             </motion.div>
           )}

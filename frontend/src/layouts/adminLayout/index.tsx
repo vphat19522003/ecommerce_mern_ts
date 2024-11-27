@@ -30,7 +30,7 @@ const AdminLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
         left: 0
       });
     }
-  }, [location]);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleScroll = () => {

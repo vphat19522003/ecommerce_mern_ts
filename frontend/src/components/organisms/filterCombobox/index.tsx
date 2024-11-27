@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { ArrowDropDown } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
@@ -54,9 +54,6 @@ const FilterComboBox = (): JSX.Element => {
   const [filters, setFilters] = useState(listFilter);
   const { isMobile } = useDevice();
 
-  useEffect(() => {
-    console.log({ filters });
-  }, [filters]);
   return (
     <>
       <Stack direction={'row'} spacing={2} alignItems={'center'} className={`${isMobile && 'ml-auto'}`}>

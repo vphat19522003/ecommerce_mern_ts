@@ -130,16 +130,7 @@ class ProductService {
   }
 
   static async getProductByFilter(req: Request): Promise<CustomIProduct[]> {
-    const {
-      mainCategory,
-      subCategory,
-      page = 1,
-      pageSize = 8,
-      rating,
-      minPrice = 0,
-      maxPrice = 0,
-      arrange
-    } = req.query;
+    const { mainCategory, subCategory, page = 1, pageSize = 8, rating, minPrice = 0, maxPrice = 0, sort } = req.query;
 
     let productIds: string[] = [];
 
@@ -159,7 +150,7 @@ class ProductService {
     if (mainCategory) matchFilters.category = mainCategory;
     if (subCategory && productIds.length) matchFilters._id = { $in: productIds };
     if (rating) matchFilters.productVoteRate = { $gte: Number(rating) };
-    if (minPrice || maxPrice) {
+    if ((minPrice != 0 || maxPrice != 0) && minPrice <= maxPrice) {
       matchFilters.productPrice = { $gte: minPrice, $lte: maxPrice };
     }
 
@@ -167,7 +158,7 @@ class ProductService {
     const limit = Number(pageSize);
 
     const products = await ProductModel.find(matchFilters, { productDescImg: 0, createdBy: 0, updatedAt: 0, __v: 0 })
-      .sort(getSortOption(Number(arrange)))
+      .sort(getSortOption(Number(sort)))
       .skip(skip)
       .limit(limit)
       .populate('category', 'name')

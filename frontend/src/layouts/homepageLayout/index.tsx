@@ -26,7 +26,7 @@ const HomePageLayout = (): JSX.Element => {
       top: 0,
       left: 0
     });
-  }, [location]);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
