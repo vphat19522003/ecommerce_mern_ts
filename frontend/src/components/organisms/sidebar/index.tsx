@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import { List } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
-import { useGetMainCategory } from '@app/api/hooks/category.hook';
 import { useDevice } from '@app/hooks/useDevice';
+import { RootState } from '@app/store';
 
 const Sidebar = (): JSX.Element => {
   const location = useLocation();
@@ -13,7 +14,7 @@ const Sidebar = (): JSX.Element => {
   const isActivePath = checkPath.includes(location.pathname.split('/')[1]);
 
   const [isHovering, setIsHovering] = useState<boolean>(!isActivePath);
-  const { data: mainCategory = [] } = useGetMainCategory();
+  const mainCategories = useSelector((state: RootState) => state.category.mainCategory);
   const { isMobile } = useDevice();
 
   const handleMouseLeave = () => {
@@ -50,7 +51,7 @@ const Sidebar = (): JSX.Element => {
         <Stack
           direction={'column'}
           className={`absolute top-full left-0 transition-all duration-300 ease-in-out ${isHovering ? 'opacity-100 visible' : 'opacity-0 invisible'} bg-white w-full z-10 shadow-md rounded-br-lg rounded-bl-lg ${isMobile ? 'h-[220px] mt-[80px]' : 'h-[460px]'}`}>
-          {mainCategory.map((category) => (
+          {mainCategories.map((category) => (
             <Link
               key={category._id}
               to={`/category/${category.name.toLowerCase().replace(/\s+/g, '')}`}

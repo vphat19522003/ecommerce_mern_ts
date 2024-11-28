@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 
-import { useGetMainCategory } from '@app/api/hooks/category.hook';
 import { toggleSidebar } from '@app/redux/uiSlice';
 import { RootState } from '@app/store';
 
@@ -34,8 +33,7 @@ export const categoryList = [
 const MobileSideBar = (): JSX.Element => {
   const isOpen = useSelector((state: RootState) => state.ui.showSidebar);
   const dispatch = useDispatch();
-
-  const { data: mainCategory = [] } = useGetMainCategory();
+  const mainCategories = useSelector((state: RootState) => state.category.mainCategory);
 
   return (
     <>
@@ -60,7 +58,7 @@ const MobileSideBar = (): JSX.Element => {
           Category
         </Typography>
         <Stack direction={'column'}>
-          {mainCategory.map((category) => (
+          {mainCategories.map((category) => (
             <Link
               key={category._id}
               to={`/category/${category.name.toLowerCase().replace(/\s+/g, '')}`}

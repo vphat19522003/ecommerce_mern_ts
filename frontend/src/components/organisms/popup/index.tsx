@@ -75,7 +75,14 @@ const PopUp = forwardRef(
         {title && (
           <DialogTitle>
             <Stack direction={'row'} justifyContent={'space-between'}>
-              <Stack direction={'row'} justifyContent={'flex-start'} gap={2}>
+              <Stack
+                direction={'row'}
+                justifyContent={'flex-start'}
+                alignItems={'center'}
+                gap={2}
+                style={{
+                  width: '500px'
+                }}>
                 {!hiddenTitleIcon && <img src={viteImg} sizes='5' />}
                 <Typography variant='h6' color={'primary'}>
                   {title}

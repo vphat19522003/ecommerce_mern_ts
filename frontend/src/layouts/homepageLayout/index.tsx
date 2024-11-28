@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { Box } from '@mui/material';
 
+import { useGetMainCategory } from '@app/api/hooks/category.hook';
 import Footer from '@app/components/organisms/footer';
 import Header from '@app/components/organisms/header';
 import MobileNavigator from '@app/components/organisms/mobileNavigator';
@@ -12,14 +13,21 @@ import ProductDetailSideBar from '@app/components/organisms/productDetailSidebar
 import ScrollToTopButton from '@app/components/organisms/scrollToTopButton';
 import SubBanner from '@app/components/organisms/subBanner';
 import { useDevice } from '@app/hooks/useDevice';
+import { setCategories } from '@app/redux/categorySlice';
 import { RootState } from '@app/store';
 
 const HomePageLayout = (): JSX.Element => {
   const [isVisible, setIsVisible] = useState(false);
   const { isMobile } = useDevice();
+  const { data: mainCategory = [] } = useGetMainCategory();
   const showSidebar = useSelector((state: RootState) => state.ui.showSidebar);
   const showProductSidebar = useSelector((state: RootState) => state.ui.showProductDetailSidebar);
+  const dispatch = useDispatch();
   const location = useLocation();
+
+  useEffect(() => {
+    dispatch(setCategories(mainCategory));
+  });
 
   useEffect(() => {
     window.scrollTo({

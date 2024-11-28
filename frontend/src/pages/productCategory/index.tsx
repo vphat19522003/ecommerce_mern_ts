@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Stack } from '@mui/material';
 
-import { useGetMainCategory, useGetSubCategory } from '@app/api/hooks/category.hook';
 import { useGetProductByFilter } from '@app/api/hooks/product.hook';
 import BannerCategory from '@app/assets/banner_category.png';
 import BreadCrumb from '@app/components/organisms/breadcrumb';
@@ -24,8 +23,6 @@ import ProductFilterSection from './components/ProductFilterSection';
 const ProductCategoryPage = (): JSX.Element => {
   const [listProduct, setListProduct] = useState<getProductTypeCustom[]>([]);
   const [listSubCategory, setListSubCategory] = useState<CustomCategoryResponseType[]>([]);
-  const [mainCategoryId, setMainCategoryId] = useState<string>('');
-  const [subCategoryId, setSubCategoryId] = useState<string>('');
 
   const { isMobile } = useDevice();
   const dispatch = useDispatch();
@@ -35,75 +32,72 @@ const ProductCategoryPage = (): JSX.Element => {
   const navigate = useNavigate();
   const path = location.pathname.split('/').filter((x) => x && x !== 'category');
 
-  const { data: mainCategoryList = [] } = useGetMainCategory();
-
-  const { mutate: getSubCategory } = useGetSubCategory();
-
   const { mutate: getProductByFilter } = useGetProductByFilter();
+  const categoryList = useSelector((state: RootState) => state.category.mainCategory);
+
+  const parseQueryParams = useMemo(() => {
+    const searchParams = new URLSearchParams(location.search);
+    return {
+      minPrice: parseInt(searchParams.get('minPrice') || '0', 10),
+      maxPrice: parseInt(searchParams.get('maxPrice') || '0', 10),
+      sort: parseInt(searchParams.get('sort') || '5', 10),
+      rating: parseInt(searchParams.get('rating') || '0', 10)
+    };
+  }, [location.search]);
+
+  const { mainCategoryId, subCategoryId, subCategoryList } = useMemo(() => {
+    const mainCategory = categoryList.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[0]);
+
+    const subCategoryList = mainCategory?.child || [];
+    const mainCategoryId = mainCategory?._id || null;
+    const subCategoryId =
+      subCategoryList.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[1])?._id || null;
+
+    return { mainCategoryId, subCategoryId, subCategoryList };
+  }, [path, categoryList]);
 
   useEffect(() => {
-    if (!mainCategoryList.length) return;
+    const mainCategory = categoryList.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[0]);
 
-    const categoryId =
-      mainCategoryList.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[0])?._id || null;
+    if (!mainCategory && path[0] !== 'all') {
+      navigate('/category/all', { replace: true });
+      return;
+    }
 
-    setMainCategoryId(categoryId || '');
+    if (path[1] && mainCategory) {
+      const subCategory = mainCategory.child?.find((sub) => sub.name.toLowerCase().replace(/\s+/g, '') === path[1]);
 
-    if (path[0] !== 'all' && categoryId) {
-      getSubCategory(categoryId, {
-        onSuccess: (data) => {
-          setListSubCategory(data.length > 0 ? data : []);
+      if (!subCategory) {
+        navigate(paths.pageNotFound, { replace: true });
+        return;
+      }
+    }
 
-          if (!path[1]) {
-            setSubCategoryId('');
-          } else {
-            const subCategoryId =
-              data.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[1])?._id || null;
-
-            if (!subCategoryId) navigate('/category/all', { replace: true });
-            else setSubCategoryId(subCategoryId);
-          }
-        }
-      });
+    if (path[0] !== 'all' && mainCategoryId) {
+      setListSubCategory(subCategoryList);
     } else if (path[0] === 'all' && !path[1]) {
-      setListSubCategory(mainCategoryList);
+      setListSubCategory(categoryList);
     } else if (path[0] === 'all' && path[1]) {
       navigate(paths.pageNotFound, { replace: true });
     }
-  }, [path[0], path[1], mainCategoryList]);
+  }, [path[0], path[1], categoryList]);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-
-    const parseQueryParam = (param: string | null, defaultValue: number) =>
-      param ? parseInt(param, 10) : defaultValue;
-
-    const minPrice = parseQueryParam(searchParams.get('minPrice'), 0);
-    const maxPrice = parseQueryParam(searchParams.get('maxPrice'), 0);
-    const sort = parseQueryParam(searchParams.get('sort'), 5);
-    const rating = parseQueryParam(searchParams.get('rating'), 0);
-
     dispatch(
       setFilter({
-        minPrice,
-        maxPrice,
-        sort,
         mainCategory: mainCategoryId || '',
         subCategory: subCategoryId || '',
-        rating
+        ...parseQueryParams
       })
     );
 
     getProductByFilter(
       {
-        mainCategory: mainCategoryId,
-        subCategory: subCategoryId,
-        sort,
-        minPrice,
-        maxPrice,
-        rating,
+        mainCategory: mainCategoryId || '',
+        subCategory: subCategoryId || '',
         page: 1,
-        pageSize: 8
+        pageSize: 8,
+        ...parseQueryParams
       },
       {
         onSuccess: (data) => {
@@ -111,7 +105,7 @@ const ProductCategoryPage = (): JSX.Element => {
         }
       }
     );
-  }, [location.search, mainCategoryId, subCategoryId]);
+  }, [parseQueryParams, location.pathname]);
 
   const handleChangeFilterPrice = (minPrice: number, maxPrice: number) => {
     const isChecked = filter.minPrice === minPrice && filter.maxPrice === maxPrice;

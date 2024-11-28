@@ -32,7 +32,13 @@ class CategoryRepository {
       filter.name = { $regex: name, $options: 'i' };
     }
 
-    const listMainCategory = await CategoryModel.find(filter).lean();
+    const listMainCategory = await CategoryModel.find(filter)
+      .populate({
+        path: 'child',
+        select: 'name description categoryImg'
+      })
+      .lean();
+
     return listMainCategory as unknown as CategoryInfo[];
   }
 
