@@ -11,7 +11,6 @@ import { useDevice } from '@app/hooks/useDevice';
 import { initialFilterStateType, setFilter, setFilterPrice } from '@app/redux/filterSlice';
 import { paths } from '@app/routes/paths';
 import { RootState } from '@app/store';
-import { CustomCategoryResponseType } from '@app/types/category';
 
 import { getProductTypeCustom } from '../admin/ecommerce/addNewProductPage/components/schemas';
 import CategoryFilterNavigator from './components/CategoryFilterNavigator';
@@ -22,7 +21,6 @@ import ProductFilterSection from './components/ProductFilterSection';
 
 const ProductCategoryPage = (): JSX.Element => {
   const [listProduct, setListProduct] = useState<getProductTypeCustom[]>([]);
-  const [listSubCategory, setListSubCategory] = useState<CustomCategoryResponseType[]>([]);
 
   const { isMobile } = useDevice();
   const dispatch = useDispatch();
@@ -48,15 +46,24 @@ const ProductCategoryPage = (): JSX.Element => {
   const { mainCategoryId, subCategoryId, subCategoryList } = useMemo(() => {
     const mainCategory = categoryList.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[0]);
 
-    const subCategoryList = mainCategory?.child || [];
+    let subCategoryList;
+
     const mainCategoryId = mainCategory?._id || null;
     const subCategoryId =
-      subCategoryList.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[1])?._id || null;
+      mainCategory?.child.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[1])?._id || null;
+
+    if (path[0] === 'all' && !path[1]) {
+      subCategoryList = categoryList;
+    } else {
+      subCategoryList = mainCategory?.child || [];
+    }
 
     return { mainCategoryId, subCategoryId, subCategoryList };
   }, [path, categoryList]);
 
   useEffect(() => {
+    if (categoryList.length === 0) return;
+
     const mainCategory = categoryList.find((category) => category.name.toLowerCase().replace(/\s+/g, '') === path[0]);
 
     if (!mainCategory && path[0] !== 'all') {
@@ -73,16 +80,13 @@ const ProductCategoryPage = (): JSX.Element => {
       }
     }
 
-    if (path[0] !== 'all' && mainCategoryId) {
-      setListSubCategory(subCategoryList);
-    } else if (path[0] === 'all' && !path[1]) {
-      setListSubCategory(categoryList);
-    } else if (path[0] === 'all' && path[1]) {
+    if (path[0] === 'all' && path[1]) {
       navigate(paths.pageNotFound, { replace: true });
     }
   }, [path[0], path[1], categoryList]);
 
   useEffect(() => {
+    if (categoryList.length === 0) return;
     if (path[0] === 'all' && path[1]) return;
 
     dispatch(
@@ -107,7 +111,7 @@ const ProductCategoryPage = (): JSX.Element => {
         }
       }
     );
-  }, [parseQueryParams, location.pathname]);
+  }, [parseQueryParams, location.pathname, categoryList]);
 
   const handleChangeFilterPrice = (minPrice: number, maxPrice: number) => {
     const isChecked = filter.minPrice === minPrice && filter.maxPrice === maxPrice;
@@ -154,7 +158,7 @@ const ProductCategoryPage = (): JSX.Element => {
         {/* Category Navigator */}
         {!isMobile && (
           <CategoryFilterNavigator
-            subCategoryList={listSubCategory}
+            subCategoryList={subCategoryList}
             mainPath={path[0]}
             handleChangeFilterPrice={handleChangeFilterPrice}
           />
@@ -169,7 +173,7 @@ const ProductCategoryPage = (): JSX.Element => {
           <ProductCategoryBanner banner_category={BannerCategory} />
 
           {/* Filter */}
-          <ProductFilterSection listSubCategory={listSubCategory} handleFilterChange={handleFilterChange} />
+          <ProductFilterSection listSubCategory={subCategoryList} handleFilterChange={handleFilterChange} />
 
           {/* Product List */}
           <ProductCategoryList listProduct={listProduct} />
