@@ -8,4 +8,11 @@ export type ResultResponseType = {
   result: UserTypeResponse;
 };
 
-export type ProductResultResponseType = Omit<ResultResponseType, 'result'> & { result: getProductTypeCustom[] };
+export type ProductResultResponseType = Omit<ResultResponseType, 'result'> & {
+  result: getProductTypeCustom[];
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+  };
+};

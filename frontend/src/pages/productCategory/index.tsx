@@ -21,6 +21,12 @@ import ProductFilterSection from './components/ProductFilterSection';
 
 const ProductCategoryPage = (): JSX.Element => {
   const [listProduct, setListProduct] = useState<getProductTypeCustom[]>([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    pageSize: 2
+  });
+
+  const [total, setTotal] = useState(0);
 
   const { isMobile } = useDevice();
   const dispatch = useDispatch();
@@ -30,11 +36,12 @@ const ProductCategoryPage = (): JSX.Element => {
   const navigate = useNavigate();
   const path = location.pathname.split('/').filter((x) => x && x !== 'category');
 
-  const { mutate: getProductByFilter } = useGetProductByFilter();
+  const { mutate: getProductByFilter, isPending } = useGetProductByFilter();
   const categoryList = useSelector((state: RootState) => state.category.mainCategory);
 
   const parseQueryParams = useMemo(() => {
     const searchParams = new URLSearchParams(location.search);
+
     return {
       minPrice: parseInt(searchParams.get('minPrice') || '0', 10),
       maxPrice: parseInt(searchParams.get('maxPrice') || '0', 10),
@@ -89,6 +96,12 @@ const ProductCategoryPage = (): JSX.Element => {
     if (categoryList.length === 0) return;
     if (path[0] === 'all' && path[1]) return;
 
+    setListProduct([]);
+    setPagination({
+      page: 1,
+      pageSize: 2
+    });
+
     dispatch(
       setFilter({
         mainCategory: mainCategoryId || '',
@@ -102,12 +115,13 @@ const ProductCategoryPage = (): JSX.Element => {
         mainCategory: mainCategoryId || '',
         subCategory: subCategoryId || '',
         page: 1,
-        pageSize: 8,
+        pageSize: 2,
         ...parseQueryParams
       },
       {
         onSuccess: (data) => {
           setListProduct(data.result);
+          setTotal(data.pagination.total);
         }
       }
     );
@@ -151,6 +165,31 @@ const ProductCategoryPage = (): JSX.Element => {
     navigate(`${location.pathname}?${searchParams.toString()}`);
   };
 
+  const handleLoadMoreProduct = () => {
+    const nextPage = pagination.page + 1;
+
+    getProductByFilter(
+      {
+        mainCategory: mainCategoryId || '',
+        subCategory: subCategoryId || '',
+        page: nextPage,
+        pageSize: pagination.pageSize,
+        ...parseQueryParams
+      },
+      {
+        onSuccess: (data) => {
+          const tempData = [...listProduct, ...data.result];
+
+          setListProduct(tempData);
+          setTotal(data.pagination.total);
+          setPagination((prev) => ({
+            ...prev,
+            page: nextPage
+          }));
+        }
+      }
+    );
+  };
   return (
     <Stack>
       <BreadCrumb mainCategory={path[0]} subCategories={path.slice(1)} isCategory />
@@ -173,10 +212,19 @@ const ProductCategoryPage = (): JSX.Element => {
           <ProductCategoryBanner banner_category={BannerCategory} />
 
           {/* Filter */}
-          <ProductFilterSection listSubCategory={subCategoryList} handleFilterChange={handleFilterChange} />
+          <ProductFilterSection
+            listSubCategory={subCategoryList}
+            handleFilterChange={handleFilterChange}
+            totalValue={total}
+          />
 
           {/* Product List */}
-          <ProductCategoryList listProduct={listProduct} />
+          <ProductCategoryList
+            listProduct={listProduct}
+            handleLoadMoreProduct={handleLoadMoreProduct}
+            totalValue={total}
+            isPending={isPending}
+          />
         </Stack>
       </Stack>
     </Stack>

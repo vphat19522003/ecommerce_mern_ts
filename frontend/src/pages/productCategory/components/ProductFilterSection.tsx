@@ -18,9 +18,14 @@ import ProductFilterForm from './ProductFilterForm';
 type ProductFilterSectionProps = {
   listSubCategory: CustomCategoryResponseType[];
   handleFilterChange: (filter: initialFilterStateType) => void;
+  totalValue: number;
 };
 
-const ProductFilterSection = ({ listSubCategory, handleFilterChange }: ProductFilterSectionProps): JSX.Element => {
+const ProductFilterSection = ({
+  listSubCategory,
+  handleFilterChange,
+  totalValue
+}: ProductFilterSectionProps): JSX.Element => {
   const filterDialogRef = useRef<IDialogRef>(null);
   const { isMobile } = useDevice();
 
@@ -39,7 +44,9 @@ const ProductFilterSection = ({ listSubCategory, handleFilterChange }: ProductFi
           boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
         }}>
         <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} className='py-2'>
-          <Typography className='font-bold'>Tất cả sản phẩm</Typography>
+          <Typography className='font-bold'>
+            Tất cả sản phẩm <span className='text-sm font-medium'>{`(${totalValue} sản phẩm)`}</span>
+          </Typography>
           <ButtonForm variant='outlined' className='rounded-lg' onClick={handleOpenFilter}>
             <Stack direction={'row'} alignItems={'center'} spacing={1}>
               <FilterAlt className='text-md' />

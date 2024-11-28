@@ -1,14 +1,23 @@
-import { Stack } from '@mui/material';
+import { CircularProgress, Stack } from '@mui/material';
 
+import ButtonForm from '@app/components/atoms/button';
 import ProductCard from '@app/components/organisms/productCard';
 import { useDevice } from '@app/hooks/useDevice';
 import { getProductTypeCustom } from '@app/pages/admin/ecommerce/addNewProductPage/components/schemas';
 
 type ProductCategoryListProps = {
   listProduct: getProductTypeCustom[];
+  handleLoadMoreProduct: () => void;
+  totalValue: number;
+  isPending: boolean;
 };
 
-const ProductCategoryList = ({ listProduct }: ProductCategoryListProps): JSX.Element => {
+const ProductCategoryList = ({
+  listProduct,
+  handleLoadMoreProduct,
+  totalValue,
+  isPending
+}: ProductCategoryListProps): JSX.Element => {
   const { isMobile } = useDevice();
   return (
     <Stack>
@@ -24,6 +33,16 @@ const ProductCategoryList = ({ listProduct }: ProductCategoryListProps): JSX.Ele
           />
         ))}
       </div>
+      {isPending && <CircularProgress className='mx-auto' />}
+      {listProduct.length < totalValue && (
+        <ButtonForm
+          variant='outlined'
+          onClick={handleLoadMoreProduct}
+          className='mt-4 max-w-[240px] mx-auto'
+          disabled={isPending}>
+          Tải thêm sản phẩm
+        </ButtonForm>
+      )}
     </Stack>
   );
 };

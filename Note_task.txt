@@ -110,8 +110,8 @@
                     + Tạo api lọc theo bộ lọc: DONE - 3 - Thiết kế giao diện là một popup chứa các Filter: DONE -1
                     + Tạo một combobox chứa các trường bộ lọc: DONE - Tạo api lọc theo bộ lọc: DONE
                     + Ráp api vào giao diện: DONE
-                    + Tạo phần suspense load sản phẩm: PENDING
-                    + Tạo phần load thểm sản phẩm khi click vào nút: PENDING
+                    + Tạo phần suspense load sản phẩm: DONE
+                    + Tạo phần load thểm sản phẩm khi click vào nút: DONE
                     + Tạo api comment và giao diện comment
                     + Tạo api get chi tiết thông tin sản phẩm
                     + Tạo api tính tiền sản phẩm

@@ -129,7 +129,9 @@ class ProductService {
     return omit(detailProduct, '__v', 'updatedAt') as CustomIProduct;
   }
 
-  static async getProductByFilter(req: Request): Promise<CustomIProduct[]> {
+  static async getProductByFilter(
+    req: Request
+  ): Promise<{ data: CustomIProduct[]; pagination: { page: number; pageSize: number; total: number } }> {
     const { mainCategory, subCategory, page = 1, pageSize = 8, rating, minPrice = 0, maxPrice = 0, sort } = req.body;
 
     let productIds: string[] = [];
@@ -156,6 +158,7 @@ class ProductService {
 
     const skip = (Number(page) - 1) * Number(pageSize);
     const limit = Number(pageSize);
+    const total = await ProductModel.countDocuments(matchFilters);
 
     const products = await ProductModel.find(matchFilters, { productDescImg: 0, createdBy: 0, updatedAt: 0, __v: 0 })
       .sort(getSortOption(Number(sort)))
@@ -164,7 +167,7 @@ class ProductService {
       .populate('category', 'name')
       .exec();
 
-    return products as unknown as CustomIProduct[];
+    return { data: products as unknown as CustomIProduct[], pagination: { page, pageSize, total } };
   }
 }
 
