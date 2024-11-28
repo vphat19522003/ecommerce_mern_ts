@@ -83,6 +83,8 @@ const ProductCategoryPage = (): JSX.Element => {
   }, [path[0], path[1], categoryList]);
 
   useEffect(() => {
+    if (path[0] === 'all' && path[1]) return;
+
     dispatch(
       setFilter({
         mainCategory: mainCategoryId || '',
