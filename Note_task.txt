@@ -112,7 +112,11 @@
                     + Ráp api vào giao diện: DONE
                     + Tạo phần suspense load sản phẩm: DONE
                     + Tạo phần load thểm sản phẩm khi click vào nút: DONE
-                    + Tạo api comment và giao diện comment
+                    + Tạo api comment và giao diện comment: PENDING
+                            - UI : DONE
+                            - API: PENDING
+                                    . MODEL comment: PENDING
+                                    . Route, controller, service, repository: PENDING
                     + Tạo api get chi tiết thông tin sản phẩm
                     + Tạo api tính tiền sản phẩm
                     + Tạo api mua hàng
