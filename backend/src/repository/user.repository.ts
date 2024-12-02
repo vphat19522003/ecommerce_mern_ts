@@ -1,6 +1,8 @@
 import { omit } from 'lodash';
 import mongoose, { Types } from 'mongoose';
 
+import STATUS_CODE from '@app/constants/responseStatus';
+import { CustomError } from '@app/core/response.error';
 import UserModel, { AvatarType, Gender, Role } from '@app/models/user.model';
 
 export type UserInfo = {
@@ -24,10 +26,12 @@ class UserRepository {
     username,
     password
   }: Pick<UserInfo, 'email' | 'username' | 'password'>): Promise<UserInfo> {
-    const user = await UserModel.create({ email, username, password });
-    if (!user) throw new Error('Failed to create user');
-
-    return omit(user.toObject(), '__v', 'updatedAt') as UserInfo;
+    try {
+      const user = await UserModel.create({ email, username, password });
+      return omit(user.toObject(), '__v', 'updatedAt') as UserInfo;
+    } catch (error) {
+      throw new CustomError('Failed to create user', STATUS_CODE.INTERNAL_SERVER_ERROR);
+    }
   }
 
   static async findUserByEmail({ email }: Pick<UserInfo, 'email'>): Promise<Pick<UserInfo, 'email'> | null> {

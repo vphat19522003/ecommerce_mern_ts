@@ -43,7 +43,7 @@ const productValidators = {
     body('publisher')
       .if((value: unknown, { req }: { req: Request }) => req.body.categoryType === 'Book')
       .notEmpty()
-      .withMessage('Publiserr is required with books')
+      .withMessage('Publisher is required with books')
       .isString()
       .withMessage('Publisher must be string')
   ],

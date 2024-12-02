@@ -115,8 +115,10 @@
                     + Tạo api comment và giao diện comment: PENDING
                             - UI : DONE
                             - API: PENDING
-                                    . MODEL comment: PENDING
+                                    . MODEL comment: DONE
                                     . Route, controller, service, repository: PENDING
+                                    . Add Comment: DONE
+                                    . Get List comment: PENDING
                     + Tạo api get chi tiết thông tin sản phẩm
                     + Tạo api tính tiền sản phẩm
                     + Tạo api mua hàng

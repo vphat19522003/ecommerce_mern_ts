@@ -39,18 +39,20 @@ class AddressRepository {
     address_type,
     address_detail
   }: AddressInfo): Promise<AddressInfo> {
-    const newAddress = await AddressModel.create({
-      userId: new Types.ObjectId(userId),
-      address_city,
-      address_district,
-      address_ward,
-      address_street,
-      address_type,
-      address_detail
-    });
-    if (!newAddress) throw new CustomError('Failed to create address', STATUS_CODE.INTERNAL_SERVER_ERROR);
-
-    return newAddress.toObject<AddressInfo>();
+    try {
+      const newAddress = await AddressModel.create({
+        userId: new Types.ObjectId(userId),
+        address_city,
+        address_district,
+        address_ward,
+        address_street,
+        address_type,
+        address_detail
+      });
+      return newAddress.toObject<AddressInfo>();
+    } catch (err) {
+      throw new CustomError('Failed to create address', STATUS_CODE.INTERNAL_SERVER_ERROR);
+    }
   }
 
   static async deleteAddress(addressId: string): Promise<mongoose.mongo.DeleteResult> {

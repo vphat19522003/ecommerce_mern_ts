@@ -173,8 +173,6 @@ class AuthService {
 
     const user = await UserRepository.findUserById(client_id);
 
-    console.log('BI GI VAY', { user });
-
     if (!user) throw new CustomError('User not found', STATUS_CODE.UNAUTHORIZED);
 
     await KeyService.deleteKeyByUserId(client_id);

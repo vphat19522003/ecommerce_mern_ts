@@ -16,14 +16,18 @@ export type CategoryInfo = {
 
 class CategoryRepository {
   static async createCategory({ name, description, categoryImg, parent }: CategoryInfo): Promise<CategoryInfo> {
-    const newCategory = await CategoryModel.create({
-      name,
-      description,
-      categoryImg,
-      parent
-    });
+    try {
+      const newCategory = await CategoryModel.create({
+        name,
+        description,
+        categoryImg,
+        parent
+      });
 
-    return newCategory.toObject<CategoryInfo>();
+      return newCategory.toObject<CategoryInfo>();
+    } catch (e) {
+      throw new CustomError('Can not create category', STATUS_CODE.INTERNAL_SERVER_ERROR);
+    }
   }
 
   static async getMainCategory(name?: string): Promise<CategoryInfo[]> {
