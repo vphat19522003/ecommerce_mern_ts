@@ -12,3 +12,13 @@ export const addCommentController = async (req: Request, res: Response): Promise
     result
   });
 };
+
+export const getCommentsController = async (req: Request, res: Response): Promise<Response> => {
+  const result = await CommentService.getComments(req);
+
+  return res.json({
+    status: STATUS_CODE.OK,
+    message: 'Get comments successfully',
+    result
+  });
+};

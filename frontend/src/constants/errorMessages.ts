@@ -17,5 +17,8 @@ export const errorMessages = {
   productNameMinLength: 'Product name must be at least 3 characters long',
   descriptionMinLength: 'Description must be at least 5 characters long',
   categoryNameMinLength: 'Category name must be at least 3 characters long',
-  categoryDescriptionMinLength: 'Category description must be at least 5 characters long'
+  categoryDescriptionMinLength: 'Category description must be at least 5 characters long',
+  commentContentMinLength: 'Comment must be at least 5 characters long',
+  commentVoteMin: 'Comment minimum votes must be at least 1 star',
+  commentVoteMax: 'Comment maximum votes must be at 5 star'
 };

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { addCommentController } from '@app/controllers/comment.controller';
+import { addCommentController, getCommentsController } from '@app/controllers/comment.controller';
 import verifyAccessToken from '@app/middleware/accessToken.middleware';
 import validateRequest from '@app/middleware/validateRequest.middleware';
 import verifyAccountHandler from '@app/middleware/verifyAccount.middleware';
@@ -18,5 +18,7 @@ commentRouter.post(
   validateRequest(commentValidators.createComment),
   reqHandler(addCommentController)
 );
+
+commentRouter.get('/get-comments', reqHandler(getCommentsController));
 
 export default commentRouter;

@@ -4,6 +4,7 @@ import { Types } from 'mongoose';
 import STATUS_CODE from '@app/constants/responseStatus';
 import { CustomError } from '@app/core/response.error';
 import { IRequestCustom } from '@app/middleware/accessToken.middleware';
+import CommentModel from '@app/models/comment.model';
 import ProductModel from '@app/models/product.model';
 import CommentRepository, { CommentInfo } from '@app/repository/comment.repository';
 import { UserInfo } from '@app/repository/user.repository';
@@ -63,6 +64,37 @@ class CommentService {
 
       throw new CustomError('Failed to upload images', STATUS_CODE.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  static async getComments(req: IRequestCustom): Promise<{
+    data: CommentInfo[];
+    pagination: {
+      page: number;
+      pageSize: number;
+      total: number;
+    };
+  }> {
+    const { productId, page = 1, pageSize = 5 } = req.body;
+
+    if (!Types.ObjectId.isValid(productId)) {
+      throw new Error('Product ID is not valid');
+    }
+
+    const product = await ProductModel.findById(new Types.ObjectId(productId));
+
+    if (!product) throw new CustomError('Product not found', STATUS_CODE.BAD_REQUEST);
+
+    const skip = (Number(page) - 1) * Number(pageSize);
+    const limit = Number(pageSize);
+    const total = await CommentModel.countDocuments({ productId });
+
+    const commentList = await CommentModel.find({ productId })
+      .skip(skip)
+      .limit(limit)
+      .populate('userId', 'username createdAt avatar')
+      .exec();
+
+    return { data: commentList as unknown as CommentInfo[], pagination: { page, pageSize, total } };
   }
 }
 

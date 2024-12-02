@@ -59,7 +59,7 @@ const ProductDetailPage = (): JSX.Element => {
             style={{
               boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
             }}>
-            <ProductComment />
+            <ProductComment productDetail={productDetail} />
           </Stack>
         </Stack>
         {/* Product detail action : add to cart, buy now */}

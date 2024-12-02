@@ -1,5 +1,5 @@
 import { CheckCircle, Comment, Share, ThumbUp, ThumbUpOffAlt } from '@mui/icons-material';
-import { Avatar, Box, Divider, IconButton, Rating, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Divider, IconButton, Pagination, Rating, Stack, Typography } from '@mui/material';
 
 import ExampleCommentImage from '@app/assets/exp_comment_img.jpg';
 import avatar from '@app/assets/stitch_icon.png';
@@ -89,6 +89,9 @@ const MainCommentSection = (): JSX.Element => {
           <Divider />
         </>
       ))}
+      <Stack direction={'row'} justifyContent={'flex-end'}>
+        <Pagination />
+      </Stack>
     </>
   );
 };
