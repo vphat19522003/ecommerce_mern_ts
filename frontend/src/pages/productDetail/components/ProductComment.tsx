@@ -83,8 +83,7 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
   };
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    console.log('PAGE: ', page);
-
+    if (page === pagination.page) return;
     getCommentList(
       { productId: productDetail?._id as string, page: page, pageSize: 5 },
       {
