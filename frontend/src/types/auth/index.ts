@@ -1,4 +1,5 @@
 import { getProductTypeCustom } from '@app/pages/admin/ecommerce/addNewProductPage/components/schemas';
+import { IComment } from '@app/pages/productDetail/commentComponent/schemas';
 
 import { UserTypeResponse } from '../user';
 
@@ -14,5 +15,16 @@ export type ProductResultResponseType = Omit<ResultResponseType, 'result'> & {
     page: number;
     pageSize: number;
     total: number;
+  };
+};
+
+export type CommentResultResponseType = Omit<ResultResponseType, 'result'> & {
+  result: {
+    data: IComment[];
+    pagination: {
+      page: number;
+      pageSize: number;
+      total: number;
+    };
   };
 };

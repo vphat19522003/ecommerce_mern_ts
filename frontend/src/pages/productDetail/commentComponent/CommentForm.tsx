@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AddAPhoto } from '@mui/icons-material';
-import { Box, Rating, Stack, Typography } from '@mui/material';
+import { AddAPhoto, HighlightOff } from '@mui/icons-material';
+import { Box, IconButton, Rating, Stack, Typography } from '@mui/material';
 
 import ButtonForm from '@app/components/atoms/button';
 import TextArea from '@app/components/atoms/textArea';
@@ -16,7 +17,7 @@ type CommentFormProps = {
   isPending: boolean;
 };
 
-const labels: { [index: string]: string } = {
+export const commentRatelabels: { [index: string]: string } = {
   1: 'Bad+',
   2: 'Bad',
   3: 'Normal',
@@ -24,6 +25,8 @@ const labels: { [index: string]: string } = {
   5: 'Excellent'
 };
 const CommentForm = ({ productDetail, handleAddComment, isPending }: CommentFormProps): JSX.Element => {
+  const [listCommentImg, setListCommentImg] = useState<{ item: File; url: string }[]>([]);
+
   const {
     control,
     handleSubmit,
@@ -34,12 +37,23 @@ const CommentForm = ({ productDetail, handleAddComment, isPending }: CommentForm
     resolver: zodResolver(addNewCommentFormSchemas),
     defaultValues: {
       content: '',
-      comment_vote: 5
+      comment_vote: 5,
+      comment_images: []
     }
   });
 
   const handleSubmitComment = (value: AddNewCommentFormType) => {
     handleAddComment(value);
+  };
+
+  const handleRemoveCommentImg = (image: { item: File; url: string }) => {
+    const filterImgList = listCommentImg.filter((img) => img.item.name !== image.item.name);
+
+    setValue(
+      'comment_images',
+      filterImgList.map((img) => img.item)
+    );
+    setListCommentImg(filterImgList);
   };
 
   return (
@@ -95,7 +109,7 @@ const CommentForm = ({ productDetail, handleAddComment, isPending }: CommentForm
                   }}
                 />
                 <span style={{ position: 'absolute', right: 'auto', top: 6, color: '#faaf00', marginLeft: '4px' }}>
-                  {labels[getValues('comment_vote')]}
+                  {commentRatelabels[getValues('comment_vote')]}
                 </span>
               </Box>
             </Stack>
@@ -124,24 +138,93 @@ const CommentForm = ({ productDetail, handleAddComment, isPending }: CommentForm
         />
 
         <Stack direction={'row'} justifyContent={'flex-end'}>
-          <input type='file' id='upload-comment-images' accept='image/*' hidden multiple />
+          <Controller
+            control={control}
+            name='comment_images'
+            render={({ field: { value, onChange } }) => (
+              <Stack spacing={2}>
+                <Stack>
+                  <input
+                    type='file'
+                    id='upload-comment-images'
+                    accept='.jpg,.jpeg,.png'
+                    hidden
+                    multiple
+                    onChange={(e) => {
+                      const descriptionImages = e.target.files;
+                      if (descriptionImages && descriptionImages.length > 0) {
+                        if (descriptionImages.length > 3) {
+                          alert('Please select 3 images at max');
+                        }
 
-          <label htmlFor='upload-comment-images'>
-            <Stack direction={'row'} spacing={2} alignItems={'center'} style={{ marginTop: '6px' }}>
-              <AddAPhoto
-                style={{
-                  color: '#1D4ED8'
-                }}
-              />
-              <p
-                style={{
-                  color: '#1D4ED8',
-                  fontSize: '12px'
-                }}>
-                Gửi ảnh thực tế <span>(Tối đa 3 ảnh)</span>
-              </p>
-            </Stack>
-          </label>
+                        const tempArrImg = Array.from(descriptionImages)
+                          .slice(0, 3)
+                          .map((img) => ({
+                            url: URL.createObjectURL(img),
+                            item: img
+                          }));
+
+                        const customArr = [...tempArrImg, ...listCommentImg].slice(0, 3);
+
+                        setListCommentImg(customArr);
+                        onChange(customArr.map((imgObj) => imgObj.item));
+                      }
+                    }}
+                  />
+
+                  <label htmlFor='upload-comment-images'>
+                    <Stack direction={'row'} spacing={2} alignItems={'center'} style={{ marginTop: '6px' }}>
+                      <AddAPhoto
+                        style={{
+                          color: '#1D4ED8'
+                        }}
+                      />
+                      <p
+                        style={{
+                          color: '#1D4ED8',
+                          fontSize: '12px'
+                        }}>
+                        Gửi ảnh thực tế <span>(Tối đa 3 ảnh)</span>
+                      </p>
+                    </Stack>
+                  </label>
+                </Stack>
+
+                {listCommentImg.length > 0 && (
+                  <Stack direction={'row'} spacing={2}>
+                    {listCommentImg.map((item, index) => (
+                      <Stack
+                        key={index}
+                        style={{
+                          position: 'relative'
+                        }}>
+                        <img
+                          src={item.url}
+                          style={{
+                            width: '60px',
+                            height: '60px',
+                            objectFit: 'cover'
+                          }}
+                        />
+                        <IconButton
+                          style={{
+                            width: '20px',
+                            height: '20px',
+                            position: 'absolute',
+                            right: '0',
+                            top: '-10px',
+                            backgroundColor: 'white'
+                          }}
+                          onClick={() => handleRemoveCommentImg(item)}>
+                          <HighlightOff />
+                        </IconButton>
+                      </Stack>
+                    ))}
+                  </Stack>
+                )}
+              </Stack>
+            )}
+          />
         </Stack>
         <ButtonForm variant='contained' style={{ marginTop: '16px' }} type='submit' disabled={isPending}>
           Gửi đánh giá

@@ -19,6 +19,6 @@ commentRouter.post(
   reqHandler(addCommentController)
 );
 
-commentRouter.get('/get-comments', reqHandler(getCommentsController));
+commentRouter.post('/get-comments', reqHandler(getCommentsController));
 
 export default commentRouter;

@@ -114,9 +114,8 @@ const ProductDescription = ({ productDetail }: ProductDescriptionProps): JSX.Ele
 
         <Stack>
           {details.map((item, index) => (
-            <>
+            <Stack key={index}>
               <Box
-                key={index}
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -128,7 +127,7 @@ const ProductDescription = ({ productDetail }: ProductDescriptionProps): JSX.Ele
                 <Typography className='text-md'>{item.value}</Typography>
               </Box>
               {index !== details.length - 1 && <Divider />}
-            </>
+            </Stack>
           ))}
         </Stack>
       </Stack>

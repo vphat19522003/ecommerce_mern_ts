@@ -10,7 +10,12 @@ type BreadCrumbProps = {
   isCategory?: boolean;
 };
 
-const BreadCrumb = ({ mainCategory, subCategories, productName, isCategory }: BreadCrumbProps): JSX.Element => {
+const BreadCrumb = ({
+  mainCategory = '',
+  subCategories = [],
+  productName = '',
+  isCategory
+}: BreadCrumbProps): JSX.Element => {
   return (
     <Breadcrumbs separator='>' aria-label='breadcrumb' className='py-4 text-md'>
       <Link to={'/'} className='no-underline text-[#39465f] hover:text-blue-700'>

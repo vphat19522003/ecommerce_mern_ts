@@ -3,8 +3,14 @@ import { UserTypeResponse } from '@app/types/user';
 
 import { getCookie, removeCookie } from '../cacheCookie';
 
-export const saveUserToCache = (value: UserTypeResponse): void => {
-  localStorage.setItem(USER_INFO_KEY, JSON.stringify(value));
+export const saveUserToCache = (value: UserTypeResponse, ttl: number): void => {
+  const now = new Date().getTime();
+  const item = {
+    value,
+    expiry: now + ttl // Lưu thời gian hết hạn (milliseconds)
+  };
+
+  localStorage.setItem(USER_INFO_KEY, JSON.stringify(item));
 };
 
 export const getUserFromCache = (): UserTypeResponse | null => {
@@ -12,11 +18,15 @@ export const getUserFromCache = (): UserTypeResponse | null => {
 
   if (!user) return null;
 
-  try {
-    return JSON.parse(user) as UserTypeResponse;
-  } catch {
+  const item = JSON.parse(user);
+  const now = new Date().getTime();
+
+  if (now > item.expiry) {
+    localStorage.removeItem(USER_INFO_KEY);
     return null;
   }
+
+  return item.value;
 };
 
 export const removeUserFromCache = (): void => {

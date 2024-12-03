@@ -17,7 +17,7 @@ const authSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<{ user: UserTypeResponse }>) => {
       state.user = action.payload.user;
-      saveUserToCache(action.payload.user);
+      saveUserToCache(action.payload.user, 3600 * 1000);
     },
     clearUser: (state) => {
       state.user = null;
