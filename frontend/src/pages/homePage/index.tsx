@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Box, Grid, Stack } from '@mui/material';
 
-import ImageViewer from '@app/components/organisms/imageModel';
+import ImageViewer from '@app/components/organisms/imageViewer';
 import MainBanner from '@app/components/organisms/mainBanner';
 import { useDevice } from '@app/hooks/useDevice';
 
