@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { Box, Divider, Stack } from '@mui/material';
 
-import ImageViewer from '@app/components/organisms/imageViewer';
 import { getProductDetailCustom } from '@app/pages/admin/ecommerce/addNewProductPage/components/schemas';
+import { showImageViewer } from '@app/redux/uiSlice';
 
 type ProductImageProps = {
   productDetail: getProductDetailCustom;
@@ -11,8 +12,7 @@ type ProductImageProps = {
 const ProductImage = ({ productDetail }: ProductImageProps): JSX.Element => {
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [fade, setFade] = useState<boolean>(false);
-  const [isViewerOpen, setViewerOpen] = useState(false);
-  const [viewerIndex, setViewerIndex] = useState(0);
+  const dispatch = useDispatch();
 
   const handleImageChange = (imageUrl: string) => {
     setFade(true);
@@ -26,15 +26,19 @@ const ProductImage = ({ productDetail }: ProductImageProps): JSX.Element => {
     setSelectedImage(productDetail?.productThumbImg.url);
   }, [productDetail]);
 
-  const handleImageClick = (index: number) => {
-    setViewerIndex(index);
-    setViewerOpen(true);
-  };
-
   const imageArrTemp = [
     productDetail?.productThumbImg?.url,
     ...(productDetail?.productDescImg.map((image) => image.url) || [])
   ];
+
+  const handleImageClick = (index: number) => {
+    dispatch(
+      showImageViewer({
+        index,
+        images: imageArrTemp
+      })
+    );
+  };
   return (
     <>
       <Stack direction={'column'} className='max-h-max'>
@@ -81,9 +85,6 @@ const ProductImage = ({ productDetail }: ProductImageProps): JSX.Element => {
           <p className='px-4'>Xem tóm tắt</p>
         </Stack>
       </Stack>
-      {isViewerOpen && (
-        <ImageViewer images={imageArrTemp} initialIndex={viewerIndex} onClose={() => setViewerOpen(false)} />
-      )}
     </>
   );
 };
