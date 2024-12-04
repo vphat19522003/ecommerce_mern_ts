@@ -48,7 +48,7 @@ const ImageViewer = ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 9999
+        zIndex: 99999
       }}>
       <IconButton
         onClick={onClose}
