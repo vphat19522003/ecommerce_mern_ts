@@ -100,11 +100,10 @@ const ImageViewer = ({
                 src={image}
                 alt={`Image ${index}`}
                 style={{
-                  width: 'auto',
-                  height: 'auto',
+                  width: '100%',
                   maxWidth: '100%',
                   maxHeight: '100%',
-                  objectFit: 'contain'
+                  objectFit: 'cover'
                 }}
               />
             </Box>
