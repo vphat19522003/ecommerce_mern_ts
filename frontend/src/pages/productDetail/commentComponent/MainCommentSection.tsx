@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { CheckCircle, Comment, Share, ThumbUp, ThumbUpOffAlt } from '@mui/icons-material';
 import {
@@ -16,6 +16,7 @@ import {
 import ButtonForm from '@app/components/atoms/button';
 import { useDevice } from '@app/hooks/useDevice';
 import { showImageViewer } from '@app/redux/uiSlice';
+import { RootState } from '@app/store';
 
 import { commentRatelabels } from './CommentForm';
 import { IComment } from './schemas';
@@ -38,6 +39,7 @@ const MainCommentSection = ({
 }: MainCommentSectionProps): JSX.Element => {
   const { isMobile } = useDevice();
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   if (listComment.length === 0) {
     return (
@@ -59,10 +61,13 @@ const MainCommentSection = ({
               <Stack className={`${isMobile ? 'w-5/12' : 'w-3/12'}`}>
                 {/* User Avatar, name, participate date */}
                 <Stack direction={'row'} spacing={3}>
-                  <Avatar alt='Remy Sharp' src={item.userId.avatar.avatar_url} />
+                  <Avatar alt='Remy Sharp' src={item.userId.avatar?.avatar_url || ''} />
                   {/* Name, participate date */}
                   <Stack>
-                    <Typography className='text-lg font-semibold'>{item.userId.username}</Typography>
+                    <Typography
+                      className={`text-lg font-semibold ${user && user._id === item.userId._id ? 'text-pink-500' : ''}`}>
+                      {item.userId.username}
+                    </Typography>
                     <Typography className='text-sm font-medium text-gray-400'>
                       Participate {item.userId.createdAt}
                     </Typography>
@@ -133,15 +138,18 @@ const MainCommentSection = ({
                 </Stack>
 
                 {/* Comment action */}
-                <Stack direction={'row'} justifyContent={'space-between'} className='mt-2'>
-                  <ButtonForm className='size-auto'>
-                    <ThumbUpOffAlt className='text-lg' />
-                    <Typography className='ml-2 text-md'>Hữu ích</Typography>
-                  </ButtonForm>
-                  <IconButton className='size-auto'>
-                    <Share className='text-xl text-blue-700' />
-                  </IconButton>
-                </Stack>
+                {!user ||
+                  (user?._id !== item.userId._id && (
+                    <Stack direction={'row'} justifyContent={'space-between'} className='mt-2'>
+                      <ButtonForm className='size-auto'>
+                        <ThumbUpOffAlt className='text-lg' />
+                        <Typography className='ml-2 text-md'>Hữu ích</Typography>
+                      </ButtonForm>
+                      <IconButton className='size-auto'>
+                        <Share className='text-xl text-blue-700' />
+                      </IconButton>
+                    </Stack>
+                  ))}
               </Stack>
             </Stack>
             <Divider />

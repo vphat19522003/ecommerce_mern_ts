@@ -1,5 +1,5 @@
 import axiosCustom from '@app/config/axios';
-import { CommentFormTypeCustom } from '@app/pages/productDetail/commentComponent/schemas';
+import { CommentFormTypeCustom, IComment } from '@app/pages/productDetail/commentComponent/schemas';
 import { CommentResultResponseType, ResultResponseType } from '@app/types/auth';
 
 export const addComment = async ({
@@ -49,6 +49,26 @@ export const getCommentImages = async ({
   productId: string;
 }): Promise<Omit<CommentResultResponseType, 'result'> & { result: string[] }> => {
   const res = await axiosCustom.post('/comment/get-image-comments', { productId });
+
+  return res.data;
+};
+
+export const getMyComment = async ({
+  productId
+}: {
+  productId: string;
+}): Promise<Omit<CommentResultResponseType, 'result'> & { result: IComment }> => {
+  const res = await axiosCustom.post('/comment/get-my-comment', { productId });
+
+  return res.data;
+};
+
+export const deleteMyComment = async ({
+  productId
+}: {
+  productId: string;
+}): Promise<Omit<CommentResultResponseType, 'result'>> => {
+  const res = await axiosCustom.post('/comment/delete-my-comment', { productId });
 
   return res.data;
 };

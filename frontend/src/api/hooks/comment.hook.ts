@@ -1,10 +1,10 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 
-import { CommentFormTypeCustom } from '@app/pages/productDetail/commentComponent/schemas';
+import { CommentFormTypeCustom, IComment } from '@app/pages/productDetail/commentComponent/schemas';
 import { CommentResultResponseType, ResultResponseType } from '@app/types/auth';
 import { IErrorResponse } from '@app/types/common';
 
-import { addComment, getCommentByProductId, getCommentImages } from '../comment';
+import { addComment, deleteMyComment, getCommentByProductId, getCommentImages, getMyComment } from '../comment';
 
 export const useAddComment = (): UseMutationResult<ResultResponseType, IErrorResponse, CommentFormTypeCustom> => {
   return useMutation({
@@ -29,5 +29,27 @@ export const useGetCommentImages = (): UseMutationResult<
 > => {
   return useMutation({
     mutationFn: getCommentImages
+  });
+};
+
+export const useGetMyComment = (): UseMutationResult<
+  Omit<CommentResultResponseType, 'result'> & { result: IComment },
+  IErrorResponse,
+  {
+    productId: string;
+  }
+> => {
+  return useMutation({
+    mutationFn: getMyComment
+  });
+};
+
+export const useDeleteMyComment = (): UseMutationResult<
+  Omit<CommentResultResponseType, 'result'>,
+  IErrorResponse,
+  { productId: string }
+> => {
+  return useMutation({
+    mutationFn: deleteMyComment
   });
 };

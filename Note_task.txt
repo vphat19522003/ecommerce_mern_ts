@@ -120,8 +120,8 @@
                                     . Add Comment: DONE
                                     . Get List comment: DONE
                                     . Get All comment images of product API: DONE, create ui box to watch comment image: DONE
-                                    . API get my comment: DONE, delete my comment: DONE, UPDATE MY COMMENT: PENDING
-                                    . UI my comment and logic FE: PENDING
+                                    . API get my comment: DONE, delete my comment: DONE
+                                    . UI my comment and logic FE: DONE
                                     . Filter All comments rating api: PENDING
                     + Tạo api get chi tiết thông tin sản phẩm
                     + Tạo api tính tiền sản phẩm

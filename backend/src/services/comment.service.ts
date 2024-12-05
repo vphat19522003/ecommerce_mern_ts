@@ -115,7 +115,7 @@ class CommentService {
     return commentImagesUrls;
   }
 
-  static async getMyComment(req: IRequestCustom): Promise<CommentInfo> {
+  static async getMyComment(req: IRequestCustom): Promise<CommentInfo | null> {
     const { _id: userId } = req.user as UserInfo;
     const { productId } = req.body;
 
@@ -130,7 +130,9 @@ class CommentService {
     const myComment = await CommentModel.find({
       productId,
       userId
-    });
+    }).populate('userId', 'username createdAt avatar');
+
+    if (!myComment || myComment.length === 0) return null;
 
     return myComment[0].toObject<CommentInfo>();
   }

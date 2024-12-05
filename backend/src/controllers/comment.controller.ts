@@ -48,6 +48,6 @@ export const deleteMyCommentController = async (req: Request, res: Response): Pr
 
   return res.json({
     status: STATUS_CODE.OK,
-    message: 'Delete my comment successfully'
+    message: 'Delete comment successfully'
   });
 };
