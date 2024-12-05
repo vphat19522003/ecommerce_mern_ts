@@ -119,7 +119,9 @@
                                     . Route, controller, service, repository: DONE
                                     . Add Comment: DONE
                                     . Get List comment: DONE
-                                    . Get All comment images of product API: PENDING, create ui box to watch comment image: DONE
+                                    . Get All comment images of product API: DONE, create ui box to watch comment image: DONE
+                                    . API get my comment: PENDING, delete my comment: PENDING, UPDATE MY COMMENT: PENDING
+                                    . UI my comment and logic FE: PENDING
                                     . Filter All comments rating api: PENDING
                     + Tạo api get chi tiết thông tin sản phẩm
                     + Tạo api tính tiền sản phẩm

@@ -96,6 +96,24 @@ class CommentService {
 
     return { data: commentList as unknown as CommentInfo[], pagination: { page, pageSize, total } };
   }
+
+  static async getImageComments(req: IRequestCustom): Promise<string[]> {
+    const { productId } = req.body;
+
+    if (!Types.ObjectId.isValid(productId as string)) {
+      throw new Error('Product ID is not valid');
+    }
+
+    const product = await ProductModel.findById(new Types.ObjectId(productId as string));
+
+    if (!product) throw new CustomError('Product not found', STATUS_CODE.BAD_REQUEST);
+
+    const imageComments = await CommentModel.find({ productId }).select('comment_images').sort({ createdAt: -1 });
+
+    const commentImagesUrls = imageComments.flatMap((comment) => comment.comment_images.map((image) => image.url));
+
+    return commentImagesUrls;
+  }
 }
 
 export default CommentService;

@@ -1,3 +1,5 @@
+import { useDispatch } from 'react-redux';
+
 import { CheckCircle, Comment, Share, ThumbUp, ThumbUpOffAlt } from '@mui/icons-material';
 import {
   Avatar,
@@ -13,6 +15,7 @@ import {
 
 import ButtonForm from '@app/components/atoms/button';
 import { useDevice } from '@app/hooks/useDevice';
+import { showImageViewer } from '@app/redux/uiSlice';
 
 import { commentRatelabels } from './CommentForm';
 import { IComment } from './schemas';
@@ -34,6 +37,16 @@ const MainCommentSection = ({
   isPendingGetComment
 }: MainCommentSectionProps): JSX.Element => {
   const { isMobile } = useDevice();
+  const dispatch = useDispatch();
+
+  if (listComment.length === 0) {
+    return (
+      <Box>
+        <Typography className='text-lg text-slate-600 text-center mt-2'>Chưa có bình luận</Typography>
+      </Box>
+    );
+  }
+
   return (
     <>
       {isPendingGetComment ? (
@@ -101,7 +114,15 @@ const MainCommentSection = ({
                           key={index}
                           className={
                             'cursor-pointer size-16 border-[0.2px] border-solid border-slate-200 rounded-lg overflow-hidden mt-2'
-                          }>
+                          }
+                          onClick={() => {
+                            dispatch(
+                              showImageViewer({
+                                index: item.comment_images.findIndex((item) => item.url === commentImg.url),
+                                images: item.comment_images.map((item) => item.url)
+                              })
+                            );
+                          }}>
                           <img src={commentImg.url} alt={'comment image'} className='w-full h-full object-cover' />
                         </Box>
                       ))}

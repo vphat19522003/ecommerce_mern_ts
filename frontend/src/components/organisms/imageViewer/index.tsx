@@ -93,16 +93,18 @@ const ImageViewer = ({
             <Box
               key={index}
               sx={{
+                display: 'flex',
                 flexShrink: 0,
-                width: '100%'
+                width: '100%',
+                alignItems: 'center'
               }}>
               <img
                 src={image}
+                className='mx-auto'
                 alt={`Image ${index}`}
                 style={{
-                  width: '100%',
-                  maxWidth: '100%',
-                  maxHeight: '100%',
+                  width: '300px',
+                  height: 'auto',
                   objectFit: 'cover'
                 }}
               />

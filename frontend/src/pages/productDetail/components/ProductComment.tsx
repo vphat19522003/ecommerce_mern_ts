@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { Divider, Stack, Typography } from '@mui/material';
 
-import { useAddComment, useGetComments } from '@app/api/hooks/comment.hook';
+import { useAddComment, useGetCommentImages, useGetComments } from '@app/api/hooks/comment.hook';
 import ButtonForm from '@app/components/atoms/button';
 import { IDialogRef } from '@app/components/organisms/confirmPopup';
 import PopUp from '@app/components/organisms/popup';
@@ -31,12 +31,15 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
     pageSize: 5,
     total: 0
   });
+  const [commentImages, setCommentImages] = useState<string[]>([]);
+
   const addCommentDialogRef = useRef<IDialogRef>(null);
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
 
   const { mutate: addComment, isPending } = useAddComment();
   const { mutate: getCommentList, isPending: isPendingGetComment } = useGetComments();
+  const { mutate: getCommentImages } = useGetCommentImages();
 
   useEffect(() => {
     if (!productDetail?._id) return;
@@ -46,6 +49,14 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
         onSuccess: (data) => {
           setListComment(data.result.data);
           setPagination(data.result.pagination);
+        }
+      }
+    );
+    getCommentImages(
+      { productId: productDetail?._id as string },
+      {
+        onSuccess: (data) => {
+          setCommentImages(data.result);
         }
       }
     );
@@ -102,7 +113,7 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
         <GeneralRatingInfo />
         <Divider />
         {/* Comment Images Section */}
-        <CommentImageSection />
+        <CommentImageSection commentImages={commentImages} />
         <Divider />
         {/* Comment Action Form */}
         <ButtonForm variant='contained' className='max-w-[36%]' onClick={handleOpenAddComment}>

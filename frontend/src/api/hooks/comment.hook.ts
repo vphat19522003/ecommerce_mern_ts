@@ -4,7 +4,7 @@ import { CommentFormTypeCustom } from '@app/pages/productDetail/commentComponent
 import { CommentResultResponseType, ResultResponseType } from '@app/types/auth';
 import { IErrorResponse } from '@app/types/common';
 
-import { addComment, getCommentByProductId } from '../comment';
+import { addComment, getCommentByProductId, getCommentImages } from '../comment';
 
 export const useAddComment = (): UseMutationResult<ResultResponseType, IErrorResponse, CommentFormTypeCustom> => {
   return useMutation({
@@ -19,5 +19,15 @@ export const useGetComments = (): UseMutationResult<
 > => {
   return useMutation({
     mutationFn: getCommentByProductId
+  });
+};
+
+export const useGetCommentImages = (): UseMutationResult<
+  Omit<CommentResultResponseType, 'result'> & { result: string[] },
+  IErrorResponse,
+  { productId: string }
+> => {
+  return useMutation({
+    mutationFn: getCommentImages
   });
 };

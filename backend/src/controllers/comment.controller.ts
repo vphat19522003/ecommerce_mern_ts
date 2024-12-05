@@ -22,3 +22,13 @@ export const getCommentsController = async (req: Request, res: Response): Promis
     result
   });
 };
+
+export const getImageCommentsController = async (req: Request, res: Response): Promise<Response> => {
+  const result = await CommentService.getImageComments(req);
+
+  return res.json({
+    status: STATUS_CODE.OK,
+    message: 'Get image comments successfully',
+    result
+  });
+};

@@ -42,3 +42,13 @@ export const getCommentByProductId = async ({
 
   return res.data;
 };
+
+export const getCommentImages = async ({
+  productId
+}: {
+  productId: string;
+}): Promise<Omit<CommentResultResponseType, 'result'> & { result: string[] }> => {
+  const res = await axiosCustom.post('/comment/get-image-comments', { productId });
+
+  return res.data;
+};

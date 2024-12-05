@@ -1,6 +1,10 @@
 import { Router } from 'express';
 
-import { addCommentController, getCommentsController } from '@app/controllers/comment.controller';
+import {
+  addCommentController,
+  getCommentsController,
+  getImageCommentsController
+} from '@app/controllers/comment.controller';
 import verifyAccessToken from '@app/middleware/accessToken.middleware';
 import validateRequest from '@app/middleware/validateRequest.middleware';
 import verifyAccountHandler from '@app/middleware/verifyAccount.middleware';
@@ -20,5 +24,6 @@ commentRouter.post(
 );
 
 commentRouter.post('/get-comments', reqHandler(getCommentsController));
+commentRouter.post('/get-image-comments', reqHandler(getImageCommentsController));
 
 export default commentRouter;
