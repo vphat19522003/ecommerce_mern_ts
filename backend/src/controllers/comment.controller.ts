@@ -32,3 +32,22 @@ export const getImageCommentsController = async (req: Request, res: Response): P
     result
   });
 };
+
+export const getMyCommentController = async (req: Request, res: Response): Promise<Response> => {
+  const result = await CommentService.getMyComment(req);
+
+  return res.json({
+    status: STATUS_CODE.OK,
+    message: 'Get my comment successfully',
+    result
+  });
+};
+
+export const deleteMyCommentController = async (req: Request, res: Response): Promise<Response> => {
+  await CommentService.deleteMyComment(req);
+
+  return res.json({
+    status: STATUS_CODE.OK,
+    message: 'Delete my comment successfully'
+  });
+};

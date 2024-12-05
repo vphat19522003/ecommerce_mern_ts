@@ -114,6 +114,43 @@ class CommentService {
 
     return commentImagesUrls;
   }
+
+  static async getMyComment(req: IRequestCustom): Promise<CommentInfo> {
+    const { _id: userId } = req.user as UserInfo;
+    const { productId } = req.body;
+
+    if (!Types.ObjectId.isValid(productId)) {
+      throw new Error('Product ID is not valid');
+    }
+
+    const product = await ProductModel.findById(new Types.ObjectId(productId));
+
+    if (!product) throw new CustomError('Product not found', STATUS_CODE.BAD_REQUEST);
+
+    const myComment = await CommentModel.find({
+      productId,
+      userId
+    });
+
+    return myComment[0].toObject<CommentInfo>();
+  }
+
+  static async deleteMyComment(req: IRequestCustom): Promise<void> {
+    const { _id: userId } = req.user as UserInfo;
+    const { productId } = req.body;
+
+    if (!Types.ObjectId.isValid(productId)) {
+      throw new Error('Product ID is not valid');
+    }
+
+    const product = await ProductModel.findById(new Types.ObjectId(productId));
+
+    if (!product) throw new CustomError('Product not found', STATUS_CODE.BAD_REQUEST);
+
+    const deleteResult = await CommentModel.deleteOne({ userId, productId });
+
+    if (deleteResult.deletedCount === 0) throw new CustomError('Comment not found', STATUS_CODE.BAD_REQUEST);
+  }
 }
 
 export default CommentService;

@@ -2,8 +2,10 @@ import { Router } from 'express';
 
 import {
   addCommentController,
+  deleteMyCommentController,
   getCommentsController,
-  getImageCommentsController
+  getImageCommentsController,
+  getMyCommentController
 } from '@app/controllers/comment.controller';
 import verifyAccessToken from '@app/middleware/accessToken.middleware';
 import validateRequest from '@app/middleware/validateRequest.middleware';
@@ -25,5 +27,12 @@ commentRouter.post(
 
 commentRouter.post('/get-comments', reqHandler(getCommentsController));
 commentRouter.post('/get-image-comments', reqHandler(getImageCommentsController));
+commentRouter.post('/get-my-comment', verifyAccessToken, verifyAccountHandler, reqHandler(getMyCommentController));
+commentRouter.post(
+  '/delete-my-comment',
+  verifyAccessToken,
+  verifyAccountHandler,
+  reqHandler(deleteMyCommentController)
+);
 
 export default commentRouter;
