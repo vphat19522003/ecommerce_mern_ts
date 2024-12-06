@@ -51,3 +51,13 @@ export const deleteMyCommentController = async (req: Request, res: Response): Pr
     message: 'Delete comment successfully'
   });
 };
+
+export const getRatingSummaryController = async (req: Request, res: Response): Promise<Response> => {
+  const result = await CommentService.getRatingSummary(req);
+
+  return res.json({
+    status: STATUS_CODE.OK,
+    message: 'Get rating summary successfully',
+    result
+  });
+};

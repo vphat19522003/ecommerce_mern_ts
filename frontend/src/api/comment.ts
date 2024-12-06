@@ -1,5 +1,6 @@
 import axiosCustom from '@app/config/axios';
 import { CommentFormTypeCustom, IComment } from '@app/pages/productDetail/commentComponent/schemas';
+import { filterType } from '@app/pages/productDetail/components/ProductComment';
 import { CommentResultResponseType, ResultResponseType } from '@app/types/auth';
 
 export const addComment = async ({
@@ -28,16 +29,19 @@ export const addComment = async ({
 export const getCommentByProductId = async ({
   productId,
   page,
-  pageSize
+  pageSize,
+  filter
 }: {
   productId: string;
   page: number;
   pageSize: number;
+  filter: filterType;
 }): Promise<CommentResultResponseType> => {
   const res = await axiosCustom.post('/comment/get-comments', {
     productId,
     page,
-    pageSize
+    pageSize,
+    filter
   });
 
   return res.data;
@@ -69,6 +73,20 @@ export const deleteMyComment = async ({
   productId: string;
 }): Promise<Omit<CommentResultResponseType, 'result'>> => {
   const res = await axiosCustom.post('/comment/delete-my-comment', { productId });
+
+  return res.data;
+};
+
+export const getRatingSummary = async ({
+  productId
+}: {
+  productId: string;
+}): Promise<
+  Omit<CommentResultResponseType, 'result'> & {
+    result: { star: number; count: number }[];
+  }
+> => {
+  const res = await axiosCustom.post('/comment/get-rating-summary', { productId });
 
   return res.data;
 };

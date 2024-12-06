@@ -5,7 +5,8 @@ import {
   deleteMyCommentController,
   getCommentsController,
   getImageCommentsController,
-  getMyCommentController
+  getMyCommentController,
+  getRatingSummaryController
 } from '@app/controllers/comment.controller';
 import verifyAccessToken from '@app/middleware/accessToken.middleware';
 import validateRequest from '@app/middleware/validateRequest.middleware';
@@ -34,5 +35,7 @@ commentRouter.post(
   verifyAccountHandler,
   reqHandler(deleteMyCommentController)
 );
+
+commentRouter.post('/get-rating-summary', reqHandler(getRatingSummaryController));
 
 export default commentRouter;

@@ -3,7 +3,12 @@ import { Divider, Rating, Stack, Typography } from '@mui/material';
 import BorderLinearProgress from '@app/components/organisms/borderLinearProgress';
 import { useDevice } from '@app/hooks/useDevice';
 
-const GeneralRatingInfo = (): JSX.Element => {
+type GeneralRatingInfoProps = {
+  ratingSummary: { star: number; count: number }[];
+  totalComments: number;
+};
+
+const GeneralRatingInfo = ({ ratingSummary, totalComments }: GeneralRatingInfoProps): JSX.Element => {
   const { isMobile } = useDevice();
   return (
     <Stack direction={isMobile ? 'column' : 'row'}>
@@ -12,41 +17,71 @@ const GeneralRatingInfo = (): JSX.Element => {
         {/* Rating Point */}
         <Stack direction={'row'} alignItems={'center'} spacing={4} className='mt-2'>
           <Typography className='text-4xl font-bold'>5.0</Typography>
-          <Rating name='rating' defaultValue={5} precision={0.5} size='large' readOnly />
+          <Rating name='rating' defaultValue={5} precision={1} size='large' readOnly />
         </Stack>
         {/* Total comment */}
-        <Typography className='text-md text-gray-400'>(2615 ratings)</Typography>
+        <Typography className='text-md text-gray-400'>({totalComments} ratings)</Typography>
         {/* Total rating type */}
         <Stack spacing={2} className='mt-3'>
           {/* 5 stars */}
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Rating name='rating' defaultValue={5} precision={0.5} size='small' readOnly />
-            <BorderLinearProgress variant='determinate' value={90} className='w-[140px]' />
-            <Typography className='text-xs text-gray-500'>2000</Typography>
+            <Rating name='rating' defaultValue={5} precision={1} size='small' readOnly />
+            <BorderLinearProgress
+              variant='determinate'
+              value={ratingSummary.find((item) => item.star === 5)?.count || 0}
+              className='w-[140px]'
+            />
+            <Typography className='text-xs text-gray-500'>
+              {ratingSummary.find((item) => item.star === 5)?.count || 0}
+            </Typography>
           </Stack>
           {/* 4 stars */}
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Rating name='rating' defaultValue={4} precision={0.5} size='small' readOnly />
-            <BorderLinearProgress variant='determinate' value={70} className='w-[140px]' />
-            <Typography className='text-xs text-gray-500'>300</Typography>
+            <Rating name='rating' defaultValue={4} precision={1} size='small' readOnly />
+            <BorderLinearProgress
+              variant='determinate'
+              value={ratingSummary.find((item) => item.star === 4)?.count || 0}
+              className='w-[140px]'
+            />
+            <Typography className='text-xs text-gray-500'>
+              {ratingSummary.find((item) => item.star === 4)?.count || 0}
+            </Typography>
           </Stack>
           {/* 3 stars */}
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Rating name='rating' defaultValue={3} precision={0.5} size='small' readOnly />
-            <BorderLinearProgress variant='determinate' value={20} className='w-[140px]' />
-            <Typography className='text-xs text-gray-500'>230</Typography>
+            <Rating name='rating' defaultValue={3} precision={1} size='small' readOnly />
+            <BorderLinearProgress
+              variant='determinate'
+              value={ratingSummary.find((item) => item.star === 3)?.count || 0}
+              className='w-[140px]'
+            />
+            <Typography className='text-xs text-gray-500'>
+              {ratingSummary.find((item) => item.star === 3)?.count || 0}
+            </Typography>
           </Stack>
           {/* 2 stars */}
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Rating name='rating' defaultValue={2} precision={0.5} size='small' readOnly />
-            <BorderLinearProgress variant='determinate' value={10} className='w-[140px]' />
-            <Typography className='text-xs text-gray-500'>11</Typography>
+            <Rating name='rating' defaultValue={2} precision={1} size='small' readOnly />
+            <BorderLinearProgress
+              variant='determinate'
+              value={ratingSummary.find((item) => item.star === 2)?.count || 0}
+              className='w-[140px]'
+            />
+            <Typography className='text-xs text-gray-500'>
+              {ratingSummary.find((item) => item.star === 2)?.count || 0}
+            </Typography>
           </Stack>
           {/* 1 stars */}
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Rating name='rating' defaultValue={1} precision={0.5} size='small' readOnly />
-            <BorderLinearProgress variant='determinate' value={10} className='w-[140px]' />
-            <Typography className='text-xs text-gray-500'>10</Typography>
+            <Rating name='rating' defaultValue={1} precision={1} size='small' readOnly />
+            <BorderLinearProgress
+              variant='determinate'
+              value={ratingSummary.find((item) => item.star === 1)?.count || 0}
+              className='w-[140px]'
+            />
+            <Typography className='text-xs text-gray-500'>
+              {ratingSummary.find((item) => item.star === 1)?.count || 0}
+            </Typography>
           </Stack>
         </Stack>
       </Stack>

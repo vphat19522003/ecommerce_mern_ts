@@ -22,45 +22,56 @@ const listFilterButton = [
     isChoose: false
   },
   {
-    name: 'fiveStar',
+    name: 'rating',
     label: '5 stars',
-    value: 4,
-    isChoose: false
-  },
-  {
-    name: 'fourStar',
-    label: '4 stars',
     value: 5,
     isChoose: false
   },
   {
-    name: 'threeStar',
+    name: 'rating',
+    label: '4 stars',
+    value: 4,
+    isChoose: false
+  },
+  {
+    name: 'rating',
     label: '3 stars',
-    value: 6,
+    value: 3,
     isChoose: false
   },
   {
-    name: 'twoStar',
+    name: 'rating',
     label: '2 stars',
-    value: 7,
+    value: 2,
     isChoose: false
   },
   {
-    name: 'oneStar',
-    label: '1 stars',
-    value: 8,
+    name: 'rating',
+    label: '1 star',
+    value: 1,
     isChoose: false
   }
 ];
 
-const CommentFilterSection = (): JSX.Element => {
-  const onClickFilter = () => {};
+const CommentFilterSection = ({ filters, handleToggleFilter }: any): JSX.Element => {
   return (
     <Stack className='min-h-12'>
       <Typography className='font-semibold text-md'>Filter by</Typography>
       <Stack direction={'row'} spacing={4} className='flex-wrap'>
         {listFilterButton.map((button, index) => (
-          <ButtonForm key={index} variant='outlined' className='rounded-3xl mt-2' onClick={() => onClickFilter()}>
+          <ButtonForm
+            key={index}
+            variant={
+              button.name === 'rating'
+                ? filters.rating.includes(button.value)
+                  ? 'contained'
+                  : 'outlined'
+                : filters[button.name]
+                  ? 'contained'
+                  : 'outlined'
+            }
+            className='rounded-3xl mt-2'
+            onClick={() => handleToggleFilter(button.name, button.value)}>
             {button.label}
           </ButtonForm>
         ))}

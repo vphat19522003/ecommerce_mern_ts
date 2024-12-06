@@ -10,7 +10,8 @@ import {
   useDeleteMyComment,
   useGetCommentImages,
   useGetComments,
-  useGetMyComment
+  useGetMyComment,
+  useGetRatingSummary
 } from '@app/api/hooks/comment.hook';
 import ButtonForm from '@app/components/atoms/button';
 import ConfirmPopup, { IDialogRef } from '@app/components/organisms/confirmPopup';
@@ -31,11 +32,18 @@ type ProductCommentProps = {
   productDetail?: getProductDetailCustom;
 };
 
-const initFitler = {
+export type filterType = {
+  hasImage: boolean;
+  hasBought: boolean;
+  rating: number[];
+  latest: boolean;
+};
+
+const initFitler: filterType = {
   hasImage: false,
   hasBought: false,
   rating: [],
-  sort: 'latest'
+  latest: false
 };
 
 const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => {
@@ -47,7 +55,8 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
   });
   const [commentImages, setCommentImages] = useState<string[]>([]);
   const [myComment, setMyComment] = useState<IComment | null>(null);
-  const [filters, setFilters] = useState(initFitler);
+  const [filters, setFilters] = useState<filterType>(initFitler);
+  const [ratingSummary, setRatingSummary] = useState<{ star: number; count: number }[]>([]);
 
   const addCommentDialogRef = useRef<IDialogRef>(null);
   const confirmDialogRef = useRef<IDialogRef>(null);
@@ -60,11 +69,12 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
   const { mutate: getCommentImages } = useGetCommentImages();
   const { mutate: getMyComment } = useGetMyComment();
   const { mutate: deleteMyComment } = useDeleteMyComment();
+  const { mutate: getRatingSummary } = useGetRatingSummary();
 
   useEffect(() => {
     if (!productDetail?._id) return;
     getCommentList(
-      { productId: productDetail?._id as string, page: 1, pageSize: 5 },
+      { productId: productDetail?._id as string, page: 1, pageSize: 5, filter: filters },
       {
         onSuccess: (data) => {
           setListComment(data.result.data);
@@ -93,7 +103,18 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
     } else {
       setMyComment(null);
     }
-  }, [productDetail?._id]);
+  }, [productDetail?._id, filters]);
+
+  useEffect(() => {
+    getRatingSummary(
+      { productId: productDetail?._id as string },
+      {
+        onSuccess: (data) => {
+          setRatingSummary(data.result);
+        }
+      }
+    );
+  }, [myComment]);
 
   const handleOpenAddComment = () => {
     if (!user) {
@@ -110,7 +131,12 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
           addCommentDialogRef.current?.hide();
 
           getCommentList(
-            { productId: productDetail?._id as string, page: pagination.page, pageSize: pagination.pageSize },
+            {
+              productId: productDetail?._id as string,
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+              filter: filters
+            },
             {
               onSuccess: (data) => {
                 setListComment(data.result.data);
@@ -139,7 +165,7 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
   const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     if (page === pagination.page) return;
     getCommentList(
-      { productId: productDetail?._id as string, page: page, pageSize: 5 },
+      { productId: productDetail?._id as string, page: page, pageSize: 5, filter: filters },
       {
         onSuccess: (data) => {
           setListComment(data.result.data);
@@ -158,7 +184,12 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
             toast.success(data.message);
             setMyComment(null);
             getCommentList(
-              { productId: productDetail?._id as string, page: pagination.page, pageSize: pagination.pageSize },
+              {
+                productId: productDetail?._id as string,
+                page: pagination.page,
+                pageSize: pagination.pageSize,
+                filter: filters
+              },
               {
                 onSuccess: (data) => {
                   setListComment(data.result.data);
@@ -181,13 +212,26 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
     });
   };
 
-  const handleChangeFilter = () => {};
+  const handleToggleFilter = (filterName: string, value?: number) => {
+    setFilters((prevFilters) => {
+      if (filterName === 'rating') {
+        const newRatings = prevFilters.rating.includes(value!)
+          ? prevFilters.rating.filter((r) => r !== value)
+          : [...prevFilters.rating, value!];
+        return { ...prevFilters, rating: newRatings };
+      }
+
+      return { ...prevFilters, [filterName]: !prevFilters[filterName] };
+    });
+    console.log({ filters });
+  };
+
   return (
     <>
       <Stack className='p-4' spacing={2}>
         <Typography className='font-extrabold'>Customer's Reviews</Typography>
         {/* General Rating Info */}
-        <GeneralRatingInfo />
+        <GeneralRatingInfo ratingSummary={ratingSummary} totalComments={pagination.total} />
         <Divider />
         {/* Comment Images Section */}
         <CommentImageSection commentImages={commentImages} />
@@ -203,7 +247,7 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
 
         <Divider />
         {/* Comment Filter Section */}
-        <CommentFilterSection />
+        <CommentFilterSection handleToggleFilter={handleToggleFilter} filters={filters} />
         <Divider />
         {/* Main Comment Section */}
         <MainCommentSection

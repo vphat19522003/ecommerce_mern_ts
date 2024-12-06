@@ -21,6 +21,10 @@ class CommentService {
     const uploadedImages: string[] = [];
     let commentImgUploadResults: UploadApiResponse[] = [];
 
+    if (!Types.ObjectId.isValid(productId)) {
+      throw new CustomError('Product ID is not valid', STATUS_CODE.BAD_REQUEST);
+    }
+
     const product = await ProductModel.findById(new Types.ObjectId(productId));
 
     if (!product) throw new CustomError('Product not found', STATUS_CODE.BAD_REQUEST);
@@ -74,23 +78,40 @@ class CommentService {
       total: number;
     };
   }> {
-    const { productId, page = 1, pageSize = 5 } = req.body;
+    const { productId, page = 1, pageSize = 5, filter } = req.body;
 
     if (!Types.ObjectId.isValid(productId)) {
-      throw new Error('Product ID is not valid');
+      throw new CustomError('Product ID is not valid', STATUS_CODE.BAD_REQUEST);
     }
 
     const product = await ProductModel.findById(new Types.ObjectId(productId));
 
     if (!product) throw new CustomError('Product not found', STATUS_CODE.BAD_REQUEST);
 
+    const filterQuery: Record<string, any> = { productId: product.id };
+
+    if (filter) {
+      if (filter.hasImage) {
+        filterQuery['comment_images'] = { $exists: true, $ne: [] };
+      }
+
+      // if (filter.hasBought) {
+      //   filterQuery['hasBought'] = true;
+      // }
+
+      if (filter.rating?.length > 0) {
+        filterQuery['comment_vote'] = { $in: filter.rating };
+      }
+    }
+
     const skip = (Number(page) - 1) * Number(pageSize);
     const limit = Number(pageSize);
-    const total = await CommentModel.countDocuments({ productId });
+    const total = await CommentModel.countDocuments(filterQuery);
 
-    const commentList = await CommentModel.find({ productId })
+    const commentList = await CommentModel.find(filterQuery)
       .skip(skip)
       .limit(limit)
+      .sort({ createdAt: filter?.latest === true ? -1 : 1 })
       .populate('userId', 'username createdAt avatar')
       .exec();
 
@@ -101,7 +122,7 @@ class CommentService {
     const { productId } = req.body;
 
     if (!Types.ObjectId.isValid(productId as string)) {
-      throw new Error('Product ID is not valid');
+      throw new CustomError('Product ID is not valid', STATUS_CODE.BAD_REQUEST);
     }
 
     const product = await ProductModel.findById(new Types.ObjectId(productId as string));
@@ -120,7 +141,7 @@ class CommentService {
     const { productId } = req.body;
 
     if (!Types.ObjectId.isValid(productId)) {
-      throw new Error('Product ID is not valid');
+      throw new CustomError('Product ID is not valid', STATUS_CODE.BAD_REQUEST);
     }
 
     const product = await ProductModel.findById(new Types.ObjectId(productId));
@@ -142,7 +163,7 @@ class CommentService {
     const { productId } = req.body;
 
     if (!Types.ObjectId.isValid(productId)) {
-      throw new Error('Product ID is not valid');
+      throw new CustomError('Product ID is not valid', STATUS_CODE.BAD_REQUEST);
     }
 
     const product = await ProductModel.findById(new Types.ObjectId(productId));
@@ -152,6 +173,37 @@ class CommentService {
     const deleteResult = await CommentModel.deleteOne({ userId, productId });
 
     if (deleteResult.deletedCount === 0) throw new CustomError('Comment not found', STATUS_CODE.BAD_REQUEST);
+  }
+
+  static async getRatingSummary(req: IRequestCustom): Promise<{ star: number; count: number }[]> {
+    const { productId } = req.body;
+
+    if (!Types.ObjectId.isValid(productId)) {
+      throw new CustomError('Product ID is not valid', STATUS_CODE.BAD_REQUEST);
+    }
+
+    const product = await ProductModel.findById(new Types.ObjectId(productId));
+    if (!product) throw new CustomError('Product not found', STATUS_CODE.BAD_REQUEST);
+
+    const ratingSummary = await CommentModel.aggregate([
+      { $match: { productId: new Types.ObjectId(productId) } },
+      {
+        $group: {
+          _id: '$comment_vote',
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          star: '$_id',
+          count: 1,
+          _id: 0
+        }
+      },
+      { $sort: { star: -1 } }
+    ]);
+
+    return ratingSummary;
   }
 }
 
