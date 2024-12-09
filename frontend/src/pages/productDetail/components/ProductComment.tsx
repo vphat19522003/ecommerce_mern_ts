@@ -103,9 +103,7 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
     } else {
       setMyComment(null);
     }
-  }, [productDetail?._id, filters]);
 
-  useEffect(() => {
     getRatingSummary(
       { productId: productDetail?._id as string },
       {
@@ -114,7 +112,7 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
         }
       }
     );
-  }, [myComment]);
+  }, [productDetail?._id, filters]);
 
   const handleOpenAddComment = () => {
     if (!user) {
@@ -151,6 +149,15 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
             {
               onSuccess: (data) => {
                 setCommentImages(data.result);
+              }
+            }
+          );
+
+          getRatingSummary(
+            { productId: productDetail?._id as string },
+            {
+              onSuccess: (data) => {
+                setRatingSummary(data.result);
               }
             }
           );
@@ -203,6 +210,15 @@ const ProductComment = ({ productDetail }: ProductCommentProps): JSX.Element => 
               {
                 onSuccess: (data) => {
                   setCommentImages(data.result);
+                }
+              }
+            );
+
+            getRatingSummary(
+              { productId: productDetail?._id as string },
+              {
+                onSuccess: (data) => {
+                  setRatingSummary(data.result);
                 }
               }
             );

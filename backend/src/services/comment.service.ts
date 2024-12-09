@@ -60,6 +60,23 @@ class CommentService {
 
       const newComment = await CommentRepository.createComment(commentData);
 
+      if (newComment) {
+        const product = await ProductModel.findById(newComment.productId);
+
+        if (product) {
+          const totalComment = product.totalComment + 1;
+          const newVoteRate = (product.productVoteRate * product.totalComment + newComment.comment_vote) / totalComment;
+
+          await ProductModel.updateOne(
+            { _id: product?._id },
+            {
+              productVoteRate: Math.ceil(newVoteRate),
+              totalComment
+            }
+          );
+        }
+      }
+
       return newComment;
     } catch (err) {
       if (uploadedImages.length > 0) {
@@ -170,9 +187,27 @@ class CommentService {
 
     if (!product) throw new CustomError('Product not found', STATUS_CODE.BAD_REQUEST);
 
+    const comment = await CommentModel.findOne({ userId, productId });
+    if (!comment) throw new CustomError('Comment not found', STATUS_CODE.BAD_REQUEST);
+
     const deleteResult = await CommentModel.deleteOne({ userId, productId });
 
     if (deleteResult.deletedCount === 0) throw new CustomError('Comment not found', STATUS_CODE.BAD_REQUEST);
+
+    const totalComment = product.totalComment - 1;
+
+    let newVoteRate = 0;
+    if (totalComment > 0) {
+      newVoteRate = (product.productVoteRate * product.totalComment - comment.comment_vote) / totalComment;
+    }
+
+    await ProductModel.updateOne(
+      { _id: product?._id },
+      {
+        productVoteRate: Math.ceil(newVoteRate),
+        totalComment
+      }
+    );
   }
 
   static async getRatingSummary(req: IRequestCustom): Promise<{ star: number; count: number }[]> {

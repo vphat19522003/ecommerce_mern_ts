@@ -10,14 +10,17 @@ type GeneralRatingInfoProps = {
 
 const GeneralRatingInfo = ({ ratingSummary, totalComments }: GeneralRatingInfoProps): JSX.Element => {
   const { isMobile } = useDevice();
+  const productVoteRate = Math.ceil(
+    ratingSummary.reduce((acc, item) => acc + item.count * item.star, 0) / totalComments
+  );
   return (
     <Stack direction={isMobile ? 'column' : 'row'}>
       <Stack className={`min-h-64 ${isMobile ? 'w-full' : 'w-4/12'}`}>
         <Typography className='font-semibold text-md'>Tổng quan</Typography>
         {/* Rating Point */}
         <Stack direction={'row'} alignItems={'center'} spacing={4} className='mt-2'>
-          <Typography className='text-4xl font-bold'>5.0</Typography>
-          <Rating name='rating' defaultValue={5} precision={1} size='large' readOnly />
+          <Typography className='text-4xl font-bold'>{productVoteRate || 0}.0</Typography>
+          <Rating name='rating' value={productVoteRate || 0} precision={1} size='large' readOnly />
         </Stack>
         {/* Total comment */}
         <Typography className='text-md text-gray-400'>({totalComments} ratings)</Typography>

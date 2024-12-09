@@ -66,10 +66,10 @@ const MainCommentSection = ({
                   <Stack>
                     <Typography
                       className={`text-lg font-semibold ${user && user._id === item.userId._id ? 'text-pink-500' : ''}`}>
-                      {item.userId.username}
+                      {item.userId?.username}
                     </Typography>
                     <Typography className='text-sm font-medium text-gray-400'>
-                      Participate {item.userId.createdAt}
+                      Participate {item.userId?.createdAt}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -138,18 +138,17 @@ const MainCommentSection = ({
                 </Stack>
 
                 {/* Comment action */}
-                {!user ||
-                  (user?._id !== item.userId._id && (
-                    <Stack direction={'row'} justifyContent={'space-between'} className='mt-2'>
-                      <ButtonForm className='size-auto'>
-                        <ThumbUpOffAlt className='text-lg' />
-                        <Typography className='ml-2 text-md'>Hữu ích</Typography>
-                      </ButtonForm>
-                      <IconButton className='size-auto'>
-                        <Share className='text-xl text-blue-700' />
-                      </IconButton>
-                    </Stack>
-                  ))}
+                {(!user || user?._id !== item.userId._id) && (
+                  <Stack direction={'row'} justifyContent={'space-between'} className='mt-2'>
+                    <ButtonForm className='size-auto'>
+                      <ThumbUpOffAlt className='text-lg' />
+                      <Typography className='ml-2 text-md'>Hữu ích</Typography>
+                    </ButtonForm>
+                    <IconButton className='size-auto'>
+                      <Share className='text-xl text-blue-700' />
+                    </IconButton>
+                  </Stack>
+                )}
               </Stack>
             </Stack>
             <Divider />

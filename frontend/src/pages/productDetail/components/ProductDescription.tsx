@@ -51,11 +51,17 @@ const ProductDescription = ({ productDetail }: ProductDescriptionProps): JSX.Ele
         <Typography className='text-2xl font-semibold'>{productDetail?.productName}</Typography>
         {/* Product Rate */}
         <Stack direction={'row'} spacing={2} alignItems={'center'}>
-          <Typography className='font-semibold'>4.5</Typography>
-          <Rating name='rating-read' defaultValue={4.5} precision={0.5} size='small' />
+          <Typography className='font-semibold'>{productDetail?.productVoteRate}</Typography>
+          <Rating
+            name='rating-read'
+            value={Number(productDetail?.productVoteRate)}
+            precision={1}
+            size='small'
+            readOnly
+          />
           {/* Comment Quantity - Saled Quantity*/}
           <Stack direction={'row'} spacing={2} alignItems={'center'}>
-            <Typography className='text-slate-400'>(10)</Typography>
+            <Typography className='text-slate-400'>({productDetail?.totalComment})</Typography>
             <Typography className='text-slate-400 text-md'>| Saled 200</Typography>
           </Stack>
         </Stack>

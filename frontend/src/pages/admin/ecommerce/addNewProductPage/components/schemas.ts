@@ -100,4 +100,6 @@ export type getProductDetailCustom = Omit<AddNewProductFormType, 'productThumbIm
     _id: string;
     name: string;
   };
+  totalComment: number;
+  productVoteRate: number;
 };
