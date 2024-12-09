@@ -124,9 +124,15 @@
                                     . UI my comment and logic FE: DONE
                                     . Filter All comments rating api: DONE
                                     . Summary rating: DONE
-                    + Tạo api get chi tiết thông tin sản phẩm
-                    + Tạo api tính tiền sản phẩm
-                    + Tạo api mua hàng
-                    + Tạo api và giao diện giỏ hàng
+                    + API Cart : PENDING
+                               . Model: DONE
+                               . Route, controller, service, repository: PENDING
+                               . UI DONE: DONE
+                               . Implement API to FE: PENDING
+                    + API ORDER: PENDING
+                               . Model: DONE
+                               . Route, controller, service, repository: PENDING
+                               . UI DONE: DONE
+                               . Implement API to FE: PENDING
             
                         
