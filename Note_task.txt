@@ -127,12 +127,12 @@
                     + API Cart : PENDING
                                . Model: DONE
                                . Route, controller, service, repository: PENDING
-                               . UI DONE: DONE
+                               . UI: DONE
                                . Implement API to FE: PENDING
                     + API ORDER: PENDING
                                . Model: DONE
                                . Route, controller, service, repository: PENDING
-                               . UI DONE: DONE
+                               . UI: PENDING
                                . Implement API to FE: PENDING
             
                         

@@ -24,17 +24,22 @@ const CartItemSchema = new Schema<CartItem>(
   }
 );
 
-const CartSchema = new Schema<ICart>({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+const CartSchema = new Schema<ICart>(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    cartItems: {
+      type: [CartItemSchema],
+      default: []
+    }
   },
-  cartItems: {
-    type: [CartItemSchema],
-    default: []
+  {
+    timestamps: true
   }
-});
+);
 
 const CartModel = model<ICart>('Cart', CartSchema);
 
