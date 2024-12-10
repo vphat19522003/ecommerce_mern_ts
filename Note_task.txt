@@ -124,15 +124,15 @@
                                     . UI my comment and logic FE: DONE
                                     . Filter All comments rating api: DONE
                                     . Summary rating: DONE
-                    + API Cart : PENDING
+                    + API Cart : DONE
                                . Model: DONE
-                               . Route, controller, service, repository: PENDING
+                               . Route, controller, service, repository: DONE
                                . UI: DONE
-                               . Implement API to FE: PENDING
+                    + Implement API to FE: PENDING
                     + API ORDER: PENDING
                                . Model: DONE
                                . Route, controller, service, repository: PENDING
                                . UI: PENDING
-                               . Implement API to FE: PENDING
+                    + Implement API to FE: PENDING
             
                         
