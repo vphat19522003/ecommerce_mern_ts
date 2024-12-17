@@ -24,11 +24,12 @@ export const updateCartQuantityController = async (req: Request, res: Response):
 };
 
 export const removeProductCartController = async (req: Request, res: Response): Promise<Response> => {
-  await CartService.removeProductCart(req);
+  const result = await CartService.removeProductCart(req);
 
   return res.json({
     status: STATUS_CODE.OK,
-    message: 'Remove item from cart successfully'
+    message: 'Remove item from cart successfully',
+    result
   });
 };
 

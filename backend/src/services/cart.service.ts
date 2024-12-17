@@ -8,7 +8,7 @@ import ProductModel from '@app/models/product.model';
 import { UserInfo } from '@app/repository/user.repository';
 
 class CartService {
-  static async addToCart(req: IRequestCustom): Promise<void> {
+  static async addToCart(req: IRequestCustom): Promise<{ cartInfo: ICart; totalQuantity: number }> {
     const { _id: userId } = req.user as UserInfo;
     const { productId, quantity } = req.body;
 
@@ -39,10 +39,14 @@ class CartService {
       }
     }
 
-    await cart.save();
+    const cartInfo = await cart.save();
+
+    const totalQuantity = cartInfo.cartItems.reduce((acc, cur) => acc + cur.quantity, 0);
+
+    return { cartInfo, totalQuantity };
   }
 
-  static async updateCartQuantity(req: IRequestCustom): Promise<ICart> {
+  static async updateCartQuantity(req: IRequestCustom): Promise<{ cartInfo: ICart; totalQuantity: number }> {
     const { _id: userId } = req.user as UserInfo;
     const data = req.body;
 
@@ -81,12 +85,13 @@ class CartService {
 
     existingItem.quantity = tempQuantity;
 
-    const updatedCart = await cart.save();
+    const cartInfo = await cart.save();
+    const totalQuantity = cartInfo.cartItems.reduce((acc, cur) => acc + cur.quantity, 0);
 
-    return updatedCart;
+    return { cartInfo, totalQuantity };
   }
 
-  static async removeProductCart(req: IRequestCustom): Promise<void> {
+  static async removeProductCart(req: IRequestCustom): Promise<{ cartInfo: ICart; totalQuantity: number }> {
     const { _id: userId } = req.user as UserInfo;
     const { productId } = req.body;
 
@@ -108,7 +113,11 @@ class CartService {
 
     cart.cartItems = cart.cartItems.filter((item) => String(item.productId) !== String(product._id));
 
-    await cart.save();
+    const cartInfo = await cart.save();
+
+    const totalQuantity = cartInfo.cartItems.reduce((acc, cur) => acc + cur.quantity, 0);
+
+    return { cartInfo, totalQuantity };
   }
 
   static async removeAllProductCart(req: IRequestCustom): Promise<void> {
@@ -121,16 +130,16 @@ class CartService {
     await CartModel.deleteOne({ _id: cart._id });
   }
 
-  static async getMyCart(req: IRequestCustom): Promise<{ myCart: ICart; totalCartItem: number }> {
+  static async getMyCart(req: IRequestCustom): Promise<{ cartInfo: ICart; totalQuantity: number }> {
     const { _id: userId } = req.user as UserInfo;
 
-    const myCart = await CartModel.findOne({ userId }).populate('cartItems.productId');
+    const cartInfo = await CartModel.findOne({ userId }).populate('cartItems.productId');
 
-    if (!myCart) throw new CustomError('Cart not found', STATUS_CODE.BAD_REQUEST);
+    if (!cartInfo) throw new CustomError('Cart not found', STATUS_CODE.BAD_REQUEST);
 
-    const totalCartItem = myCart.cartItems.reduce((acc, cur) => acc + cur.quantity, 0);
+    const totalQuantity = cartInfo.cartItems.reduce((acc, cur) => acc + cur.quantity, 0);
 
-    return { myCart, totalCartItem };
+    return { cartInfo, totalQuantity };
   }
 }
 
