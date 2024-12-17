@@ -1,13 +1,19 @@
+import { useSelector } from 'react-redux';
+
 import { Stack } from '@mui/material';
 
 import BreadCrumb from '@app/components/organisms/breadcrumb';
 import { useDevice } from '@app/hooks/useDevice';
+import { RootState } from '@app/store';
 
 import CartProductInformation from './components/CartProductInformation';
 import CartProductList from './components/CartProductList';
 
 const CartPage = (): JSX.Element => {
   const { isMobile } = useDevice();
+  const cartItemList = useSelector((state: RootState) => state.cart.cart?.cartItems);
+  const totalQuantity = useSelector((state: RootState) => state.cart.totalQuantity);
+
   return (
     <Stack>
       <BreadCrumb mainCategory={'cart'} subCategories={[]} />
@@ -18,7 +24,7 @@ const CartPage = (): JSX.Element => {
           style={{
             boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
           }}>
-          <CartProductList />
+          <CartProductList cartItemList={cartItemList || []} totalQuantity={totalQuantity} />
         </Stack>
         {/* Cart Product Information */}
         <Stack

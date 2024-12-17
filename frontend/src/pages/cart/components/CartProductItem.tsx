@@ -1,14 +1,49 @@
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { Delete, Inventory } from '@mui/icons-material';
 import { Divider, IconButton, Stack, Typography } from '@mui/material';
 
-import NetflixImg from '@app/assets/NETFLIX-1thang.png';
+import { useRemoveProductCart } from '@app/api/hooks/cart.hook';
 import QuantityGroupButton from '@app/components/organisms/quantityGroupButton';
 import { useDevice } from '@app/hooks/useDevice';
+import { setCart } from '@app/redux/cartSlice';
+import { ICartItem } from '@app/types/cart';
+import { IErrorResponse } from '@app/types/common';
 
-const CartProductItem = (): JSX.Element => {
+type CartProductItemProps = { cartItem: ICartItem };
+const CartProductItem = ({ cartItem }: CartProductItemProps): JSX.Element => {
   const { isMobile } = useDevice();
+  const { productId: productInfo, quantity } = cartItem;
+  const { mutate: removeProductCart } = useRemoveProductCart();
+  const dispatch = useDispatch();
+
+  const handleRemoveProductCart = () => {
+    const toastID = toast.loading('Please wait...');
+    removeProductCart(
+      { productId: productInfo._id },
+      {
+        onSuccess: (data) => {
+          dispatch(setCart({ cart: data.result.cartInfo, totalQuantity: data.result.totalQuantity }));
+          toast.update(toastID, {
+            render: 'Remove successfully',
+            type: 'success',
+            isLoading: false,
+            autoClose: 3000
+          });
+        },
+        onError: (err: IErrorResponse) => {
+          toast.update(toastID, {
+            render: err.response.data.message as string,
+            type: 'error',
+            isLoading: false,
+            autoClose: 3000
+          });
+        }
+      }
+    );
+  };
   return (
     <Stack
       direction={isMobile ? 'column' : 'row'}
@@ -16,7 +51,11 @@ const CartProductItem = (): JSX.Element => {
       spacing={4}>
       {/* Cart Product Image */}
       <Stack className={`${isMobile ? 'w-full' : 'w-4/12'} rounded-lg overflow-hidden max-h-[200px]`}>
-        <img src={NetflixImg} alt='Product Image' className='w-full h-full object-contain rounded-lg' />
+        <img
+          src={productInfo?.productThumbImg?.url}
+          alt='Product Image'
+          className='w-full h-full object-contain rounded-lg'
+        />
       </Stack>
       {/* Cart Product INFO + ACTION */}
       <Stack className={`${isMobile ? 'w-full' : 'w-8/12'} mt-4`} spacing={2}>
@@ -24,17 +63,17 @@ const CartProductItem = (): JSX.Element => {
         <Stack direction={isMobile ? 'column' : 'row'} justifyContent={'space-between'}>
           <Stack>
             <Link to={'/'} className='no-underline text-black'>
-              <Typography className='font-bold'>Netflix Premium 1 tháng - Tài khoản</Typography>
+              <Typography className='font-bold'>{productInfo?.productName}</Typography>
             </Link>
-            <Typography className='text-md'>App, Giải trí, Xem phim</Typography>
+            <Typography className='text-md'>Giải trí</Typography>
           </Stack>
 
           <Stack spacing={4}>
             <Stack direction='row' alignItems={'center'} spacing={2} className={`${isMobile && 'mt-4'}`}>
-              <Typography className='text-xl font-bold'>89.000đ</Typography>
+              <Typography className='text-xl font-bold'>{productInfo?.productPrice}</Typography>
               <Typography className='text-sm line-through text-slate-400 font-semibold'>260.000đ</Typography>
             </Stack>
-            <QuantityGroupButton />
+            <QuantityGroupButton productId={productInfo?._id} quantity={quantity} />
           </Stack>
         </Stack>
 
@@ -46,7 +85,7 @@ const CartProductItem = (): JSX.Element => {
             <Typography className='text-red-500 text-md'>Tình trạng: </Typography>
             <Typography className='text-green-700 text-md'>Còn hàng</Typography>
           </Stack>
-          <IconButton>
+          <IconButton onClick={handleRemoveProductCart}>
             <Delete className='text-red-600' />
           </IconButton>
         </Stack>

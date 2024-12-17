@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import authSlice from '@app/redux/authSlice';
+import cartSlice from '@app/redux/cartSlice';
 import categorySlice from '@app/redux/categorySlice';
 import filterSlice from '@app/redux/filterSlice';
 import uiSlice from '@app/redux/uiSlice';
@@ -10,7 +11,8 @@ const store = configureStore({
     auth: authSlice,
     ui: uiSlice,
     filter: filterSlice,
-    category: categorySlice
+    category: categorySlice,
+    cart: cartSlice
   }
 });
 

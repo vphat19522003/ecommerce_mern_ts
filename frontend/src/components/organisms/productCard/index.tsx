@@ -1,11 +1,15 @@
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { Favorite, StarBorder, Visibility } from '@mui/icons-material';
 import { Card, CardContent, IconButton, Stack, Typography } from '@mui/material';
 
+import { useAddToCart } from '@app/api/hooks/cart.hook';
 import ButtonForm from '@app/components/atoms/button';
+import { setCart } from '@app/redux/cartSlice';
 import { toggleProductSidebar } from '@app/redux/uiSlice';
+import { IErrorResponse } from '@app/types/common';
 
 export type ProductCardType = {
   productId: string;
@@ -26,6 +30,33 @@ const ProductCard = ({
   productId
 }: ProductCardType): JSX.Element => {
   const dispatch = useDispatch();
+  const { mutate: addToCart } = useAddToCart();
+
+  const handleAddToCart = () => {
+    const toastID = toast.loading('Please wait...');
+    addToCart(
+      { productId, quantity: 1 },
+      {
+        onSuccess: (data) => {
+          dispatch(setCart({ cart: data.result.cartInfo, totalQuantity: data.result.totalQuantity }));
+          toast.update(toastID, {
+            render: 'Add product to cart successfully',
+            type: 'success',
+            isLoading: false,
+            autoClose: 3000
+          });
+        },
+        onError: (err: IErrorResponse) => {
+          toast.update(toastID, {
+            render: err.response.data.message as string,
+            type: 'error',
+            isLoading: false,
+            autoClose: 3000
+          });
+        }
+      }
+    );
+  };
   return (
     <Card className='!max-h-[380px] max-w-[260px] !p-2 border-[0.2px] border-solid border-slate-100 hover:shadow-lg'>
       <CardContent className='!p-0'>
@@ -61,7 +92,7 @@ const ProductCard = ({
               }>
               <Visibility className='text-blue-700' />
             </ButtonForm>
-            <ButtonForm className='flex-1 rounded-lg ' variant='contained'>
+            <ButtonForm className='flex-1 rounded-lg ' variant='contained' onClick={handleAddToCart}>
               Add to cart
             </ButtonForm>
           </Stack>

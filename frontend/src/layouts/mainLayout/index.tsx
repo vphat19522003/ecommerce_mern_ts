@@ -15,6 +15,7 @@ import ProductDetailSideBar from '@app/components/organisms/productDetailSidebar
 import ScrollToTopButton from '@app/components/organisms/scrollToTopButton';
 import SubBanner from '@app/components/organisms/subBanner';
 import { useDevice } from '@app/hooks/useDevice';
+import { setCart } from '@app/redux/cartSlice';
 import { setCategories } from '@app/redux/categorySlice';
 import { closeImageViewer } from '@app/redux/uiSlice';
 import { RootState } from '@app/store';
@@ -38,7 +39,12 @@ const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
   const location = useLocation();
 
   useEffect(() => {
-    console.log({ CART: data });
+    dispatch(
+      setCart({
+        cart: data?.cartInfo || null,
+        totalQuantity: data?.totalQuantity || 0
+      })
+    );
     dispatch(setCategories(mainCategory));
   });
 

@@ -12,6 +12,7 @@ import HeaderBoxHover from '../headerBoxHover';
 
 const HeaderAction = (): JSX.Element => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const cartQuantity = useSelector((state: RootState) => state.cart.totalQuantity);
   const [isHovering, setIsHovering] = useState(false);
 
   return (
@@ -62,7 +63,7 @@ const HeaderAction = (): JSX.Element => {
           <Box className='relative'>
             <ShoppingCart fontSize='large' className='mr-2 text-pink-500' />
             <Box className='absolute rounded-full w-5 h-5 bg-pink-500 -top-2 right-0 shadow-md'>
-              <Typography className='text-white text-center mt-[1px] text-sm'>0</Typography>
+              <Typography className='text-white text-center mt-[1px] text-sm'>{cartQuantity}</Typography>
             </Box>
           </Box>
           Shopping Cart

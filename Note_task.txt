@@ -129,7 +129,7 @@
                                . Route, controller, service, repository: DONE
                                . UI: DONE
                     + Implement API to FE: PENDING
-                                    -Sửa lại route public, authen
+                                    -Sửa lại route public, authen: DONE
                     + API ORDER: PENDING
                                . Model: DONE
                                . Route, controller, service, repository: PENDING

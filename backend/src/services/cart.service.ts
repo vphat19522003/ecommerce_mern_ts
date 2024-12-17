@@ -39,7 +39,8 @@ class CartService {
       }
     }
 
-    const cartInfo = await cart.save();
+    const cartUpdate = await cart.save();
+    const cartInfo = await cartUpdate.populate('cartItems.productId');
 
     const totalQuantity = cartInfo.cartItems.reduce((acc, cur) => acc + cur.quantity, 0);
 
@@ -85,7 +86,8 @@ class CartService {
 
     existingItem.quantity = tempQuantity;
 
-    const cartInfo = await cart.save();
+    const cartUpdate = await cart.save();
+    const cartInfo = await cartUpdate.populate('cartItems.productId');
     const totalQuantity = cartInfo.cartItems.reduce((acc, cur) => acc + cur.quantity, 0);
 
     return { cartInfo, totalQuantity };
@@ -113,7 +115,8 @@ class CartService {
 
     cart.cartItems = cart.cartItems.filter((item) => String(item.productId) !== String(product._id));
 
-    const cartInfo = await cart.save();
+    const cartUpdate = await cart.save();
+    const cartInfo = await cartUpdate.populate('cartItems.productId');
 
     const totalQuantity = cartInfo.cartItems.reduce((acc, cur) => acc + cur.quantity, 0);
 

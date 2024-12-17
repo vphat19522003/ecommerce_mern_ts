@@ -7,6 +7,7 @@ import { Stack } from '@mui/material';
 
 import { useLogOut } from '@app/api/hooks/auth.hook';
 import { clearUser } from '@app/redux/authSlice';
+import { clearCart } from '@app/redux/cartSlice';
 import { paths } from '@app/routes/paths';
 import { IErrorResponse } from '@app/types/common';
 
@@ -19,6 +20,7 @@ const HeaderBoxHover = (): JSX.Element => {
       {
         onSuccess: (data) => {
           dispatch(clearUser());
+          dispatch(clearCart());
           toast.success(data.message);
         },
         onError: (error: IErrorResponse) => {

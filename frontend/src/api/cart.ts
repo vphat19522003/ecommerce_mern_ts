@@ -9,7 +9,7 @@ export const addToCart = async ({
   productId: string;
   quantity: number;
 }): Promise<CartResultResponseType> => {
-  const res = await axiosCustom.post('/cart/get-my-cart', {
+  const res = await axiosCustom.post('/cart/add-cart', {
     productId,
     quantity
   });
