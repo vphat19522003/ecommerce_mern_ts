@@ -47,9 +47,10 @@ export const useRemoveAllProductCart = (): UseMutationResult<CartResultResponseT
   });
 };
 
-export const useGetCart = (): UseQueryResult<{ cartInfo: ICart; totalQuantity: number }> => {
+export const useGetCart = (enabled: boolean): UseQueryResult<{ cartInfo: ICart; totalQuantity: number }> => {
   return useQuery({
     queryKey: ['get-cart'],
-    queryFn: getCart
+    queryFn: getCart,
+    enabled
   });
 };

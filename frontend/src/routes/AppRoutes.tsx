@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import AuthLayout from '@app/layouts/authLayout';
-import HomePageLayout from '@app/layouts/homepageLayout';
+import MainLayout from '@app/layouts/mainLayout';
 import AccountVerify from '@app/pages/accountVerify';
 import NotFoundPage from '@app/pages/notFound';
 import { RootState } from '@app/store';
@@ -36,9 +36,9 @@ const AppRoutes = (): JSX.Element => {
         />
 
         {/* HOMEPAGE */}
-        <Route element={<HomePageLayout />}>{generateRoute(visitorRoute)}</Route>
+        <Route element={<MainLayout />}>{generateRoute(visitorRoute)}</Route>
 
-        {/* SHOP PAGE */}
+        {/* AUTHEN SHOP PAGE */}
         <Route element={<ProtectedLayout allowRoles={[USER_ROLE.ADMIN, USER_ROLE.USER]} />}>
           {generateRoute(shopRoute)}
         </Route>

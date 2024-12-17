@@ -4,6 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 import { Box } from '@mui/material';
 
+import { useGetCart } from '@app/api/hooks/cart.hook';
 import { useGetMainCategory } from '@app/api/hooks/category.hook';
 import Footer from '@app/components/organisms/footer';
 import Header from '@app/components/organisms/header';
@@ -19,13 +20,15 @@ import { closeImageViewer } from '@app/redux/uiSlice';
 import { RootState } from '@app/store';
 
 type MainLayoutPropsType = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const [isVisible, setIsVisible] = useState(false);
   const { isMobile } = useDevice();
   const { data: mainCategory = [] } = useGetMainCategory();
+  const { data } = useGetCart(user ? true : false);
   const showSidebar = useSelector((state: RootState) => state.ui.showSidebar);
   const showProductSidebar = useSelector((state: RootState) => state.ui.showProductDetailSidebar);
   const isViewerOpen = useSelector((state: RootState) => state.ui.showImageViewer);
@@ -35,6 +38,7 @@ const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
   const location = useLocation();
 
   useEffect(() => {
+    console.log({ CART: data });
     dispatch(setCategories(mainCategory));
   });
 

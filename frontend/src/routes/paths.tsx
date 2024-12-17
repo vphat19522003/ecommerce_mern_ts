@@ -92,10 +92,6 @@ export const visitorRoute: RouteItemConfig[] = [
   {
     element: <ProductCategoryPage />,
     path: paths.product.subCategory
-  },
-  {
-    element: <CartPage />,
-    path: paths.cart
   }
 ];
 

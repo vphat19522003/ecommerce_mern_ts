@@ -47,7 +47,7 @@ export const removeAllProductCart = async (): Promise<CartResultResponseType> =>
 };
 
 export const getCart = async (): Promise<{ cartInfo: ICart; totalQuantity: number }> => {
-  const res = await axiosCustom.post('/cart/get-my-cart');
+  const res = await axiosCustom.get('/cart/get-my-cart');
 
   return res.data.result;
 };
