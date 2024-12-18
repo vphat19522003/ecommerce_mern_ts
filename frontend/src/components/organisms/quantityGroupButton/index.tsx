@@ -33,7 +33,8 @@ const QuantityGroupButton = ({ productId, quantity }: QuantityGroupButtonProps):
             render: 'Update quantity successfully',
             type: 'success',
             isLoading: false,
-            autoClose: 3000
+            autoClose: 3000,
+            closeButton: true
           });
         },
         onError: (err: IErrorResponse) => {
@@ -41,7 +42,8 @@ const QuantityGroupButton = ({ productId, quantity }: QuantityGroupButtonProps):
             render: err.response.data.message as string,
             type: 'error',
             isLoading: false,
-            autoClose: 3000
+            autoClose: 3000,
+            closeButton: true
           });
         }
       }
@@ -60,7 +62,8 @@ const QuantityGroupButton = ({ productId, quantity }: QuantityGroupButtonProps):
             render: 'Update quantity successfully',
             type: 'success',
             isLoading: false,
-            autoClose: 3000
+            autoClose: 3000,
+            closeButton: true
           });
         },
         onError: (err: IErrorResponse) => {
@@ -68,7 +71,8 @@ const QuantityGroupButton = ({ productId, quantity }: QuantityGroupButtonProps):
             render: err.response.data.message as string,
             type: 'error',
             isLoading: false,
-            autoClose: 3000
+            autoClose: 3000,
+            closeButton: true
           });
         }
       }
@@ -94,7 +98,8 @@ const QuantityGroupButton = ({ productId, quantity }: QuantityGroupButtonProps):
             render: 'Update quantity successfully',
             type: 'success',
             isLoading: false,
-            autoClose: 3000
+            autoClose: 3000,
+            closeButton: true
           });
         },
         onError: (err: IErrorResponse) => {
@@ -102,7 +107,8 @@ const QuantityGroupButton = ({ productId, quantity }: QuantityGroupButtonProps):
             render: err.response.data.message as string,
             type: 'error',
             isLoading: false,
-            autoClose: 3000
+            autoClose: 3000,
+            closeButton: true
           });
         }
       }

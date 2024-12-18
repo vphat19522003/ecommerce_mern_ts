@@ -13,6 +13,7 @@ const CartPage = (): JSX.Element => {
   const { isMobile } = useDevice();
   const cartItemList = useSelector((state: RootState) => state.cart.cart?.cartItems);
   const totalQuantity = useSelector((state: RootState) => state.cart.totalQuantity);
+  const totalPrice = useSelector((state: RootState) => state.cart.totalPrice);
 
   return (
     <Stack>
@@ -34,7 +35,7 @@ const CartPage = (): JSX.Element => {
             top: isMobile ? '0px' : '16px',
             boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
           }}>
-          <CartProductInformation />
+          <CartProductInformation totalPrice={totalPrice} />
         </Stack>
       </Stack>
     </Stack>

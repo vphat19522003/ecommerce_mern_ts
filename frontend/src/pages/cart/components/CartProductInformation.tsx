@@ -4,13 +4,16 @@ import MoMo from '@app/assets/momo.svg';
 import ViteShop from '@app/assets/vite.svg';
 import ButtonForm from '@app/components/atoms/button';
 
-const CartProductInformation = (): JSX.Element => {
+type CartProductInformationProps = {
+  totalPrice: number;
+};
+const CartProductInformation = ({ totalPrice }: CartProductInformationProps): JSX.Element => {
   return (
     <Stack className='pb-4'>
       <Typography className='text-2xl font-bold'>Thanh toán</Typography>
       <Stack direction={'row'} justifyContent={'space-between'} className='my-4' alignItems={'end'}>
         <Typography className='font-semibold'>Tổng tiền: </Typography>
-        <Typography className='text-red-500 text-2xl font-bold'>641,520,000₫</Typography>
+        <Typography className='text-red-500 text-2xl font-bold'>{totalPrice}₫</Typography>
       </Stack>
       <Divider />
       <ul className='px-6 text-md text-slate-400'>

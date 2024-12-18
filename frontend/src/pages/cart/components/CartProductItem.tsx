@@ -30,7 +30,8 @@ const CartProductItem = ({ cartItem }: CartProductItemProps): JSX.Element => {
             render: 'Remove successfully',
             type: 'success',
             isLoading: false,
-            autoClose: 3000
+            autoClose: 3000,
+            closeButton: true
           });
         },
         onError: (err: IErrorResponse) => {
@@ -38,7 +39,8 @@ const CartProductItem = ({ cartItem }: CartProductItemProps): JSX.Element => {
             render: err.response.data.message as string,
             type: 'error',
             isLoading: false,
-            autoClose: 3000
+            autoClose: 3000,
+            closeButton: true
           });
         }
       }

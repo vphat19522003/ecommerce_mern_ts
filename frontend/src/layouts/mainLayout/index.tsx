@@ -28,15 +28,18 @@ const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
   const user = useSelector((state: RootState) => state.auth.user);
   const [isVisible, setIsVisible] = useState(false);
   const { isMobile } = useDevice();
-  const { data: mainCategory = [] } = useGetMainCategory();
-  const { data } = useGetCart(user ? true : false);
+
   const showSidebar = useSelector((state: RootState) => state.ui.showSidebar);
   const showProductSidebar = useSelector((state: RootState) => state.ui.showProductDetailSidebar);
   const isViewerOpen = useSelector((state: RootState) => state.ui.showImageViewer);
   const imageViewers = useSelector((state: RootState) => state.ui.viewerImages);
   const viewerIndex = useSelector((state: RootState) => state.ui.viewerIndex);
+  const mainCategories = useSelector((state: RootState) => state.category.mainCategory);
   const dispatch = useDispatch();
   const location = useLocation();
+
+  const { data: mainCategory = [] } = useGetMainCategory(mainCategories.length === 0);
+  const { data } = useGetCart(user ? true : false);
 
   useEffect(() => {
     dispatch(
@@ -45,8 +48,10 @@ const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
         totalQuantity: data?.totalQuantity || 0
       })
     );
-    dispatch(setCategories(mainCategory));
-  });
+    if (mainCategories.length === 0) {
+      dispatch(setCategories(mainCategory));
+    }
+  }, [data, mainCategory, dispatch]);
 
   useEffect(() => {
     window.scrollTo({
