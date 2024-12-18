@@ -51,7 +51,7 @@ const MainLayout = ({ children }: MainLayoutPropsType): JSX.Element => {
     if (mainCategories.length === 0) {
       dispatch(setCategories(mainCategory));
     }
-  }, [data, mainCategory, dispatch]);
+  }, [data]);
 
   useEffect(() => {
     window.scrollTo({

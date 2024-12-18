@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Stack } from '@mui/material';
@@ -15,15 +14,12 @@ import ProductImage from './components/ProductImage';
 
 const ProductDetailPage = (): JSX.Element => {
   const [searchParams] = useSearchParams();
-  const { isMobile } = useDevice();
 
   const productId = searchParams.get('productId');
 
-  const { data: productDetail } = useGetDetailProduct(productId as string);
+  const { data: productDetail, isPending } = useGetDetailProduct(productId as string);
 
-  useEffect(() => {
-    console.log({ productDetail });
-  }, [productId]);
+  const { isMobile } = useDevice();
 
   return (
     <Stack>
@@ -72,7 +68,7 @@ const ProductDetailPage = (): JSX.Element => {
               top: isMobile ? '0px' : '16px',
               boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
             }}>
-            <ProductAction />
+            <ProductAction productId={productDetail?._id as string} />
           </Stack>
         )}
       </Stack>

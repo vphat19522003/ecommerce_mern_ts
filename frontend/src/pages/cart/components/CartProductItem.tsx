@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Delete, Inventory } from '@mui/icons-material';
 import { Divider, IconButton, Stack, Typography } from '@mui/material';
 
-import { useRemoveProductCart } from '@app/api/hooks/cart.hook';
+import { useRemoveProductCart, useUpdateCartQuantity } from '@app/api/hooks/cart.hook';
 import QuantityGroupButton from '@app/components/organisms/quantityGroupButton';
 import { useDevice } from '@app/hooks/useDevice';
 import { setCart } from '@app/redux/cartSlice';
@@ -17,6 +17,7 @@ const CartProductItem = ({ cartItem }: CartProductItemProps): JSX.Element => {
   const { isMobile } = useDevice();
   const { productId: productInfo, quantity } = cartItem;
   const { mutate: removeProductCart } = useRemoveProductCart();
+  const { mutate: updateCartQuantity, isPending } = useUpdateCartQuantity();
   const dispatch = useDispatch();
 
   const handleRemoveProductCart = () => {
@@ -46,6 +47,104 @@ const CartProductItem = ({ cartItem }: CartProductItemProps): JSX.Element => {
       }
     );
   };
+
+  const handleDecreaseQuantity = () => {
+    if (!productInfo._id) return;
+
+    if (quantity <= 1) return;
+
+    const toastID = toast.loading('Please wait...');
+    updateCartQuantity(
+      { productId: productInfo._id, quantity: -1 },
+      {
+        onSuccess: (data) => {
+          dispatch(setCart({ cart: data.result.cartInfo, totalQuantity: data.result.totalQuantity }));
+          toast.update(toastID, {
+            render: 'Update quantity successfully',
+            type: 'success',
+            isLoading: false,
+            autoClose: 3000,
+            closeButton: true
+          });
+        },
+        onError: (err: IErrorResponse) => {
+          toast.update(toastID, {
+            render: err.response.data.message as string,
+            type: 'error',
+            isLoading: false,
+            autoClose: 3000,
+            closeButton: true
+          });
+        }
+      }
+    );
+  };
+  const handleIncreaseQuantity = () => {
+    if (!productInfo._id) return;
+
+    const toastID = toast.loading('Please wait...');
+    updateCartQuantity(
+      { productId: productInfo._id, quantity: 1 },
+      {
+        onSuccess: (data) => {
+          dispatch(setCart({ cart: data.result.cartInfo, totalQuantity: data.result.totalQuantity }));
+          toast.update(toastID, {
+            render: 'Update quantity successfully',
+            type: 'success',
+            isLoading: false,
+            autoClose: 3000,
+            closeButton: true
+          });
+        },
+        onError: (err: IErrorResponse) => {
+          toast.update(toastID, {
+            render: err.response.data.message as string,
+            type: 'error',
+            isLoading: false,
+            autoClose: 3000,
+            closeButton: true
+          });
+        }
+      }
+    );
+  };
+
+  const handleChangeCartQuantity = (value: string) => {
+    const parseValue = Number(value.split(',').join(''));
+
+    if (quantity === parseValue) return;
+
+    const calcValue = quantity > parseValue ? -(quantity - parseValue) : parseValue - quantity;
+
+    if (parseValue <= 0) return;
+
+    const toastID = toast.loading('Please wait...');
+    updateCartQuantity(
+      { productId: productInfo._id, quantity: calcValue },
+      {
+        onSuccess: (data) => {
+          dispatch(setCart({ cart: data.result.cartInfo, totalQuantity: data.result.totalQuantity }));
+          toast.update(toastID, {
+            render: 'Update quantity successfully',
+            type: 'success',
+            isLoading: false,
+            autoClose: 3000,
+            closeButton: true
+          });
+        },
+        onError: (err: IErrorResponse) => {
+          toast.update(toastID, {
+            render: err.response.data.message as string,
+            type: 'error',
+            isLoading: false,
+            autoClose: 3000,
+            closeButton: true
+          });
+        }
+      }
+    );
+  };
+
   return (
     <Stack
       direction={isMobile ? 'column' : 'row'}
@@ -75,7 +174,13 @@ const CartProductItem = ({ cartItem }: CartProductItemProps): JSX.Element => {
               <Typography className='text-xl font-bold'>{productInfo?.productPrice}</Typography>
               <Typography className='text-sm line-through text-slate-400 font-semibold'>260.000đ</Typography>
             </Stack>
-            <QuantityGroupButton productId={productInfo?._id} quantity={quantity} />
+            <QuantityGroupButton
+              quantity={quantity}
+              onChangeQuantity={handleChangeCartQuantity}
+              onDecreaseQuantity={handleDecreaseQuantity}
+              onIncreaseQuantity={handleIncreaseQuantity}
+              isPending={isPending}
+            />
           </Stack>
         </Stack>
 

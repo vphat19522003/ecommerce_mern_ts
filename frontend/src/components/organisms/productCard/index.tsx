@@ -43,7 +43,8 @@ const ProductCard = ({
             render: 'Add product to cart successfully',
             type: 'success',
             isLoading: false,
-            autoClose: 3000
+            autoClose: 3000,
+            closeButton: true
           });
         },
         onError: (err: IErrorResponse) => {
@@ -51,7 +52,8 @@ const ProductCard = ({
             render: err.response.data.message as string,
             type: 'error',
             isLoading: false,
-            autoClose: 3000
+            autoClose: 3000,
+            closeButton: true
           });
         }
       }

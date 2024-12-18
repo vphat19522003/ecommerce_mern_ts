@@ -85,7 +85,7 @@ const ProductDescription = ({ productDetail }: ProductDescriptionProps): JSX.Ele
             top: isMobile ? '0px' : '16px',
             boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)'
           }}>
-          <ProductAction />
+          <ProductAction productId={productDetail?._id} />
         </Stack>
       )}
 
