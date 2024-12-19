@@ -2,7 +2,7 @@
   "name": "ecommerce_backend",
   "version": "1.0.0",
   "description": "ecommerce backend",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "dev": "nodemon",
     "lint": "eslint ."
